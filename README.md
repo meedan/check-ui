@@ -1,2 +1,3 @@
-# check-ui
-React component library for the Check App Ecosystem
+# Check UI
+
+React component library for the Check App Ecosystem.
