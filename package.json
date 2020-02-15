@@ -53,6 +53,10 @@
     "*.{md,html}": [
       "prettier --write",
       "git add"
+    ],
+    "*.{mdx}": [
+      "prettier --write",
+      "git add"
     ]
   }
 }
