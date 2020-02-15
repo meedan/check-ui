@@ -1,18 +1,18 @@
-import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
 import { action } from '@storybook/addon-actions';
 
 import { Timeline } from './Timeline';
 
 <Meta title="Components" />
 
-# Components
+# Media Timeline
 
-Hello components
+Hello timeline
 
 <Preview>
-  <Story name="Component">
-    <>
+  <Story name="Media Timeline">
     <Timeline />
-    <button onClick={action('button-click')}>Hello World!</button></>
   </Story>
 </Preview>
+
+<Props of={Timeline} />
