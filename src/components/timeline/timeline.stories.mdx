@@ -1,6 +1,8 @@
 import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
 import { action } from '@storybook/addon-actions';
 
+import { Timeline } from './Timeline';
+
 <Meta title="Components" />
 
 # Components
@@ -9,6 +11,8 @@ Hello components
 
 <Preview>
   <Story name="Component">
-    <button onClick={action('button-click')}>Hello World!</button>
+    <>
+    <Timeline />
+    <button onClick={action('button-click')}>Hello World!</button></>
   </Story>
 </Preview>
