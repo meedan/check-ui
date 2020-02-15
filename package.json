@@ -4,16 +4,16 @@
   "main": "index.js",
   "repository": "git@github.com:meedan/check-ui.git",
   "license": "MIT",
-  "dependencies": {
-    "@storybook/addon-docs": "5.3.13"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/core": "7.8.4",
     "@babel/plugin-proposal-class-properties": "7.8.3",
     "@babel/preset-env": "7.8.4",
     "@babel/preset-react": "7.8.3",
     "@storybook/addon-actions": "5.3.13",
+    "@storybook/addon-docs": "5.3.13",
     "@storybook/addon-links": "5.3.13",
+    "@storybook/addon-viewport": "^5.3.13",
     "@storybook/addons": "5.3.13",
     "@storybook/react": "5.3.13",
     "babel-eslint": "10.0.3",
@@ -35,7 +35,7 @@
   "scripts": {
     "storybook": "start-storybook -p 8080",
     "build-storybook": "build-storybook",
-    "start": "start-storybook -p 8080"
+    "start": "start-storybook -p 8080 --ci"
   },
   "husky": {
     "hooks": {
