@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { makeStyles, withTheme } from '@material-ui/core/styles';
 
 import Tooltip from '../tooltip/Tooltip';
-import formatSeconds from './formatSeconds';
+import formatSeconds from '../formatSeconds';
 
 const useStyles = makeStyles({
   playheadRoot: {
