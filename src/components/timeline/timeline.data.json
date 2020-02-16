@@ -70,42 +70,6 @@
         "last_name": "Boas",
         "profile_img_url": "https://lh4.googleusercontent.com/-KAQP-uwuJ-U/AAAAAAAAAAI/AAAAAAAAAA8/m1-ILT1IqWs/s100/photo.jpg"
       }
-    },
-    {
-      "id": 24112,
-      "start_seconds": 761.505806986649,
-      "text": "Will make Dreamers US Citizens",
-      "user": {
-        "first_name": "Mark",
-        "id": 2376,
-        "last_name": "Boas",
-        "profile_img_url": "https://lh4.googleusercontent.com/-KAQP-uwuJ-U/AAAAAAAAAAI/AAAAAAAAAA8/m1-ILT1IqWs/s100/photo.jpg"
-      },
-      "replies": []
-    },
-    {
-      "id": 24116,
-      "start_seconds": 1098.09159298093,
-      "text": "Gerrymandering.",
-      "user": {
-        "first_name": "Mark",
-        "id": 2376,
-        "last_name": "Boas",
-        "profile_img_url": "https://lh4.googleusercontent.com/-KAQP-uwuJ-U/AAAAAAAAAAI/AAAAAAAAAA8/m1-ILT1IqWs/s100/photo.jpg"
-      },
-      "replies": []
-    },
-    {
-      "id": 24119,
-      "start_seconds": 2644.5438548753,
-      "text": "END",
-      "user": {
-        "first_name": "Laurian",
-        "id": 2591,
-        "last_name": "Gridinoc",
-        "profile_img_url": "https://lh5.googleusercontent.com/-Fri-UYSxRqc/AAAAAAAAAAI/AAAAAAAABBI/ecSU-3hNAk0/s100/photo.jpg"
-      },
-      "replies": []
     }
   ],
   "videoClips": [
@@ -140,13 +104,13 @@
       "instances": [
         {
           "created": "2019-04-24T15:56:34+00:00",
-          "end_seconds": 20.620087336245,
+          "end_seconds": 600.620087336245,
           "global_tag_id": 3959,
           "id": 24106,
           "modified": "2019-04-24T15:56:54+00:00",
           "project_id": 1254,
           "project_tag_id": 3981,
-          "start_seconds": 0,
+          "start_seconds": 500,
           "video_id": 11503,
           "video_tag_id": 20677,
           "youtube_id": "9G8dmsnFjL4",
@@ -155,7 +119,7 @@
         },
         {
           "created": "2019-04-24T16:04:29+00:00",
-          "end_seconds": 60,
+          "end_seconds": 450,
           "global_tag_id": 3959,
           "id": 24107,
           "modified": "2019-04-24T16:04:29+00:00",
