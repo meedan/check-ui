@@ -1,16 +1,30 @@
 import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
+import { State, Store } from "@sambego/storybook-state";
 import { action } from '@storybook/addon-actions';
 
-import Entities from './Entities';
+import Timeline from './Timeline';
+
+export const store = new Store({
+  value: 50,
+  max: 100,
+});
 
 <Meta title="Components" />
 
 # Timeline
 
 <Preview>
-  <Story name="Entities">
-    <Entities />
+  <Story name="Timeline">
+    <State store={store}>
+      {state =>
+        <Timeline
+          max={state.max}
+          onChange={newValue => store.set({ value: newValue })}
+          value={state.value}
+        />
+      }
+     </State>
   </Story>
 </Preview>
 
-<Props of={Entities} />
+<Props of={Timeline} />

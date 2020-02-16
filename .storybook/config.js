@@ -1,7 +1,11 @@
+import CssBaseline from '@material-ui/core/CssBaseline';
+import React from 'react';
 import { DocsPage, DocsContainer } from '@storybook/addon-docs/blocks';
 import { MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
-import { addParameters } from '@storybook/react';
+import { addDecorator, addParameters } from '@storybook/react';
 import { configureActions } from '@storybook/addon-actions';
+
+import ThemeProvider from '../src/utils/ThemeProvider';
 
 addParameters({
   options: {
@@ -18,7 +22,7 @@ addParameters({
 
     //completely hide a dependency/dependents block if it has no elements
     //by default this is false
-    hideEmpty: true,
+    hideEmpty: false,
   },
   viewport: {
     viewports: MINIMAL_VIEWPORTS,
@@ -30,3 +34,10 @@ configureActions({
   // Limit the number of items logged into the actions panel
   limit: 10,
 });
+
+addDecorator(story => (
+  <ThemeProvider>
+    <CssBaseline />
+    {story()}
+  </ThemeProvider>
+));
