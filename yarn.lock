@@ -1275,6 +1275,18 @@
   resolved "https://registry.yarnpkg.com/@react-google-maps/marker-clusterer/-/marker-clusterer-1.8.2.tgz#ff556e1d9f34d5270b008d010e9f2e037409c623"
   integrity sha512-EPFu88okkIvX4zbJI91gBfE3WUHJpO+pp+3lRmv5vn9DPzSHYui7JNuKXuqSOUe7NUsTOqSvkiOeGZO7t0KHwA==
 
+"@rehooks/component-size@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@rehooks/component-size/-/component-size-1.0.3.tgz#823eabeb42084893d46d43e3a9d1d0e34252b3cb"
+  integrity sha512-pnYld+8SSF2vXwdLOqBGUyOrv/SjzwLjIUcs/4c1JJgR0q4E9eBtBfuZMD6zUD51fvSehSsbnlQMzotSmPTXPg==
+
+"@rehooks/window-size@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@rehooks/window-size/-/window-size-1.0.2.tgz#24583dda021969e7b7166b923b055a47cca4e4b5"
+  integrity sha512-sqPpGM4kivmOFHG+UKqmJbVDBSLOpjMZgqnCNzpzXRZey8R84LL3MaYiE5hulAAosiOh3UJopvJhgUauccaoeA==
+  dependencies:
+    react "^16.7.0-alpha.0"
+
 "@sambego/storybook-state@^2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@sambego/storybook-state/-/storybook-state-2.0.1.tgz#862096913e708cbdeae32b0d2256fc59c254699b"
@@ -10052,7 +10064,7 @@ react-transition-group@^4.3.0:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-react@16.12.0, react@^16.8.3:
+react@16.12.0, react@^16.7.0-alpha.0, react@^16.8.3:
   version "16.12.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.12.0.tgz#0c0a9c6a142429e3614834d5a778e18aa78a0b83"
   integrity sha512-fglqy3k5E+81pA8s+7K0/T3DBCF0ZDOher1elBFzF7O6arXJgzyu/FW+COxFvAWXJoJN9KIZbT2LXlukwphYTA==

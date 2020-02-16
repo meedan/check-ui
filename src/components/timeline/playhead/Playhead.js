@@ -1,62 +1,108 @@
-import React, { Component, createRef } from 'react';
+import React, { useEffect } from 'react';
+import styled from 'styled-components';
 import { func, number, object } from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withTheme } from '@material-ui/core/styles';
 
-import PlayheadTrack from './PlayheadTrack';
-
-const styles = () => ({
-  playheadRoot: {
-    minHeight: '28px',
-    overflow: 'visible',
-    pointerEvents: 'none',
-    position: 'relative',
-    userSelect: 'none',
-    width: '100%',
-  },
-});
-
-class Playhead extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-    this.measureRef = this.measureRef.bind(this);
-    this.ref = createRef();
+const PlayheadHandle = styled(({ ...props }) => <div {...props} />)`
+  cursor: -webkit-grab;
+  cursor: col-resize;
+  cursor: grab;
+  height: 100%;
+  pointer-events: all;
+  position: absolute;
+  touch-action: pan-x;
+  transform: translateX(-50%);
+  width: 28px;
+  &:before {
+    border-radius: 4px;
+    content: ' ';
+    display: block;
+    height: 9px;
+    left: 50%;
+    position: absolute;
+    top: 0;
+    transform: translate(-55%, -50%);
+    width: 9px;
   }
-
-  componentDidMount() {
-    this.measureRef();
-    window.addEventListener('resize', this.measureRef.bind(this));
-    document.addEventListener('resize', this.measureRef.bind(this));
+  &:after {
+    border-style: solid;
+    border-width: 0 0 0 1px;
+    content: ' ';
+    display: block;
+    height: 100%;
+    left: 50%;
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    width: 1px;
   }
+`;
 
-  componentWillUnmount() {
-    document.removeEventListener('resize', this.measureRef.bind(this));
-    window.removeEventListener('resize', this.measureRef.bind(this));
+const PlayheadRoot = styled(({ theme, ...props }) => <div {...props} />)`
+  min-height: 28px;
+  overflow: visible;
+  pointer-events: none;
+  position: relative;
+  user-select: none;
+  width: 100%;
+  ${PlayheadHandle}:before {
+    background-color: ${theme => theme.theme.palette.primary.main};
   }
-
-  measureRef() {
-    if (this.ref && this.ref.current)
-      this.setState({ rect: this.ref.current.getBoundingClientRect() });
+  ${PlayheadHandle}:after {
+    border-color: ${theme => theme.theme.palette.primary.main};
   }
+`;
 
-  render() {
-    const { rect } = this.state;
-    const { classes, value, max, onChange, style } = this.props;
+const Playhead = props => {
+  const playheadRootRef = React.useRef();
+  const { value, max, onChange, style, theme } = props;
 
-    return (
-      <div className={classes.playheadRoot} ref={this.ref} style={style}>
-        <PlayheadTrack
-          max={max}
-          rect={rect}
-          updateTime={onChange}
-          value={value}
-        />
-      </div>
-    );
-  }
-}
+  // const currentTime = React.useState(value);
+  const [dragState, setDragState] = React.useState(false);
 
-export default withStyles(styles)(Playhead);
+  const onMouseDown = e => {
+    setDragState(true);
+    console.log('onMouseDown', e);
+  };
+  const onMouseMove = e => {
+    if (dragState) {
+      console.log('onMouseMove', e);
+    }
+  };
+  const onMouseUp = e => {
+    setDragState(false);
+    console.log('onMouseUp', e);
+  };
+
+  useEffect(() => {
+    window.addEventListener('mousedown', onMouseDown);
+    return () => window.removeEventListener('mousedown', onMouseDown);
+  }, [onMouseDown]);
+
+  useEffect(() => {
+    window.addEventListener('mousemove', onMouseMove);
+    return () => window.removeEventListener('mousemove', onMouseMove);
+  }, [onMouseMove]);
+
+  useEffect(() => {
+    window.addEventListener('mouseup', onMouseUp);
+    return () => window.removeEventListener('mouseup', onMouseUp);
+  }, [onMouseUp]);
+
+  return (
+    <PlayheadRoot
+      onMouseDown={onMouseDown}
+      onMouseMove={onMouseMove}
+      onMouseUp={onMouseUp}
+      ref={playheadRootRef}
+      style={style}
+      theme={theme}>
+      <PlayheadHandle />
+    </PlayheadRoot>
+  );
+};
+
+export default withTheme(Playhead);
 
 Playhead.propTypes = {
   max: number.isRequired,
