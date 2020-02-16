@@ -19,7 +19,7 @@ export const store = new Store({
       {state =>
         <Timeline
           max={state.max}
-          onChange={newValue => store.set({ value: newValue })}
+          onChange={v => store.set({ value: v })}
           value={state.value}
         />
       }
