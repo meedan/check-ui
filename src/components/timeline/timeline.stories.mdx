@@ -3,13 +3,21 @@ import { State, Store } from "@sambego/storybook-state";
 import { action } from '@storybook/addon-actions';
 
 import Timeline from './Timeline';
+import EntitySlider from './entityslider/EntitySlider';
+
+import data from './timeline.data.json';
 
 export const store = new Store({
-  value: 50,
-  max: 100,
+  currentTime: 50,
+  duration: 100,
 });
 
-<Meta title="Components" />
+export const onChange = newTime => {
+  action('onChange')(newTime);
+  store.set({ currentTime: newTime });
+}
+
+<Meta title="Components/Timeline" />
 
 # Timeline
 
@@ -18,9 +26,10 @@ export const store = new Store({
     <State store={store}>
       {state =>
         <Timeline
-          max={state.max}
-          onChange={newValue => store.set({ value: newValue })}
-          value={state.value}
+          currentTime={state.currentTime}
+          data={data}
+          duration={state.duration}
+          onChange={onChange}
         />
       }
      </State>
@@ -28,3 +37,83 @@ export const store = new Store({
 </Preview>
 
 <Props of={Timeline} />
+
+# Partials
+
+## Entity slider
+
+<Preview>
+  <Story name="Entity Slider — Clips" >
+    <State store={store}>
+      {state =>
+        <EntitySlider
+          checkInstance={id => console.log('checkInstance, id: ', id)}
+          deleteInstance={id => console.log('deleteInstance, id: ', id)}
+          updateInstance={(id, payload) =>
+            console.log('updateInstance, id, payload: ', id, payload)
+          }
+          extendInstance={id => console.log('extendInstance, id: ', id)}
+          duration={100}
+          instances={[
+            {
+              end_seconds: 5,
+              id: 1,
+              start_seconds: 0,
+            },
+            {
+              end_seconds: 50,
+              id: 2,
+              start_seconds: 30,
+            },
+            {
+              end_seconds: 90,
+              id: 3,
+              start_seconds: 70,
+            },
+          ]}
+          onDrag={newTime => console.log('onDrag: newTime', newTime)}
+          onDragEnd={newTime => console.log('onDragEnd: newTime', newTime)}
+          onDragStart={newTime => console.log('onDragStart: newTime', newTime)}
+        />
+      }
+     </State>
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="Entity Slider — Tags" >
+    <State store={store}>
+      {state =>
+        <EntitySlider
+          clipInstance={id => console.log('clipInstance, id: ', id)}
+          deleteInstance={id => console.log('deleteInstance, id: ', id)}
+          updateInstance={(id, payload) =>
+            console.log('updateInstance, id, payload: ', id, payload)
+          }
+          extendInstance={id => console.log('extendInstance, id: ', id)}
+          duration={100}
+          instances={[
+            {
+              end_seconds: 5,
+              id: 1,
+              start_seconds: 0,
+            },
+            {
+              end_seconds: 50,
+              id: 2,
+              start_seconds: 30,
+            },
+            {
+              end_seconds: 90,
+              id: 3,
+              start_seconds: 70,
+            },
+          ]}
+          onDrag={newTime => console.log('onDrag: newTime', newTime)}
+          onDragEnd={newTime => console.log('onDragEnd: newTime', newTime)}
+          onDragStart={newTime => console.log('onDragStart: newTime', newTime)}
+        />
+      }
+     </State>
+  </Story>
+</Preview>

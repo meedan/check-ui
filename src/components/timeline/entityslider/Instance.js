@@ -4,10 +4,10 @@ import styled from 'styled-components';
 import { array, bool, func, number, object, shape } from 'prop-types';
 import { filter, minBy, maxBy } from 'lodash';
 
-import MeTooltip from '../../tooltip/Tooltip';
-import formatSeconds from './formatSeconds';
 import HandlePopover from './HandlePopover';
 import InstancePopover from './InstancePopover';
+import MeTooltip from '../tooltip/Tooltip';
+import formatSeconds from '../formatSeconds';
 
 const RSInstance = styled(({ ...props }) => <div {...props} />)`
   backface-visibility: visible;
