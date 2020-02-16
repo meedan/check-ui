@@ -49,7 +49,8 @@ Based on [ReactPlayer](https://cookpete.com/react-player/)
           seekTo: {state.seekTo} <br />          
           <input 
             onChange={e => store.set({seekTo: e.nativeEvent.target.value})}
-            // onMouseUp={e => store.set({seekTo: null})}
+            onMouseUp={e => store.set({seekTo: null})}
+            onMouseOut={e => store.set({seekTo: null})}
             type="range" min="0" max={state.duration} step="0.1"
             value={state.time} style={{width: '100%'}} />
           scrubTo: {state.scrubTo} <br />          
