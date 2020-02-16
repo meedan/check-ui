@@ -7,9 +7,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import CheckIcon from '../../../icons/Check';
-import CutIcon from '../../../icons/Cut';
-import ExpandIcon from '../../../icons/Expand';
+import CheckIcon from '../../icons/Check';
+import CutIcon from '../../icons/Cut';
+import ExpandIcon from '../../icons/Expand';
 
 const InstancePopover = ({
   checkInstance,

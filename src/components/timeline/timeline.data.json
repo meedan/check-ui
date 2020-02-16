@@ -1,0 +1,189 @@
+{
+  "project": {
+    "projecttags": [
+      { "id": 3958, "name": "Obama Reference", "taginstance_count": 0 },
+      { "id": 3959, "name": "Commentator", "taginstance_count": 3 },
+      { "id": 3960, "name": "Supreme Court Topic", "taginstance_count": 1 },
+      {
+        "id": 3961,
+        "name": "Guns Topic (2nd Amendment)",
+        "taginstance_count": 1
+      },
+      { "id": 3962, "name": "Abortion Topic", "taginstance_count": 1 },
+      { "id": 3963, "name": "Immigration Topic", "taginstance_count": 1 },
+      { "id": 3964, "name": "Wikileaks Russia", "taginstance_count": 1 },
+      { "id": 3965, "name": "Nuclear Weapons", "taginstance_count": 1 },
+      { "id": 3966, "name": "Economy Topic", "taginstance_count": 1 },
+      {
+        "id": 3967,
+        "name": "Fitness to be POTUS Topic",
+        "taginstance_count": 1
+      },
+      { "id": 3968, "name": "Foreign Policy Topic", "taginstance_count": 1 },
+      { "id": 3969, "name": "National Debt Topic", "taginstance_count": 1 },
+      { "id": 3970, "name": "The Wall", "taginstance_count": 1 },
+      { "id": 3971, "name": "Marijuana", "taginstance_count": 1 },
+      { "id": 3972, "name": "Opioid Crisis", "taginstance_count": 2 },
+      { "id": 3973, "name": "Gun Violence", "taginstance_count": 1 },
+      { "id": 3974, "name": "Speaks Spanish", "taginstance_count": 1 },
+      { "id": 3975, "name": "Immigration", "taginstance_count": 1 },
+      { "id": 3976, "name": "Healthcare", "taginstance_count": 1 },
+      { "id": 3977, "name": "Economy", "taginstance_count": 1 },
+      { "id": 3978, "name": "Climate Change", "taginstance_count": 1 },
+      { "id": 3979, "name": "Voting Rights", "taginstance_count": 1 }
+    ]
+  },
+  "commentThreads": [
+    {
+      "id": 24108,
+      "start_seconds": 0,
+      "text": "START",
+      "user": {
+        "first_name": "Laurian",
+        "id": 2591,
+        "last_name": "Gridinoc",
+        "profile_img_url": "https://lh5.googleusercontent.com/-Fri-UYSxRqc/AAAAAAAAAAI/AAAAAAAABBI/ecSU-3hNAk0/s100/photo.jpg"
+      },
+      "replies": []
+    },
+    {
+      "id": 24109,
+      "replies": [
+        {
+          "id": 24118,
+          "start_seconds": 681.622923961853,
+          "text": "We need transcript and translation here",
+          "thread_id": 24109,
+          "user": {
+            "first_name": "Laurian",
+            "id": 2591,
+            "last_name": "Gridinoc",
+            "profile_img_url": "https://lh5.googleusercontent.com/-Fri-UYSxRqc/AAAAAAAAAAI/AAAAAAAABBI/ecSU-3hNAk0/s100/photo.jpg"
+          }
+        }
+      ],
+      "start_seconds": 681.622923961853,
+      "text": "Speaks Spanish",
+      "user": {
+        "first_name": "Mark",
+        "id": 2376,
+        "last_name": "Boas",
+        "profile_img_url": "https://lh4.googleusercontent.com/-KAQP-uwuJ-U/AAAAAAAAAAI/AAAAAAAAAA8/m1-ILT1IqWs/s100/photo.jpg"
+      }
+    },
+    {
+      "id": 24112,
+      "start_seconds": 761.505806986649,
+      "text": "Will make Dreamers US Citizens",
+      "user": {
+        "first_name": "Mark",
+        "id": 2376,
+        "last_name": "Boas",
+        "profile_img_url": "https://lh4.googleusercontent.com/-KAQP-uwuJ-U/AAAAAAAAAAI/AAAAAAAAAA8/m1-ILT1IqWs/s100/photo.jpg"
+      },
+      "replies": []
+    },
+    {
+      "id": 24116,
+      "start_seconds": 1098.09159298093,
+      "text": "Gerrymandering.",
+      "user": {
+        "first_name": "Mark",
+        "id": 2376,
+        "last_name": "Boas",
+        "profile_img_url": "https://lh4.googleusercontent.com/-KAQP-uwuJ-U/AAAAAAAAAAI/AAAAAAAAAA8/m1-ILT1IqWs/s100/photo.jpg"
+      },
+      "replies": []
+    },
+    {
+      "id": 24119,
+      "start_seconds": 2644.5438548753,
+      "text": "END",
+      "user": {
+        "first_name": "Laurian",
+        "id": 2591,
+        "last_name": "Gridinoc",
+        "profile_img_url": "https://lh5.googleusercontent.com/-Fri-UYSxRqc/AAAAAAAAAAI/AAAAAAAABBI/ecSU-3hNAk0/s100/photo.jpg"
+      },
+      "replies": []
+    }
+  ],
+  "videoClips": [
+    {
+      "id": 129001,
+      "instances": [{ "end_seconds": 60, "id": 1238806, "start_seconds": 4 }],
+      "project_clip": { "name": "Hardcoded clip" }
+    }
+  ],
+  "videoPlaces": [
+    {
+      "project_location": { "name": "Paris" },
+      "id": 23472492834982372,
+      "lat": 48.85661400000001,
+      "lng": 2.3522219000000177,
+      "type": "marker",
+      "viewport": {
+        "south": 48.75033902000453,
+        "west": 2.0724016968749766,
+        "north": 48.96718146676017,
+        "east": 2.6217181031249766
+      },
+      "zoom": 10,
+      "instances": [
+        { "end_seconds": 120, "id": 3456712306, "start_seconds": 40 }
+      ]
+    }
+  ],
+  "videoTags": [
+    {
+      "id": 20677,
+      "instances": [
+        {
+          "created": "2019-04-24T15:56:34+00:00",
+          "end_seconds": 20.620087336245,
+          "global_tag_id": 3959,
+          "id": 24106,
+          "modified": "2019-04-24T15:56:54+00:00",
+          "project_id": 1254,
+          "project_tag_id": 3981,
+          "start_seconds": 0,
+          "video_id": 11503,
+          "video_tag_id": 20677,
+          "youtube_id": "9G8dmsnFjL4",
+          "tag": "[Circular]",
+          "$$hashKey": "object:264"
+        },
+        {
+          "created": "2019-04-24T16:04:29+00:00",
+          "end_seconds": 60,
+          "global_tag_id": 3959,
+          "id": 24107,
+          "modified": "2019-04-24T16:04:29+00:00",
+          "project_id": 1254,
+          "project_tag_id": 3981,
+          "start_seconds": 40,
+          "video_id": 11503,
+          "video_tag_id": 20677,
+          "youtube_id": "9G8dmsnFjL4",
+          "tag": "[Circular]",
+          "$$hashKey": "object:265"
+        }
+      ],
+      "project_id": 1254,
+      "project_tag": {
+        "created": "2019-04-19T11:11:56+00:00",
+        "global_tag_id": 3959,
+        "id": 3981,
+        "modified": "2019-04-19T11:11:56+00:00",
+        "name": "Commentator",
+        "project_id": 1254,
+        "subTags": [],
+        "video_tag_instance_count": 3
+      },
+      "project_tag_id": 3981,
+      "video_id": 11503,
+      "youtube_id": "9G8dmsnFjL4",
+      "c_video_id": "1254:9G8dmsnFjL4"
+    }
+  ]
+}

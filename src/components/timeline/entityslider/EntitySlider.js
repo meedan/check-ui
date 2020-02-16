@@ -2,7 +2,7 @@ import { array, func, number } from 'prop-types';
 import React, { Component, createRef } from 'react';
 import styled from 'styled-components';
 
-import Instance from './ofRangeSlider/Instance';
+import Instance from './Instance';
 
 const RSWrapper = styled.div`
   height: 28px;
