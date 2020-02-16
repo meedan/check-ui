@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { makeStyles, withTheme } from '@material-ui/core/styles';
 
 import Tooltip from '../tooltip/Tooltip';
+import formatSeconds from './formatSeconds';
 
 const useStyles = makeStyles({
   playheadRoot: {
@@ -105,6 +106,8 @@ const Playhead = props => {
     props.onChange(localValue);
   }, [localValue]);
 
+  const displayValue = dragState ? localValue : value;
+
   return (
     <div className={classes.playheadRoot} ref={playheadRoot} style={style}>
       <PlayheadHandle
@@ -113,10 +116,7 @@ const Playhead = props => {
           left: `${localValue}%`,
         }}
         theme={theme}>
-        <Tooltip isVisible={dragState}>
-          00:00:00
-          {/* {formatSeconds(displayTime)} */}
-        </Tooltip>
+        <Tooltip isVisible={dragState}>{formatSeconds(displayValue)}</Tooltip>
       </PlayheadHandle>
     </div>
   );
