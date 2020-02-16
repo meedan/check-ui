@@ -1,18 +1,30 @@
-import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
+import { State, Store } from "@sambego/storybook-state";
 import { action } from '@storybook/addon-actions';
 
-import { Timeline } from './Timeline';
+import Timeline from './Timeline';
+
+export const store = new Store({
+  value: 50,
+  max: 100,
+});
 
 <Meta title="Components" />
 
-# Components
-
-Hello components
+# Timeline
 
 <Preview>
-  <Story name="Component">
-    <>
-    <Timeline />
-    <button onClick={action('button-click')}>Hello World!</button></>
+  <Story name="Timeline">
+    <State store={store}>
+      {state =>
+        <Timeline
+          max={state.max}
+          onChange={newValue => store.set({ value: newValue })}
+          value={state.value}
+        />
+      }
+     </State>
   </Story>
 </Preview>
+
+<Props of={Timeline} />

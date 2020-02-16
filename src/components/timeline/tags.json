@@ -1,0 +1,428 @@
+{
+  "title": "Tags",
+  "entityType": "tag",
+  "currentTime": 0,
+  "duration": 2645,
+  "entities": [
+    {
+      "id": 10001,
+      "instances": [{ "end_seconds": 6, "id": 24106, "start_seconds": 4 }],
+      "project_tag": { "name": "Hardcoded tag" }
+    },
+    {
+      "id": 20682,
+      "instances": [
+        {
+          "created": "2019-04-24T16:23:44+00:00",
+          "end_seconds": 1074.17030567686,
+          "global_tag_id": 3978,
+          "id": 24115,
+          "modified": "2019-04-24T16:24:51+00:00",
+          "project_id": 1254,
+          "project_tag_id": 4000,
+          "start_seconds": 1043.23066109155,
+          "video_id": 11503,
+          "video_tag_id": 20682,
+          "youtube_id": "9G8dmsnFjL4",
+          "tag": "[Circular]",
+          "$$hashKey": "object:253"
+        }
+      ],
+      "project_id": 1254,
+      "project_tag": {
+        "created": "2019-04-24T16:23:43+00:00",
+        "global_tag_id": 3978,
+        "id": 4000,
+        "modified": "2019-04-24T16:23:43+00:00",
+        "name": "Climate Change",
+        "project_id": 1254,
+        "subTags": [],
+        "video_tag_instance_count": 1
+      },
+      "project_tag_id": 4000,
+      "video_id": 11503,
+      "youtube_id": "9G8dmsnFjL4",
+      "c_video_id": "1254:9G8dmsnFjL4"
+    },
+    {
+      "id": 20677,
+      "instances": [
+        {
+          "created": "2019-04-24T15:56:34+00:00",
+          "end_seconds": 533.620087336245,
+          "global_tag_id": 3959,
+          "id": 24106,
+          "modified": "2019-04-24T15:56:54+00:00",
+          "project_id": 1254,
+          "project_tag_id": 3981,
+          "start_seconds": 0,
+          "video_id": 11503,
+          "video_tag_id": 20677,
+          "youtube_id": "9G8dmsnFjL4",
+          "tag": "[Circular]",
+          "$$hashKey": "object:264"
+        },
+        {
+          "created": "2019-04-24T16:04:29+00:00",
+          "end_seconds": 5,
+          "global_tag_id": 3959,
+          "id": 24107,
+          "modified": "2019-04-24T16:04:29+00:00",
+          "project_id": 1254,
+          "project_tag_id": 3981,
+          "start_seconds": 0,
+          "video_id": 11503,
+          "video_tag_id": 20677,
+          "youtube_id": "9G8dmsnFjL4",
+          "tag": "[Circular]",
+          "$$hashKey": "object:265"
+        }
+      ],
+      "project_id": 1254,
+      "project_tag": {
+        "created": "2019-04-19T11:11:56+00:00",
+        "global_tag_id": 3959,
+        "id": 3981,
+        "modified": "2019-04-19T11:11:56+00:00",
+        "name": "Commentator",
+        "project_id": 1254,
+        "subTags": [],
+        "video_tag_instance_count": 3
+      },
+      "project_tag_id": 3981,
+      "video_id": 11503,
+      "youtube_id": "9G8dmsnFjL4",
+      "c_video_id": "1254:9G8dmsnFjL4"
+    },
+    {
+      "id": 20681,
+      "instances": [
+        {
+          "created": "2019-04-24T16:15:49+00:00",
+          "end_seconds": 882.436681222708,
+          "global_tag_id": 3977,
+          "id": 24114,
+          "modified": "2019-04-24T16:17:18+00:00",
+          "project_id": 1254,
+          "project_tag_id": 3999,
+          "start_seconds": 818.630273089645,
+          "video_id": 11503,
+          "video_tag_id": 20681,
+          "youtube_id": "9G8dmsnFjL4",
+          "tag": "[Circular]",
+          "$$hashKey": "object:286"
+        }
+      ],
+      "project_id": 1254,
+      "project_tag": {
+        "created": "2019-04-24T16:15:48+00:00",
+        "global_tag_id": 3977,
+        "id": 3999,
+        "modified": "2019-04-24T16:15:48+00:00",
+        "name": "Economy",
+        "project_id": 1254,
+        "subTags": [],
+        "video_tag_instance_count": 1
+      },
+      "project_tag_id": 3999,
+      "video_id": 11503,
+      "youtube_id": "9G8dmsnFjL4",
+      "c_video_id": "1254:9G8dmsnFjL4"
+    },
+    {
+      "id": 20675,
+      "instances": [
+        {
+          "created": "2019-04-24T10:14:38+00:00",
+          "end_seconds": 919.397379912664,
+          "global_tag_id": 3973,
+          "id": 24102,
+          "modified": "2019-04-24T10:15:35+00:00",
+          "project_id": 1254,
+          "project_tag_id": 3995,
+          "start_seconds": 893.986899563319,
+          "video_id": 11503,
+          "video_tag_id": 20675,
+          "youtube_id": "9G8dmsnFjL4",
+          "tag": "[Circular]",
+          "$$hashKey": "object:297"
+        }
+      ],
+      "project_id": 1254,
+      "project_tag": {
+        "created": "2019-04-24T10:14:38+00:00",
+        "global_tag_id": 3973,
+        "id": 3995,
+        "modified": "2019-04-24T10:14:38+00:00",
+        "name": "Gun Violence",
+        "project_id": 1254,
+        "subTags": [],
+        "video_tag_instance_count": 1
+      },
+      "project_tag_id": 3995,
+      "video_id": 11503,
+      "youtube_id": "9G8dmsnFjL4",
+      "c_video_id": "1254:9G8dmsnFjL4"
+    },
+    {
+      "id": 20680,
+      "instances": [
+        {
+          "created": "2019-04-24T16:15:04+00:00",
+          "end_seconds": 812.822062160217,
+          "global_tag_id": 3976,
+          "id": 24113,
+          "modified": "2019-04-24T16:15:13+00:00",
+          "project_id": 1254,
+          "project_tag_id": 3998,
+          "start_seconds": 794.655021834061,
+          "video_id": 11503,
+          "video_tag_id": 20680,
+          "youtube_id": "9G8dmsnFjL4",
+          "tag": "[Circular]",
+          "$$hashKey": "object:308"
+        }
+      ],
+      "project_id": 1254,
+      "project_tag": {
+        "created": "2019-04-24T16:15:03+00:00",
+        "global_tag_id": 3976,
+        "id": 3998,
+        "modified": "2019-04-24T16:15:03+00:00",
+        "name": "Healthcare",
+        "project_id": 1254,
+        "subTags": [],
+        "video_tag_instance_count": 1
+      },
+      "project_tag_id": 3998,
+      "video_id": 11503,
+      "youtube_id": "9G8dmsnFjL4",
+      "c_video_id": "1254:9G8dmsnFjL4"
+    },
+    {
+      "id": 20679,
+      "instances": [
+        {
+          "created": "2019-04-24T16:11:31+00:00",
+          "end_seconds": 785.414847161572,
+          "global_tag_id": 3975,
+          "id": 24111,
+          "modified": "2019-04-24T16:14:55+00:00",
+          "project_id": 1254,
+          "project_tag_id": 3997,
+          "start_seconds": 651.43231441048,
+          "video_id": 11503,
+          "video_tag_id": 20679,
+          "youtube_id": "9G8dmsnFjL4",
+          "tag": "[Circular]",
+          "$$hashKey": "object:319"
+        }
+      ],
+      "project_id": 1254,
+      "project_tag": {
+        "created": "2019-04-24T16:11:30+00:00",
+        "global_tag_id": 3975,
+        "id": 3997,
+        "modified": "2019-04-24T16:11:30+00:00",
+        "name": "Immigration",
+        "project_id": 1254,
+        "subTags": [],
+        "video_tag_instance_count": 1
+      },
+      "project_tag_id": 3997,
+      "video_id": 11503,
+      "youtube_id": "9G8dmsnFjL4",
+      "c_video_id": "1254:9G8dmsnFjL4"
+    },
+    {
+      "id": 20673,
+      "instances": [
+        {
+          "created": "2019-04-24T10:10:05+00:00",
+          "end_seconds": 1037.2096069869,
+          "global_tag_id": 3971,
+          "id": 24099,
+          "modified": "2019-04-24T16:23:00+00:00",
+          "project_id": 1254,
+          "project_tag_id": 3993,
+          "start_seconds": 975.925487992371,
+          "video_id": 11503,
+          "video_tag_id": 20673,
+          "youtube_id": "9G8dmsnFjL4",
+          "tag": "[Circular]",
+          "$$hashKey": "object:330"
+        }
+      ],
+      "project_id": 1254,
+      "project_tag": {
+        "created": "2019-04-24T10:10:04+00:00",
+        "global_tag_id": 3971,
+        "id": 3993,
+        "modified": "2019-04-24T10:10:04+00:00",
+        "name": "Marijuana",
+        "project_id": 1254,
+        "subTags": [],
+        "video_tag_instance_count": 1
+      },
+      "project_tag_id": 3993,
+      "video_id": 11503,
+      "youtube_id": "9G8dmsnFjL4",
+      "c_video_id": "1254:9G8dmsnFjL4"
+    },
+    {
+      "id": 20674,
+      "instances": [
+        {
+          "created": "2019-04-24T10:11:24+00:00",
+          "end_seconds": 977.14847161572,
+          "global_tag_id": 3972,
+          "id": 24100,
+          "modified": "2019-04-24T10:13:44+00:00",
+          "project_id": 1254,
+          "project_tag_id": 3994,
+          "start_seconds": 921.707423580786,
+          "video_id": 11503,
+          "video_tag_id": 20674,
+          "youtube_id": "9G8dmsnFjL4",
+          "tag": "[Circular]",
+          "$$hashKey": "object:341"
+        },
+        {
+          "created": "2019-04-24T10:14:05+00:00",
+          "end_seconds": 919.777292576419,
+          "global_tag_id": 3972,
+          "id": 24101,
+          "modified": "2019-04-24T10:14:05+00:00",
+          "project_id": 1254,
+          "project_tag_id": 3994,
+          "start_seconds": 914.777292576419,
+          "video_id": 11503,
+          "video_tag_id": 20674,
+          "youtube_id": "9G8dmsnFjL4",
+          "tag": "[Circular]",
+          "$$hashKey": "object:342"
+        }
+      ],
+      "project_id": 1254,
+      "project_tag": {
+        "created": "2019-04-24T10:11:24+00:00",
+        "global_tag_id": 3972,
+        "id": 3994,
+        "modified": "2019-04-24T10:11:24+00:00",
+        "name": "Opioid Crisis",
+        "project_id": 1254,
+        "subTags": [],
+        "video_tag_instance_count": 2
+      },
+      "project_tag_id": 3994,
+      "video_id": 11503,
+      "youtube_id": "9G8dmsnFjL4",
+      "c_video_id": "1254:9G8dmsnFjL4"
+    },
+    {
+      "id": 20678,
+      "instances": [
+        {
+          "created": "2019-04-24T16:10:22+00:00",
+          "end_seconds": 686.082969432314,
+          "global_tag_id": 3974,
+          "id": 24110,
+          "modified": "2019-04-24T16:10:39+00:00",
+          "project_id": 1254,
+          "project_tag_id": 3996,
+          "start_seconds": 681.622923961853,
+          "video_id": 11503,
+          "video_tag_id": 20678,
+          "youtube_id": "9G8dmsnFjL4",
+          "tag": "[Circular]",
+          "$$hashKey": "object:363"
+        }
+      ],
+      "project_id": 1254,
+      "project_tag": {
+        "created": "2019-04-24T16:10:21+00:00",
+        "global_tag_id": 3974,
+        "id": 3996,
+        "modified": "2019-04-24T16:10:21+00:00",
+        "name": "Speaks Spanish",
+        "project_id": 1254,
+        "subTags": [],
+        "video_tag_instance_count": 1
+      },
+      "project_tag_id": 3996,
+      "video_id": 11503,
+      "youtube_id": "9G8dmsnFjL4",
+      "c_video_id": "1254:9G8dmsnFjL4"
+    },
+    {
+      "id": 20683,
+      "instances": [
+        {
+          "created": "2019-04-24T16:38:28+00:00",
+          "end_seconds": 1136.54148471616,
+          "global_tag_id": 3979,
+          "id": 24117,
+          "modified": "2019-04-24T16:38:40+00:00",
+          "project_id": 1254,
+          "project_tag_id": 4001,
+          "start_seconds": 1111.65683496948,
+          "video_id": 11503,
+          "video_tag_id": 20683,
+          "youtube_id": "9G8dmsnFjL4",
+          "tag": "[Circular]",
+          "$$hashKey": "object:374"
+        }
+      ],
+      "project_id": 1254,
+      "project_tag": {
+        "created": "2019-04-24T16:38:27+00:00",
+        "global_tag_id": 3979,
+        "id": 4001,
+        "modified": "2019-04-24T16:38:27+00:00",
+        "name": "Voting Rights",
+        "project_id": 1254,
+        "subTags": [],
+        "video_tag_instance_count": 1
+      },
+      "project_tag_id": 4001,
+      "video_id": 11503,
+      "youtube_id": "9G8dmsnFjL4",
+      "c_video_id": "1254:9G8dmsnFjL4"
+    }
+  ],
+  "clips": [
+    {
+      "id": 129001,
+      "instances": [{ "end_seconds": 60, "id": 1238806, "start_seconds": 4 }],
+      "project_clip": { "name": "Hardcoded clip" }
+    }
+  ],
+  "entitiesyKey": "videoTags",
+  "playing": false,
+  "transport": null,
+  "suggestions": [
+    { "id": 3958, "name": "Obama Reference", "taginstance_count": 0 },
+    { "id": 3959, "name": "Commentator", "taginstance_count": 3 },
+    { "id": 3960, "name": "Supreme Court Topic", "taginstance_count": 1 },
+    { "id": 3961, "name": "Guns Topic (2nd Amendment)", "taginstance_count": 1 },
+    { "id": 3962, "name": "Abortion Topic", "taginstance_count": 1 },
+    { "id": 3963, "name": "Immigration Topic", "taginstance_count": 1 },
+    { "id": 3964, "name": "Wikileaks Russia", "taginstance_count": 1 },
+    { "id": 3965, "name": "Nuclear Weapons", "taginstance_count": 1 },
+    { "id": 3966, "name": "Economy Topic", "taginstance_count": 1 },
+    { "id": 3967, "name": "Fitness to be POTUS Topic", "taginstance_count": 1 },
+    { "id": 3968, "name": "Foreign Policy Topic", "taginstance_count": 1 },
+    { "id": 3969, "name": "National Debt Topic", "taginstance_count": 1 },
+    { "id": 3970, "name": "The Wall", "taginstance_count": 1 },
+    { "id": 3971, "name": "Marijuana", "taginstance_count": 1 },
+    { "id": 3972, "name": "Opioid Crisis", "taginstance_count": 2 },
+    { "id": 3973, "name": "Gun Violence", "taginstance_count": 1 },
+    { "id": 3974, "name": "Speaks Spanish", "taginstance_count": 1 },
+    { "id": 3975, "name": "Immigration", "taginstance_count": 1 },
+    { "id": 3976, "name": "Healthcare", "taginstance_count": 1 },
+    { "id": 3977, "name": "Economy", "taginstance_count": 1 },
+    { "id": 3978, "name": "Climate Change", "taginstance_count": 1 },
+    { "id": 3979, "name": "Voting Rights", "taginstance_count": 1 }
+  ],
+  "skip": false
+}
