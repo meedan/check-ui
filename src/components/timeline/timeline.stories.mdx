@@ -5,6 +5,8 @@ import { action } from '@storybook/addon-actions';
 import Timeline from './Timeline';
 import EntitySlider from './entityslider/EntitySlider';
 
+import data from './timeline.data.json';
+
 export const store = new Store({
   currentTime: 50,
   duration: 100,
@@ -25,6 +27,7 @@ export const onChange = newTime => {
       {state =>
         <Timeline
           currentTime={state.currentTime}
+          data={data}
           duration={state.duration}
           onChange={onChange}
         />
