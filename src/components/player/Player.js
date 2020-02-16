@@ -1,87 +1,122 @@
 import React, { Component } from 'react';
-// import { withTheme } from '@material-ui/core/styles';
-// import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import ReactPlayer from 'react-player';
 
-// import { play, pause, duration, timeupdate, update } from '../reducers/player';
-
 class Player extends Component {
-  ref = player => {
-    this.player = player;
-  };
+  constructor(props) {
+    super(props);
 
-  //   componentDidUpdate(prevProps) {
-  //     if (this.props.player.seekTo !== prevProps.player.seekTo) {
-  //       if (this.props.player.seekTo !== null) {
-  //         this.internalPlayer.seekTo(
-  //           this.props.player.seekTo,
-  //           true /* this.props.player.seekAhead */
-  //         );
-  //       }
-  //     }
-  //   }
+    this.player = React.createRef();
+    this.state = {
+      ready: false,
+      buffering: false,
+      position: null,
+    };
+  }
+
+  // shouldComponentUpdate(nextProps) {}
+
+  componentDidUpdate(prevProps) {
+    const { seekTo, seekAhead, scrubTo, playing, onTimeUpdate } = this.props;
+    const { ready, buffering, position } = this.state;
+
+    if (seekTo !== prevProps.seekTo && ready) {
+      if (seekTo !== null) {
+        this.internalPlayer.seekTo(seekTo, seekAhead || playing);
+        (buffering || !playing) && onTimeUpdate(seekTo);
+      }
+    }
+
+    if (scrubTo !== prevProps.scrubTo && ready) {
+      if (scrubTo !== null) {
+        if (prevProps.scrubTo === null)
+          this.setState({ position: this.player.current.getCurrentTime() });
+        this.internalPlayer.seekTo(scrubTo, seekAhead);
+        // (buffering || !playing) &&
+        onTimeUpdate(scrubTo);
+      } else if (prevProps.scrubTo !== null) {
+        this.internalPlayer.seekTo(position, seekAhead || playing);
+        (buffering || !playing) && onTimeUpdate(position);
+      }
+    }
+  }
 
   handleOnReady = () => {
-    // const { update } = this.props;
-
-    this.internalPlayer = this.player.getInternalPlayer();
-    window.internalPlayer = this.internalPlayer;
-
-    // update({ playbackRates: this.internalPlayer.getAvailablePlaybackRates() });
-
-    // this.internalPlayer.addEventListener('onStateChange', ({ data: status }) =>
-    //   update({ status })
-    // );
-
-    // this.internalPlayer.addEventListener(
-    //   'onPlaybackRateChange',
-    //   ({ data: playbackRate }) => update({ playbackRate })
-    // );
+    this.internalPlayer = this.player.current.getInternalPlayer();
+    this.setState({ ready: true });
   };
 
   handleOnProgress = ({ playedSeconds }) => {
-    const roundedSeconds = playedSeconds; // Math.round(playedSeconds * 1e3) / 1e3;
-    // this.props.timeupdate(roundedSeconds);
-    this.props.onProgress(roundedSeconds);
+    const { onTimeUpdate, onProgress, roundTime, seekTo, scrubTo } = this.props;
+    const { buffering } = this.state;
+
+    onProgress(
+      roundTime ? Math.round(playedSeconds * 1e3) / 1e3 : playedSeconds
+    );
+
+    const time = (seekTo || scrubTo) && buffering ? seekTo : playedSeconds;
+    onTimeUpdate(roundTime ? Math.round(time * 1e3) / 1e3 : time);
   };
 
   render() {
-    // const { player, play, pause, duration } = this.props;
-    const { playing, playbackRate } = player;
+    const {
+      config,
+      muted,
+      playing,
+      onDuration,
+      onPlay,
+      onPause,
+      scrubTo,
+    } = this.props;
 
     return (
       <ReactPlayer
-        ref={this.ref}
-        config={{
-          youtube: {
-            playerVars: {
-              autoplay: 0,
-            },
-            preload: true,
-          },
-        }}
-        url={this.props.url}
-        progressInterval={200}
-        playbackRate={playbackRate}
-        controls
-        volume={null}
-        muted
+        ref={this.player}
         width="100%"
         height="100%"
-        playing={playing}
-        onPlay={() => console.info('onPlay', e)}
-        onPause={() => console.info('onPause', e)}
-        onEnded={() => console.info('onEnded', e)}
-        onDuration={d => console.info('onEnded', d)}
+        controls
+        config={config}
+        progressInterval={200}
+        url={this.props.url}
+        muted={muted}
+        playing={playing && !scrubTo}
+        onPlay={() => !scrubTo && onPlay()}
+        onPause={() => !scrubTo && onPause()}
+        onEnded={onPause}
+        onDuration={onDuration}
         onProgress={this.handleOnProgress}
         onReady={this.handleOnReady}
-        onStart={e => console.info('onStart', e)}
-        onSeek={e => console.info('onSeek', e)}
-        onError={e => console.error('onError', e)}
+        onBuffer={() => this.setState({ buffering: true })}
+        onBufferEnd={() => this.setState({ buffering: false })}
       />
     );
   }
 }
 
-// export default withTheme(Player);
+Player.propTypes = {
+  config: PropTypes.object,
+  url: PropTypes.String,
+  muted: PropTypes.bool,
+  playing: PropTypes.bool,
+  roundTime: PropTypes.bool,
+  seekAhead: PropTypes.bool,
+  onDuration: PropTypes.func,
+  onPlay: PropTypes.func,
+  onPause: PropTypes.func,
+};
+
+Player.defaultProps = {
+  config: {
+    youtube: {
+      playerVars: {
+        autoplay: 0,
+      },
+      preload: true,
+    },
+  },
+  muted: true,
+  roundTime: false,
+  seekAhead: false,
+};
+
 export default Player;
