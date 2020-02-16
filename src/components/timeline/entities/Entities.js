@@ -328,9 +328,9 @@ class Entities extends Component {
     } = this.props;
     const { playlist } = transport === entityType;
 
-    console.group('ENTITIES');
-    console.log(this.props);
-    console.groupEnd();
+    // console.group('ENTITIES');
+    // console.log(this.props);
+    // console.groupEnd();
 
     return (
       <TableSection
@@ -338,8 +338,12 @@ class Entities extends Component {
         title={this.props.title}
         actions={
           <>
-            <Tooltip title={playlist ? 'Pause all' : 'Play all'}>
+            <Tooltip
+              title={
+                playlist ? 'Pause' : `Play ${this.props.title.toLowerCase()}`
+              }>
               <IconButton
+                disabled={entities.length < 1}
                 onClick={() =>
                   playlist ? this.handlePause() : this.handlePlay()
                 }>

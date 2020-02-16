@@ -13,7 +13,6 @@ const styles = theme => ({
     borderColor: grey[200],
   },
   rightCol: {
-    width: '100%',
     borderColor: grey[200],
   },
   plain: {
@@ -25,8 +24,14 @@ function TableBlock(props) {
   const { classes, leftColContent, rightColContent } = props;
   return (
     <TableRow>
-      <TableCell className={`${classes.leftCol} ${props.plain ? classes.plain : null}`}>{leftColContent}</TableCell>
-      <TableCell className={`${classes.rightCol} ${props.plain ? classes.plain : null}`} padding="none">
+      <TableCell
+        className={`${classes.leftCol} ${props.plain ? classes.plain : null}`}
+        padding={!props.section ? 'none' : 'default'}>
+        {leftColContent}
+      </TableCell>
+      <TableCell
+        className={`${classes.rightCol} ${props.plain ? classes.plain : null}`}
+        padding={!props.section ? 'none' : 'default'}>
         {rightColContent}
       </TableCell>
     </TableRow>

@@ -11,10 +11,10 @@ function TableSection(props) {
   return (
     <TableBody
       style={{ width: '100%', position: 'relative', zIndex: '20' }}
-      onMouseLeave={props.onMouseLeave}
-    >
+      onMouseLeave={props.onMouseLeave}>
       <TableBlock
         plain={props.plain}
+        section
         leftColContent={
           <Grid
             alignItems="center"
@@ -23,8 +23,7 @@ function TableSection(props) {
             style={{
               paddingLeft: '12px',
               paddingRight: '12px',
-            }}
-          >
+            }}>
             <Grid item>
               <Typography variant="subtitle2">{title}</Typography>
             </Grid>

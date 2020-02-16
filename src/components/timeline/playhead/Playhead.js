@@ -13,7 +13,6 @@ const useStyles = makeStyles({
     pointerEvents: 'none',
     position: 'relative',
     userSelect: 'none',
-    width: '100%',
   },
 });
 
