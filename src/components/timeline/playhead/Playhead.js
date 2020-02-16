@@ -1,9 +1,22 @@
-import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { func, number, object } from 'prop-types';
-import { withTheme } from '@material-ui/core/styles';
+import { makeStyles, withTheme } from '@material-ui/core/styles';
 
-const PlayheadHandle = styled(({ ...props }) => <div {...props} />)`
+import Tooltip from '../tooltip/Tooltip';
+
+const useStyles = makeStyles({
+  playheadRoot: {
+    minHeight: '28px',
+    overflow: 'visible',
+    pointerEvents: 'none',
+    position: 'relative',
+    userSelect: 'none',
+    width: '100%',
+  },
+});
+
+const PlayheadHandle = styled(({ theme, ...props }) => <div {...props} />)`
   cursor: -webkit-grab;
   cursor: col-resize;
   cursor: grab;
@@ -14,6 +27,7 @@ const PlayheadHandle = styled(({ ...props }) => <div {...props} />)`
   transform: translateX(-50%);
   width: 28px;
   &:before {
+    background-color: ${theme => theme.theme.palette.primary.main};
     border-radius: 4px;
     content: ' ';
     display: block;
@@ -25,6 +39,7 @@ const PlayheadHandle = styled(({ ...props }) => <div {...props} />)`
     width: 9px;
   }
   &:after {
+    border-color: ${theme => theme.theme.palette.primary.main};
     border-style: solid;
     border-width: 0 0 0 1px;
     content: ' ';
@@ -38,46 +53,39 @@ const PlayheadHandle = styled(({ ...props }) => <div {...props} />)`
   }
 `;
 
-const PlayheadRoot = styled(({ theme, ...props }) => <div {...props} />)`
-  min-height: 28px;
-  overflow: visible;
-  pointer-events: none;
-  position: relative;
-  user-select: none;
-  width: 100%;
-  ${PlayheadHandle}:before {
-    background-color: ${theme => theme.theme.palette.primary.main};
-  }
-  ${PlayheadHandle}:after {
-    border-color: ${theme => theme.theme.palette.primary.main};
-  }
-`;
-
 const Playhead = props => {
-  const playheadRootRef = React.useRef();
-  const { value, max, onChange, style, theme } = props;
+  const playheadRoot = useRef();
+  const classes = useStyles();
+  const { value, max, style, theme } = props;
 
-  // const currentTime = React.useState(value);
   const [dragState, setDragState] = React.useState(false);
+  const [localValue, setLocalValue] = React.useState(value);
+  const [rootRect, setRootRect] = React.useState(null);
 
   const onMouseDown = e => {
+    if (!e) return null;
+    const coords = { x: e.pageX };
+
+    if (coords.x <= 0) return null;
+    const v = ((coords.x - rootRect.left) * max) / rootRect.width;
+
+    if (v < 0 || v >= max) return null;
     setDragState(true);
-    console.log('onMouseDown', e);
+    setLocalValue(v);
   };
   const onMouseMove = e => {
-    if (dragState) {
-      console.log('onMouseMove', e);
-    }
+    if (!e || !dragState) return null;
+    const coords = { x: e.pageX };
+
+    if (coords.x <= 0) return null;
+    const v = ((coords.x - rootRect.left) * max) / rootRect.width;
+
+    if (v < 0 || v >= max) return null;
+    setLocalValue(v);
   };
   const onMouseUp = e => {
     setDragState(false);
-    console.log('onMouseUp', e);
   };
-
-  useEffect(() => {
-    window.addEventListener('mousedown', onMouseDown);
-    return () => window.removeEventListener('mousedown', onMouseDown);
-  }, [onMouseDown]);
 
   useEffect(() => {
     window.addEventListener('mousemove', onMouseMove);
@@ -89,26 +97,38 @@ const Playhead = props => {
     return () => window.removeEventListener('mouseup', onMouseUp);
   }, [onMouseUp]);
 
+  useEffect(() => {
+    setRootRect(playheadRoot.current.getBoundingClientRect());
+  }, [playheadRoot]);
+
+  useEffect(() => {
+    props.onChange(localValue);
+  }, [localValue]);
+
   return (
-    <PlayheadRoot
-      onMouseDown={onMouseDown}
-      onMouseMove={onMouseMove}
-      onMouseUp={onMouseUp}
-      ref={playheadRootRef}
-      style={style}
-      theme={theme}>
-      <PlayheadHandle />
-    </PlayheadRoot>
+    <div className={classes.playheadRoot} ref={playheadRoot} style={style}>
+      <PlayheadHandle
+        onMouseDown={onMouseDown}
+        style={{
+          left: `${localValue}%`,
+        }}
+        theme={theme}>
+        <Tooltip isVisible={dragState}>
+          00:00:00
+          {/* {formatSeconds(displayTime)} */}
+        </Tooltip>
+      </PlayheadHandle>
+    </div>
   );
 };
 
 export default withTheme(Playhead);
 
 Playhead.propTypes = {
-  max: number.isRequired,
-  onChange: func.isRequired,
-  style: object,
-  value: number,
+  max: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired,
+  style: PropTypes.object,
+  value: PropTypes.number,
 };
 Playhead.defaultProps = {
   style: null,

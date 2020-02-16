@@ -9,6 +9,11 @@ export const store = new Store({
   max: 100,
 });
 
+export const onChange = value => {
+  action('onChange')(value);
+  store.set({ value });
+}
+
 <Meta title="Components" />
 
 # Timeline
@@ -19,7 +24,7 @@ export const store = new Store({
       {state =>
         <Timeline
           max={state.max}
-          onChange={v => store.set({ value: v })}
+          onChange={onChange}
           value={state.value}
         />
       }
