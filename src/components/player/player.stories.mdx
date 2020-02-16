@@ -1,0 +1,72 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
+import { action } from '@storybook/addon-actions';
+import { State, Store } from "@sambego/storybook-state";
+
+import Player from './Player';
+
+export const store = new Store({
+  time: 0,
+  progress: 0,
+  duration: 0,
+  seekTo: null,
+  scrubTo: null,
+  playing: false,
+});
+
+<Meta title="Components" />
+
+# Player
+
+Based on [ReactPlayer](https://cookpete.com/react-player/)
+
+<Preview>
+  <Story name="Player">
+    <State store={store}>
+      {state =>
+        <div style={{
+          width: 560,
+          height: 315
+        }}>
+          <Player
+            url="https://www.youtube.com/watch?v=Et5B-zfAIIo"
+            playing={state.playing}
+            onDuration={duration => store.set({duration})}
+            onPlay={() => store.set({playing: true})}
+            onPause={() => store.set({playing: false})}
+            onDuration={duration => store.set({duration})}
+            onTimeUpdate={time => store.set({time})}
+            onProgress={progress => store.set({progress})}
+            seekTo={state.seekTo}
+            scrubTo={state.scrubTo}
+          />
+          
+          Duration: {state.duration} <br />
+          
+          Progress: {state.progress} <br />
+          <input disabled type="range" min="0" max={state.duration} value={state.progress} style={{width: '100%'}} />
+          
+          Time: {state.time} <br />          
+          seekTo: {state.seekTo} <br />          
+          <input 
+            onChange={e => store.set({seekTo: e.nativeEvent.target.value})}
+            onMouseUp={e => store.set({seekTo: null})}
+            onMouseOut={e => store.set({seekTo: null})}
+            type="range" min="0" max={state.duration} step="0.1"
+            value={state.time} style={{width: '100%'}} />
+          scrubTo: {state.scrubTo} <br />          
+          <input 
+            onChange={e => store.set({scrubTo: e.nativeEvent.target.value, seekTo: null})} 
+            onMouseUp={e => store.set({scrubTo: null})}
+            onMouseOut={e => store.set({scrubTo: null})}
+            type="range" min="0" max={state.duration} step="0.1"
+            value={state.time} style={{width: '100%'}} />
+          
+          <br />
+          <button onClick={() => store.set({playing: !state.playing})}>{state.playing ? 'Pause' : 'Play'}</button>
+        </div>
+      }
+     </State>
+  </Story>
+</Preview>
+
+<Props of={Player} />

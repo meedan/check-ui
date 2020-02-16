@@ -4,15 +4,23 @@
   "main": "index.js",
   "repository": "git@github.com:meedan/check-ui.git",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "react-player": "^1.15.2",
+    "@material-ui/core": "4.9.2",
+    "@material-ui/icons": "^4.9.1",
+    "@react-google-maps/api": "1.4.0",
+    "downshift": "3.3.5",
+    "material-ui-popup-state": "1.5.3"
+  },
   "devDependencies": {
     "@babel/core": "7.8.4",
     "@babel/plugin-proposal-class-properties": "7.8.3",
     "@babel/preset-env": "7.8.4",
     "@babel/preset-react": "7.8.3",
+    "@sambego/storybook-state": "^2.0.1",
     "@storybook/addon-actions": "5.3.13",
-    "@storybook/addon-console": "^1.2.1",
     "@storybook/addon-docs": "5.3.13",
+    "@storybook/addon-essentials": "5.3.13",
     "@storybook/addon-links": "5.3.13",
     "@storybook/addon-viewport": "5.3.13",
     "@storybook/addons": "5.3.13",
@@ -24,14 +32,14 @@
     "eslint-config-prettier": "6.10.0",
     "eslint-plugin-prettier": "3.1.2",
     "eslint-plugin-react": "7.18.3",
-    "husky": "4.2.1",
+    "husky": "4.2.3",
     "lint-staged": "10.0.7",
     "prettier": "1.19.1",
     "prettier-eslint": "9.0.1",
     "prettier-stylelint": "0.4.2",
     "pretty-quick": "2.0.1",
-    "react": "16.10.2",
-    "react-dom": "16.10.2",
+    "react": "16.12.0",
+    "react-dom": "16.12.0",
     "styled-components": "5.0.1",
     "stylelint-prettier": "1.1.2"
   },
@@ -47,14 +55,6 @@
   },
   "lint-staged": {
     "*.{js,jsx}": [
-      "prettier --write",
-      "git add"
-    ],
-    "*.{md,html}": [
-      "prettier --write",
-      "git add"
-    ],
-    "*.{mdx}": [
       "prettier --write",
       "git add"
     ]
