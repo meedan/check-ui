@@ -1,11 +1,12 @@
-import { bool, func, number, object, shape } from 'prop-types';
-import React, { Component, createRef } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import styled from 'styled-components';
+import { withTheme } from '@material-ui/core/styles';
 
 import MeTooltip from '../tooltip/Tooltip';
 import formatSeconds from './formatSeconds';
 
-const El = styled.div`
+const PlayheadTrackRoot = styled(({ theme, ...props }) => <div {...props} />)`
   cursor: -webkit-grab;
   cursor: col-resize;
   cursor: grab;
@@ -14,21 +15,21 @@ const El = styled.div`
   position: absolute;
   touch-action: pan-x;
   transform: translateX(-50%);
-  width: 7px;
+  width: 28px;
   &:before {
-    background: orange;
+    background: ${theme => theme.theme.palette.primary.main};
     border-radius: 4px;
     content: ' ';
     display: block;
-    height: 7px;
+    height: 9px;
     left: 50%;
     position: absolute;
     top: 0;
     transform: translate(-55%, -50%);
-    width: 7px;
+    width: 9px;
   }
   &:after {
-    border-left: 1px solid orange;
+    border-left: 1px solid ${theme => theme.theme.palette.primary.main};
     content: ' ';
     display: block;
     height: 100%;
@@ -40,7 +41,7 @@ const El = styled.div`
   }
 `;
 
-class Playhead extends Component {
+class PlayheadHandle extends Component {
   constructor(props) {
     super(props);
     this.state = { value: 0 };
@@ -109,7 +110,7 @@ class Playhead extends Component {
   render() {
     if (!this.props.rect) return null;
 
-    const { max, rect } = this.props;
+    const { max, rect, theme } = this.props;
     const { dragging, value, newValue } = this.state;
     const { width } = rect;
 
@@ -118,25 +119,27 @@ class Playhead extends Component {
     const x = (displayTime * width) / max;
 
     return (
-      <El
+      <PlayheadTrackRoot
         style={{
           left: `${x}px`,
         }}
+        theme={theme}
         onMouseDown={this.onMouseDown}>
         <MeTooltip isVisible={dragging}>{formatSeconds(displayTime)}</MeTooltip>
-      </El>
+      </PlayheadTrackRoot>
     );
   }
 }
 
-export default Playhead;
-
-Playhead.propTypes = {
-  max: number.isRequired,
-  rect: object,
-  updateTime: func.isRequired,
-  value: number.isRequired,
+PlayheadHandle.propTypes = {
+  max: PropTypes.number.isRequired,
+  rect: PropTypes.object,
+  updateTime: PropTypes.func.isRequired,
+  value: PropTypes.number.isRequired,
 };
-Playhead.defaultProps = {
+
+PlayheadHandle.defaultProps = {
   rect: null,
 };
+
+export default withTheme(PlayheadHandle);

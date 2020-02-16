@@ -1246,11 +1246,6 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
-"@reach/auto-id@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@reach/auto-id/-/auto-id-0.2.0.tgz#97f9e48fe736aa5c6f4f32cf73c1f19d005f8550"
-  integrity sha512-lVK/svL2HuQdp7jgvlrLkFsUx50Az9chAhxpiPwBqcS83I2pVWvXp98FOcSCCJCV++l115QmzHhFd+ycw1zLBg==
-
 "@reach/router@^1.2.1":
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/@reach/router/-/router-1.3.1.tgz#0a49f75fa9621323d6e21c803447bcfcde1713b2"
@@ -1261,17 +1256,24 @@
     prop-types "^15.6.1"
     react-lifecycles-compat "^3.0.4"
 
-"@react-google-maps/api@1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@react-google-maps/api/-/api-1.4.0.tgz#482c801fc1abb18a491a71879fc44e1e428f3016"
-  integrity sha512-kKavGvFzH56AhX288fd/UT2leUXfEb1CcNMMTU/DIbREG7pO9eomtZRnt9jzH8Ob8hQh+RVadCRlbepCAEgkCg==
+"@react-google-maps/api@1.8.3":
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/@react-google-maps/api/-/api-1.8.3.tgz#99942c465235648111a3ad9c60197207aae014fd"
+  integrity sha512-D3/qFxhgxS5rNeeB0sb785vgfU7P5X70B+/vnKWU4lTVTsekEm5qdJNBznWBGzvCzC4e7F3FMa6Y4K+HIPpTYQ==
   dependencies:
-    "@react-google-maps/marker-clusterer" "1.4.0"
+    "@react-google-maps/infobox" "1.8.2"
+    "@react-google-maps/marker-clusterer" "1.8.2"
+    invariant "2.2.4"
 
-"@react-google-maps/marker-clusterer@1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@react-google-maps/marker-clusterer/-/marker-clusterer-1.4.0.tgz#3a9888011ea20cd60e7092d9921bbc1612ecd2ff"
-  integrity sha512-VHQSVY7JZRNWNCUGi6sIvHwl7LOxNGnLy/dkMaZSGNOKJwQoKf6aSipdwCJ9McSLXTI3eovmocIkSaiRx1p+cg==
+"@react-google-maps/infobox@1.8.2":
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/@react-google-maps/infobox/-/infobox-1.8.2.tgz#da2cab6331fbdcb5580e64262befa88c55f4c7a4"
+  integrity sha512-lU+0g0BUq2xhJEJb16uEdCmEgEMd5Oib5yTyeSrBUUC6wCj2Rl0y41TcgxtZhD2C155n5v8Ns6NHQyVctRehcQ==
+
+"@react-google-maps/marker-clusterer@1.8.2":
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/@react-google-maps/marker-clusterer/-/marker-clusterer-1.8.2.tgz#ff556e1d9f34d5270b008d010e9f2e037409c623"
+  integrity sha512-EPFu88okkIvX4zbJI91gBfE3WUHJpO+pp+3lRmv5vn9DPzSHYui7JNuKXuqSOUe7NUsTOqSvkiOeGZO7t0KHwA==
 
 "@sambego/storybook-state@^2.0.1":
   version "2.0.1"
@@ -4635,13 +4637,12 @@ dotenv@^8.0.0:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
   integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
 
-downshift@3.3.5:
-  version "3.3.5"
-  resolved "https://registry.yarnpkg.com/downshift/-/downshift-3.3.5.tgz#635f465ab45f577814a98901024873637649ce6f"
-  integrity sha512-OLBKLfP8cUaB7/wF0Al74v+znYOV/BG6hMGIj/JMuPcnNHQ/1WrF3btCZx+KnJcYtfMdQHEwWv0yC1cdPinyXw==
+downshift@5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/downshift/-/downshift-5.0.0.tgz#2fc85e2f1b8854ef8194ab9c025b05487841ab9d"
+  integrity sha512-7rgK+WVi22nP7UA/hO97jsxkFE5ByK0DyVtHn3GB5rVGHXRjKrm2QvgK3wzFn1yWU/UwUDSdDYRpsiPz9oztVg==
   dependencies:
     "@babel/runtime" "^7.4.5"
-    "@reach/auto-id" "^0.2.0"
     compute-scroll-into-view "^1.0.9"
     prop-types "^15.7.2"
     react-is "^16.9.0"
@@ -6582,7 +6583,7 @@ interpret@^2.0.0:
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-2.0.0.tgz#b783ffac0b8371503e9ab39561df223286aa5433"
   integrity sha512-e0/LknJ8wpMMhTiWcjivB+ESwIuvHnBSlBbmP/pSb8CQJldoj1p2qv7xGZ/+BtbTziYRFSz8OsvdbiX45LtYQA==
 
-invariant@^2.2.2, invariant@^2.2.3, invariant@^2.2.4:
+invariant@2.2.4, invariant@^2.2.2, invariant@^2.2.3, invariant@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
   integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
