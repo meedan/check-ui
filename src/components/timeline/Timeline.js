@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
-import { withTheme } from '@material-ui/core/styles';
 
 import Playhead from './playhead/Playhead';
 import Entities from './entities/Entities';
@@ -10,31 +9,32 @@ import Comments from './entities/Comments';
 
 const TIMELINE_OFFSET = 224;
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   timelineRoot: {
     position: 'relative',
     userSelect: 'none',
   },
-});
+  playhead: {
+    borderLeft: `1px solid ${theme.palette.divider}`,
+    bottom: 0,
+    left: `${TIMELINE_OFFSET}px`,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+  },
+}));
 
 const Timeline = props => {
-  const { currentTime, duration, onChange, playing, theme } = props;
+  const { currentTime, duration, onChange, playing } = props;
   const classes = useStyles();
 
   return (
     <div className={classes.timelineRoot}>
       <Playhead
+        className={classes.playhead}
         currentTime={currentTime}
         duration={duration}
         onChange={onChange}
-        style={{
-          borderLeft: `1px solid ${theme.palette.divider}`,
-          bottom: 0,
-          left: `${TIMELINE_OFFSET}px`,
-          position: 'absolute',
-          right: 0,
-          top: 0,
-        }}
       />
       <Table>
         <Comments {...props} currentTime={currentTime} />
@@ -127,4 +127,4 @@ Timeline.defaultProps = {
   playing: false,
 };
 
-export default withTheme(Timeline);
+export default Timeline;

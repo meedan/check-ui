@@ -1,24 +1,24 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import grey from '@material-ui/core/colors/grey';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
-const styles = theme => ({
+const useStyles = makeStyles({
   leftCol: {
     width: '224px',
     paddingLeft: 0,
     paddingRight: 0,
   },
-  rightCol: {},
   plain: {
     border: 'none',
   },
 });
 
-function TableBlock(props) {
-  const { classes, leftColContent, rightColContent } = props;
+const TableBlock = props => {
+  const classes = useStyles();
+  const { leftColContent, rightColContent } = props;
   return (
     <TableRow>
       <TableCell
@@ -33,6 +33,25 @@ function TableBlock(props) {
       </TableCell>
     </TableRow>
   );
-}
+};
 
-export default withStyles(styles)(TableBlock);
+TableBlock.propTypes = {
+  leftColContent: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
+  plain: PropTypes.bool,
+  section: PropTypes.bool,
+  rightColContent: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
+};
+
+TableBlock.defaultProps = {
+  plain: false,
+  rightColContent: null,
+  section: false,
+};
+
+export default TableBlock;

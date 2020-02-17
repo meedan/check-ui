@@ -66,12 +66,6 @@ const theme = createMuiTheme({
       root: {
         borderBottom: `1px solid ${grey[200]}`,
       },
-      paddingDense: {
-        paddingBottom: 6,
-        paddingLeft: 12,
-        paddingRight: 12,
-        paddingTop: 6,
-      },
     },
     MuiMenuItem: {
       root: {

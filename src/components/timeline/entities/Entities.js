@@ -342,13 +342,15 @@ class Entities extends Component {
               title={
                 playlist ? 'Pause' : `Play ${this.props.title.toLowerCase()}`
               }>
-              <IconButton
-                disabled={entities.length < 1}
-                onClick={() =>
-                  playlist ? this.handlePause() : this.handlePlay()
-                }>
-                <PlayArrowIcon fontSize="small" />
-              </IconButton>
+              <span>
+                <IconButton
+                  disabled={entities.length < 1}
+                  onClick={() =>
+                    playlist ? this.handlePause() : this.handlePlay()
+                  }>
+                  <PlayArrowIcon fontSize="small" />
+                </IconButton>
+              </span>
             </Tooltip>
             <Tooltip title="New…">
               <IconButton onClick={this.startNewEntity}>

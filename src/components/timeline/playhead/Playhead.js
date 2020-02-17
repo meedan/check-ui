@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef } from 'react';
-import { makeStyles, withTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 import Tooltip from '../tooltip/Tooltip';
 import formatSeconds from '../formatSeconds';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   playheadRoot: {
     minHeight: '28px',
     overflow: 'visible',
@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     transform: 'translateX(-50%)',
     width: '28px',
     '&:before': {
-      backgroundColor: theme => theme.palette.primary.main,
+      backgroundColor: theme.palette.primary.main,
       borderRadius: '4px',
       content: '" "',
       display: 'block',
@@ -35,7 +35,7 @@ const useStyles = makeStyles({
       width: '9px',
     },
     '&:after': {
-      borderColor: theme => theme.palette.primary.main,
+      borderColor: theme.palette.primary.main,
       borderStyle: 'solid',
       borderWidth: '0 0 0 1px',
       content: '" "',
@@ -48,12 +48,12 @@ const useStyles = makeStyles({
       width: '1px',
     },
   },
-});
+}));
 
 const Playhead = props => {
   const playheadRoot = useRef();
-  const classes = useStyles(props.theme);
-  const { currentTime, duration, style } = props;
+  const classes = useStyles();
+  const { currentTime, duration } = props;
 
   const [dragState, setDragState] = React.useState(false);
   const [localCurrentTime, setLocalCurrentTime] = React.useState(currentTime);
@@ -103,10 +103,9 @@ const Playhead = props => {
 
   return (
     <div
-      className={classes.playheadRoot}
+      className={`${props.className} ${classes.playheadRoot}`}
       onMouseDown={onHandlePress}
-      ref={playheadRoot}
-      style={style}>
+      ref={playheadRoot}>
       <div
         className={classes.playheadHandle}
         style={{
@@ -118,15 +117,13 @@ const Playhead = props => {
   );
 };
 
-export default withTheme(Playhead);
+export default Playhead;
 
 Playhead.propTypes = {
   currentTime: PropTypes.number,
   duration: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
-  style: PropTypes.object,
 };
 Playhead.defaultProps = {
   currentTime: 0,
-  style: null,
 };

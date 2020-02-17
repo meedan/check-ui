@@ -4,17 +4,28 @@ import { action } from '@storybook/addon-actions';
 
 import Timeline from './Timeline';
 import EntitySlider from './entityslider/EntitySlider';
+import Playhead from './playhead/Playhead';
 
 import data from './timeline.data.json';
 
-export const store = new Store({
+export const timelineStore = new Store({
   currentTime: 50,
   duration: 1000,
 });
 
-export const onChange = newTime => {
+export const playheadStore = new Store({
+  currentTime: 0,
+  duration: 10000,
+});
+
+export const onTimelineChange = (store, newTime) => {
   action('onChange')(newTime);
-  store.set({ currentTime: newTime });
+  timelineStore.set({ currentTime: newTime });
+}
+
+export const onPlayheadChange = (store, newTime) => {
+  action('onChange')(newTime);
+  playheadStore.set({ currentTime: newTime });
 }
 
 <Meta title="Timeline" />
@@ -25,11 +36,11 @@ export const onChange = newTime => {
 
 <Preview>
   <Story name="Empty">
-    <State store={store}>
+    <State store={timelineStore}>
       {state =>
         <Timeline
           duration={state.duration}
-          onChange={onChange}
+          onChange={onTimelineChange}
         />
       }
      </State>
@@ -40,13 +51,13 @@ export const onChange = newTime => {
 
 <Preview>
   <Story name="Populated">
-    <State store={store}>
+    <State store={timelineStore}>
       {state =>
         <Timeline
           currentTime={state.currentTime}
           data={data}
           duration={state.duration}
-          onChange={onChange}
+          onChange={onTimelineChange}
         />
       }
      </State>
@@ -56,3 +67,21 @@ export const onChange = newTime => {
 ## Prop types
 
 <Props of={Timeline} />
+
+# Partials
+
+## Playhead
+
+<Preview>
+  <Story name="Partials » Playhead">
+    <State store={playheadStore}>
+      {state =>
+        <Playhead
+          currentTime={state.currentTime}
+          duration={state.duration}
+          onChange={onPlayheadChange}
+        />
+      }
+     </State>
+  </Story>
+</Preview>
