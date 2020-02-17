@@ -6,6 +6,7 @@ import React, { Component } from 'react';
 class Map extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       marker: this.props.marker || {},
       center: null,
@@ -15,33 +16,31 @@ class Map extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    // if (this.props.currentTime !== nextProps.currentTime) {
-    //   const marker = this.props.places.find(
-    //     ({ time, duration }) =>
-    //       time <= nextProps.currentTime &&
-    //       nextProps.currentTime < time + duration
-    //   );
+    const { index, places } = this.props;
 
-    //   if (marker && this.map) {
-    //     const { viewport, zoom, type } = marker;
-    //     const { lat, lng } = type === 'marker' ? marker : marker.polygon[0];
+    if (index > -1 && index < places.length && index !== nextProps.index) {
+      const marker = places[index];
 
-    //     this.setState({ marker, center: { lat, lng }, zoom: zoom });
+      if (marker && this.map) {
+        const { viewport, zoom, type } = marker;
+        const { lat, lng } = type === 'marker' ? marker : marker.polygon[0];
 
-    //     this.map.panTo({ lat, lng });
-    //     if (zoom) this.map.setZoom(zoom);
-    //     if (viewport) {
-    //       this.map.panToBounds(viewport);
-    //     }
+        this.setState({ marker, center: { lat, lng }, zoom: zoom });
 
-    //     // // this.map.setCenter({ lat, lng });
-    //     // this.map.panTo({ lat, lng });
-    //     // if (zoom) this.map.setZoom(zoom);
-    //     // if (viewport) setTimeout(() => this.map.panToBounds(viewport), 500);
-    //   }
+        this.map.panTo({ lat, lng });
+        if (zoom) this.map.setZoom(zoom);
+        if (viewport) {
+          this.map.panToBounds(viewport);
+        }
 
-    //   return false;
-    // }
+        // // this.map.setCenter({ lat, lng });
+        // this.map.panTo({ lat, lng });
+        // if (zoom) this.map.setZoom(zoom);
+        // if (viewport) setTimeout(() => this.map.panToBounds(viewport), 500);
+      }
+
+      return false;
+    }
 
     return !equal(this.props.places, nextProps.places);
   }
@@ -51,11 +50,12 @@ class Map extends Component {
   };
 
   handleMarkerClick(time) {
-    this.props.seekTo({ seekTo: time, transport: 'map' });
+    // FIXME
+    // this.props.seekTo({ seekTo: time, transport: 'map' });
   }
 
   render() {
-    const { classes, places, id } = this.props;
+    const { places, isCompact } = this.props;
     const { marker } = this.state;
 
     let center = places
@@ -76,34 +76,33 @@ class Map extends Component {
 
     if (this.map && this.map.center) center = this.map.center;
 
-    let zoom = this.props.isCompact ? 10 : 2.5;
+    let zoom = isCompact ? 10 : 2.5;
     if (this.state.zoom) center = this.state.zoom;
 
     return (
       <GoogleMap
         center={center}
         mapContainerStyle={{ height: '100%', width: '100%' }}
-        onClick={this.props.switchMapDisplay}
         onLoad={this.onLoad}
         options={{
           draggableCursor: 'grab',
-          zoomControl: this.props.isCompact ? false : true,
-          streetViewControl: this.props.isCompact ? false : true,
-          mapTypeControl: this.props.isCompact ? false : true,
-          scaleControl: this.props.isCompact ? false : true,
-          rotateControl: this.props.isCompact ? false : true,
-          fullscreenControl: this.props.isCompact ? false : true,
+          zoomControl: isCompact ? false : true,
+          streetViewControl: isCompact ? false : true,
+          mapTypeControl: isCompact ? false : true,
+          scaleControl: isCompact ? false : true,
+          rotateControl: isCompact ? false : true,
+          fullscreenControl: isCompact ? false : true,
         }}
         zoom={zoom}>
-        {this.props.places
+        {places
           .filter(d => d.type === 'marker')
           .map(({ lat, lng, time }, i) => (
             <Marker
               key={`m-${i}`}
               draggable={false}
-              animation={window.google && window.google.maps.Animation.DROP}
+              // animation={window.google && window.google.maps.Animation.DROP}
               position={{ lat, lng }}
-              onClick={() => this.handleMarkerClick(time)}
+              // onClick={() => this.handleMarkerClick(time)}
             />
           ))}
         {this.props.places
@@ -113,7 +112,7 @@ class Map extends Component {
               key={`p-${i}`}
               path={polygon.polygon}
               options={polygonOptions}
-              onClick={() => this.handleMarkerClick(polygon.time)}
+              // onClick={() => this.handleMarkerClick(polygon.time)}
             />
           ))}
       </GoogleMap>
@@ -135,13 +134,15 @@ const polygonOptions = {
 };
 
 Map.propTypes = {
-  currentTime: PropTypes.number,
+  index: PropTypes.number,
   places: PropTypes.array,
+  isCompact: PropTypes.bool,
 };
 
 Map.defaultProps = {
-  currentTime: 0,
+  index: -1,
   places: [],
+  isCompact: false,
 };
 
 export default Map;

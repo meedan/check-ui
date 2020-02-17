@@ -7,6 +7,7 @@ import { LoadScript } from '@react-google-maps/api'
 import Map from './Map';
 
 export const store = new Store({
+  index: -1,
   places: [
     {
       "name": "Maboa",
@@ -97,8 +98,11 @@ Based on [React Google Maps Api](https://react-google-maps-api-docs.netlify.com/
             width: 560,
             height: 315
           }}>
-            <Map places={state.places} />
+            <Map places={state.places} index={state.index} />
           </div>
+          <input 
+            onChange={e => store.set({index: parseInt(e.nativeEvent.target.value)})} 
+            type="number" min="-1" max={state.places.length - 1} value={state.index} />
         </LoadScript>
       }
     </State>
