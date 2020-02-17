@@ -8,21 +8,27 @@ import Playhead from './playhead/Playhead';
 
 import data from './timeline.data.json';
 
-export const timelineStore = new Store({
+export const plainTimelineStore = new Store({
   currentTime: 50,
   duration: 1000,
 });
-
+export const richTimelineStore = new Store({
+  currentTime: 50,
+  duration: 1000,
+});
 export const playheadStore = new Store({
   currentTime: 0,
   duration: 10000,
 });
 
-export const onTimelineChange = (newTime) => {
+export const onPlainTimelineChange = (newTime) => {
   action('onTimelineChange')(newTime);
-  timelineStore.set({ currentTime: newTime });
+  plainTimelineStore.set({ currentTime: newTime });
 }
-
+export const onRichTimelineChange = (newTime) => {
+  action('onTimelineChange')(newTime);
+  richTimelineStore.set({ currentTime: newTime });
+}
 export const onPlayheadChange = (newTime) => {
   action('onPlayheadChange')(newTime);
   playheadStore.set({ currentTime: newTime });
@@ -32,32 +38,32 @@ export const onPlayheadChange = (newTime) => {
 
 # Timeline
 
-## Empty
+## Plain
 
 <Preview>
-  <Story name="Empty">
-    <State store={timelineStore}>
+  <Story name="Plain">
+    <State store={plainTimelineStore}>
       {state =>
         <Timeline
           duration={state.duration}
-          onChange={onTimelineChange}
+          onChange={onPlainTimelineChange}
         />
       }
      </State>
   </Story>
 </Preview>
 
-## Populated
+## Rich
 
 <Preview>
-  <Story name="Populated">
-    <State store={timelineStore}>
+  <Story name="Rich">
+    <State store={richTimelineStore}>
       {state =>
         <Timeline
           currentTime={state.currentTime}
           data={data}
           duration={state.duration}
-          onChange={onTimelineChange}
+          onChange={onRichTimelineChange}
         />
       }
      </State>
