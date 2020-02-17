@@ -23,9 +23,8 @@ addParameters({
 });
 
 configureActions({
-  depth: 50,
-  // Limit the number of items logged into the actions panel
-  limit: 10,
+  depth: 10,
+  limit: 25,
 });
 
 addDecorator(story => (
