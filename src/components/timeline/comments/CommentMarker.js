@@ -1,16 +1,15 @@
+import Avatar from '@material-ui/core/Avatar';
+import Card from '@material-ui/core/Card';
+import HoverPopover from 'material-ui-popup-state/HoverPopover';
 import React from 'react';
+import TriggerPopover from '@material-ui/core/Popover';
 import {
   usePopupState,
   bindHover,
   bindTrigger,
   bindPopover,
 } from 'material-ui-popup-state/hooks';
-import HoverPopover from 'material-ui-popup-state/HoverPopover';
-
 import { withStyles } from '@material-ui/core/styles';
-import Avatar from '@material-ui/core/Avatar';
-import Card from '@material-ui/core/Card';
-import TriggerPopover from '@material-ui/core/Popover';
 
 import CommentThread from './CommentThread';
 import NewThreadPopoover from './NewThreadPopover';

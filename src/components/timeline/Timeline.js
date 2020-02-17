@@ -3,7 +3,7 @@ import React from 'react';
 import Table from '@material-ui/core/Table';
 import { makeStyles } from '@material-ui/core/styles';
 
-import Comments from './entities/Comments';
+import Comments from './comments/Comments';
 import Entities from './entities/Entities';
 import Playhead from './playhead/Playhead';
 

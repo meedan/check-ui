@@ -1,16 +1,15 @@
 import 'rc-slider/assets/index.css';
-import React, { Component } from 'react';
-import produce from 'immer';
-
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import React, { Component } from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
+import produce from 'immer';
 
-import EntityControls from './ofEntities/EntityControls';
-import EntitySlider from '../entityslider/EntitySlider';
-import TableBlock from './TableBlock';
-import TableSection from './TableSection';
+import EntityControls from './EntityControls';
+import Slider from '../slider/Slider';
+import TableBlock from '../elements/TableBlock';
+import TableSection from '../elements/TableSection';
 
 // const FPS = 30;
 
@@ -395,7 +394,7 @@ class Entities extends Component {
                     />
                   }
                   rightColContent={
-                    <EntitySlider
+                    <Slider
                       clipInstance={
                         entityType !== 'clip'
                           ? instanceId =>

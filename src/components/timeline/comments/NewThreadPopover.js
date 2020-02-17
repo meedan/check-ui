@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
-import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
-import Popover from '@material-ui/core/Popover';
-
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
+import Grid from '@material-ui/core/Grid';
+import Popover from '@material-ui/core/Popover';
+import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
+import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 
 import CommentForm from './CommentForm';
 

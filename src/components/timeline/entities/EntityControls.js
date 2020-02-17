@@ -1,10 +1,3 @@
-import Popover from 'material-ui-popup-state/HoverPopover';
-import PopupState, { bindHover, bindPopover } from 'material-ui-popup-state';
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import { array, func, object, string } from 'prop-types';
-
-import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
@@ -12,8 +5,14 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Popover from 'material-ui-popup-state/HoverPopover';
+import PopupState, { bindHover, bindPopover } from 'material-ui-popup-state';
+import React, { Component } from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import styled from 'styled-components';
+import { array, func, object, string } from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 
 import EntityDeleteModal from './EntityDeleteModal';
 import EntityMapPopover from './EntityMapPopover';
@@ -56,7 +55,8 @@ class EntityControls extends Component {
     this.state = {
       flow: null,
     };
-    if (this.props.entityType === 'location') this.anchorRef = React.createRef();
+    if (this.props.entityType === 'location')
+      this.anchorRef = React.createRef();
   }
 
   componentDidMount() {
@@ -83,7 +83,11 @@ class EntityControls extends Component {
 
   onReposition = marker => {
     this.setState({ marker });
-    console.log('updateEntity reposition', this.props.entityName, this.state.marker);
+    console.log(
+      'updateEntity reposition',
+      this.props.entityName,
+      this.state.marker
+    );
     this.props.updateEntity(this.props.entityName, marker);
   };
 
@@ -126,7 +130,8 @@ class EntityControls extends Component {
       suggestions,
     } = this.props;
 
-    const allowNewInstance = this.state.flow !== 'edit' && this.state.flow !== 'processing';
+    const allowNewInstance =
+      this.state.flow !== 'edit' && this.state.flow !== 'processing';
 
     // console.group('EntityControls');
     // console.log('state', this.state);
@@ -134,13 +139,20 @@ class EntityControls extends Component {
     // console.groupEnd();
 
     const read = (
-      <Grid alignItems="center" className={classes.Grid} container justify="space-between" wrap="nowrap">
+      <Grid
+        alignItems="center"
+        className={classes.Grid}
+        container
+        justify="space-between"
+        wrap="nowrap">
         <Grid item>
           {entityName ? (
             <Tooltip title={entityName} enterDelay={750}>
               <Typography
                 className={classes.Typography}
-                color={this.state.flow === 'reposition' ? 'primary' : 'textSecondary'}
+                color={
+                  this.state.flow === 'reposition' ? 'primary' : 'textSecondary'
+                }
                 noWrap
                 variant="body2">
                 {entityName}
@@ -149,7 +161,9 @@ class EntityControls extends Component {
           ) : (
             <Typography
               className={classes.Typography}
-              color={this.state.flow === 'reposition' ? 'primary' : 'textSecondary'}
+              color={
+                this.state.flow === 'reposition' ? 'primary' : 'textSecondary'
+              }
               noWrap
               variant="body2">
               {entityName}
@@ -159,12 +173,17 @@ class EntityControls extends Component {
         <Grid item>
           <ElementAdornment onClick={e => e.stopPropagation()}>
             {this.state.flow === 'processing' ? (
-              <CircularProgress size={18} className={classes.CircularProgress} />
+              <CircularProgress
+                size={18}
+                className={classes.CircularProgress}
+              />
             ) : (
               <PopupState variant="popover" popupId="moreEntityControls">
                 {popupState => (
                   <div>
-                    <IconButton {...bindHover(popupState)} aria-label="Options…">
+                    <IconButton
+                      {...bindHover(popupState)}
+                      aria-label="Options…">
                       <MoreVertIcon />
                     </IconButton>
                     <Popover
@@ -183,7 +202,9 @@ class EntityControls extends Component {
                           <ListItemText>Rename</ListItemText>
                         </ListItem>
                         {entityType === 'location' ? (
-                          <ListItem button onClick={() => this.startReposition()}>
+                          <ListItem
+                            button
+                            onClick={() => this.startReposition()}>
                             <ListItemText>Reposition</ListItemText>
                           </ListItem>
                         ) : null}
@@ -211,7 +232,11 @@ class EntityControls extends Component {
 
     return (
       <Element
-        hasAdornment={this.state.flow && this.state.flow !== 'reposition' && this.state.flow !== 'delete'}
+        hasAdornment={
+          this.state.flow &&
+          this.state.flow !== 'reposition' &&
+          this.state.flow !== 'delete'
+        }
         onClick={allowNewInstance ? startNewInstance : null}
         onMouseEnter={this.startHover}
         onMouseLeave={this.state.flow === 'hover' ? this.stop : null}
