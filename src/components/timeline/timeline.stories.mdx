@@ -2,9 +2,9 @@ import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
 import { State, Store } from "@sambego/storybook-state";
 import { action } from '@storybook/addon-actions';
 
-import Timeline from './Timeline';
-import EntitySlider from './entityslider/EntitySlider';
 import Playhead from './playhead/Playhead';
+import Slider from './slider/Slider';
+import Timeline from './Timeline';
 
 import data from './timeline.data.json';
 
@@ -96,7 +96,7 @@ export const onPlayheadChange = (newTime) => {
 
 <Preview>
   <Story name="Partials » Slider (Clips)">
-    <EntitySlider
+    <Slider
       checkInstance={action('checkInstance')}
       deleteInstance={action('deleteInstance')}
       extendInstance={action('extendInstance')}
@@ -123,7 +123,7 @@ export const onPlayheadChange = (newTime) => {
 
 <Preview>
   <Story name="Partials » Slider (Tags)">
-    <EntitySlider
+    <Slider
       clipInstance={action('clipInstance')}
       deleteInstance={action('deleteInstance')}
       extendInstance={action('extendInstance')}
