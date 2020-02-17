@@ -1,11 +1,11 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
+import React from 'react';
 import Table from '@material-ui/core/Table';
+import { makeStyles } from '@material-ui/core/styles';
 
-import Playhead from './playhead/Playhead';
-import Entities from './entities/Entities';
 import Comments from './entities/Comments';
+import Entities from './entities/Entities';
+import Playhead from './playhead/Playhead';
 
 const TIMELINE_OFFSET = 224;
 
@@ -28,6 +28,9 @@ const Timeline = props => {
   const { currentTime, duration, onChange, playing } = props;
   const classes = useStyles();
 
+  // this stops Entities from re-rendering constantly when moving playhead
+  const [skip, setSkip] = React.useState(false);
+
   return (
     <div className={classes.timelineRoot}>
       <Playhead
@@ -35,11 +38,11 @@ const Timeline = props => {
         currentTime={currentTime}
         duration={duration}
         onChange={onChange}
+        setSkip={setSkip}
       />
       <Table>
         <Comments {...props} currentTime={currentTime} />
         <Entities
-          // skip={skip}
           // transport={transport}
           currentTime={currentTime}
           duration={duration}
@@ -51,11 +54,11 @@ const Timeline = props => {
           onBeforeChange={args => console.log('onBeforeChange', args)}
           onChange={args => console.log('onChange', args)}
           playing={playing}
+          skip={skip}
           suggestions={props.data.project.projectclips}
           title="Clips"
         />
         <Entities
-          // skip={skip}
           // transport={transport}
           clips={props.data.videoClips}
           currentTime={currentTime}
@@ -68,11 +71,11 @@ const Timeline = props => {
           onBeforeChange={args => console.log('onBeforeChange', args)}
           onChange={args => console.log('onChange', args)}
           playing={playing}
+          skip={skip}
           suggestions={props.data.project.projecttags}
           title="Tags"
         />
         <Entities
-          // skip={skip}
           // transport={transport}
           clips={props.data.videoClips}
           currentTime={currentTime}
@@ -85,6 +88,7 @@ const Timeline = props => {
           onBeforeChange={args => console.log('onBeforeChange', args)}
           onChange={args => console.log('onChange', args)}
           playing={playing}
+          skip={skip}
           suggestions={props.data.project.projectplaces}
           title="Places"
         />

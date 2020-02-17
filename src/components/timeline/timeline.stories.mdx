@@ -18,13 +18,13 @@ export const playheadStore = new Store({
   duration: 10000,
 });
 
-export const onTimelineChange = (store, newTime) => {
-  action('onChange')(newTime);
+export const onTimelineChange = (newTime) => {
+  action('onTimelineChange')(newTime);
   timelineStore.set({ currentTime: newTime });
 }
 
-export const onPlayheadChange = (store, newTime) => {
-  action('onChange')(newTime);
+export const onPlayheadChange = (newTime) => {
+  action('onPlayheadChange')(newTime);
   playheadStore.set({ currentTime: newTime });
 }
 

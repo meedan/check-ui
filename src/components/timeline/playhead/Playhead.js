@@ -55,9 +55,9 @@ const Playhead = props => {
   const classes = useStyles();
   const { currentTime, duration } = props;
 
-  const [dragState, setDragState] = React.useState(false);
-  const [localCurrentTime, setLocalCurrentTime] = React.useState(currentTime);
+  const [dragging, setDragging] = React.useState(false);
   const [rootRect, setRootRect] = React.useState(null);
+  const [time, setTime] = React.useState(currentTime);
 
   const onHandlePress = e => {
     if (!e) return null;
@@ -66,22 +66,23 @@ const Playhead = props => {
     const v = ((e.pageX - rootRect.left) * duration) / rootRect.width;
 
     if (v < 0 || v >= duration) return null;
-    setDragState(true);
-    setLocalCurrentTime(v);
+    setDragging(true);
+
+    setTime(v);
     props.onChange(v);
   };
   const onHandleMove = e => {
-    if (!e || !dragState) return null;
+    if (!e || !dragging) return null;
 
     if (e.pageX <= 0) return null;
     const v = ((e.pageX - rootRect.left) * duration) / rootRect.width;
 
     if (v < 0 || v >= duration) return null;
-    setLocalCurrentTime(v);
+    setTime(v);
     props.onChange(v);
   };
   const onHandleRelease = e => {
-    setDragState(false);
+    setDragging(false);
   };
 
   useEffect(() => {
@@ -98,8 +99,12 @@ const Playhead = props => {
     setRootRect(playheadRoot.current.getBoundingClientRect());
   }, [playheadRoot]);
 
-  const val = dragState ? localCurrentTime : currentTime;
-  const pos = rootRect ? (localCurrentTime * rootRect.width) / duration : 0;
+  useEffect(() => {
+    if (props && props.setSkip) props.setSkip(dragging);
+  }, [dragging]);
+
+  const val = dragging ? time : currentTime;
+  const pos = rootRect ? (time * rootRect.width) / duration : 0;
 
   return (
     <div
@@ -111,7 +116,7 @@ const Playhead = props => {
         style={{
           left: `${pos}px`,
         }}>
-        <Tooltip isVisible={dragState}>{formatSeconds(val)}</Tooltip>
+        <Tooltip isVisible={dragging}>{formatSeconds(val)}</Tooltip>
       </div>
     </div>
   );
