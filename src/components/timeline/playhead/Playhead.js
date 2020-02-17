@@ -8,7 +8,7 @@ import formatSeconds from '../formatSeconds';
 const useStyles = makeStyles(theme => ({
   playheadRoot: {
     minHeight: '28px',
-    overflow: 'visible',
+    overflowX: 'visible',
     position: 'relative',
     userSelect: 'none',
   },
@@ -65,10 +65,8 @@ const Playhead = props => {
     if (e.pageX <= 0) return null;
     const v = ((e.pageX - rootRect.left) * duration) / rootRect.width;
 
-    if (v < 0 || v >= duration) return null;
     setDragging(true);
-
-    setTime(v);
+    setTime(v < 0 ? 0 : v > duration ? duration : v);
     props.onChange(v);
   };
   const onHandleMove = e => {
@@ -77,8 +75,7 @@ const Playhead = props => {
     if (e.pageX <= 0) return null;
     const v = ((e.pageX - rootRect.left) * duration) / rootRect.width;
 
-    if (v < 0 || v >= duration) return null;
-    setTime(v);
+    setTime(v < 0 ? 0 : v > duration ? duration : v);
     props.onChange(v);
   };
   const onHandleRelease = e => {
@@ -113,6 +110,8 @@ const Playhead = props => {
       ref={playheadRoot}>
       <div
         className={classes.playheadHandle}
+        onMouseDown={onHandlePress}
+        onMouseUp={onHandleRelease}
         style={{
           left: `${pos}px`,
         }}>
