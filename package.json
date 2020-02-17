@@ -27,6 +27,7 @@
     "@storybook/addon-actions": "5.3.13",
     "@storybook/addon-docs": "5.3.13",
     "@storybook/addon-essentials": "5.3.13",
+    "@storybook/addon-knobs": "^5.3.13",
     "@storybook/addon-links": "5.3.13",
     "@storybook/addon-viewport": "5.3.13",
     "@storybook/addons": "5.3.13",
