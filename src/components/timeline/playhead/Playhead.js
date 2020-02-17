@@ -27,7 +27,7 @@ const PlayheadHandle = styled(({ theme, ...props }) => <div {...props} />)`
   transform: translateX(-50%);
   width: 28px;
   &:before {
-    background-color: ${theme => theme.theme.palette.primary.main};
+    background-color: ${props => props.theme.palette.primary.main};
     border-radius: 4px;
     content: ' ';
     display: block;
@@ -39,7 +39,7 @@ const PlayheadHandle = styled(({ theme, ...props }) => <div {...props} />)`
     width: 9px;
   }
   &:after {
-    border-color: ${theme => theme.theme.palette.primary.main};
+    border-color: ${props => props.theme.palette.primary.main};
     border-style: solid;
     border-width: 0 0 0 1px;
     content: ' ';

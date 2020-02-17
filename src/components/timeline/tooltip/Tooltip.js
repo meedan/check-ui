@@ -1,21 +1,34 @@
+import PropTypes from 'prop-types';
+import React from 'react';
 import styled from 'styled-components';
-import grey from '@material-ui/core/colors/grey';
+import { withTheme } from '@material-ui/core/styles';
 
-const MeTooltip = styled.div`
-  background: ${grey[800]};
+const Tooltip = styled(({ theme, isVisible, ...props }) => <div {...props} />)`
+  ${({ theme }) => theme.typography.caption};
+  background: ${({ theme }) => theme.palette.common.black};
   border-radius: 3px;
   bottom: 100%;
-  color: white !important;
+  color: ${({ theme }) => theme.palette.common.white};
   display: ${({ isVisible }) => (isVisible ? 'block' : 'none')};
-  font-family: 'Roboto', sans-serif;
-  font-size: 11px !important;
   left: 50%;
-  line-height: 11px !important;
   padding: 6px !important;
-  position: absolute;
   pointer-events: none;
+  position: absolute;
   transform: translate(-50%, -6px);
   z-index: 200;
 `;
 
-export default MeTooltip;
+Tooltip.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
+  isVisible: PropTypes.bool,
+  theme: PropTypes.object.isRequired,
+};
+
+Tooltip.defaultProps = {
+  isVisible: false,
+};
+
+export default withTheme(Tooltip);
