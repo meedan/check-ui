@@ -1,0 +1,107 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
+import { action } from '@storybook/addon-actions';
+import { State, Store } from "@sambego/storybook-state";
+
+import { LoadScript } from '@react-google-maps/api'
+
+import Map from './Map';
+
+export const store = new Store({
+  places: [
+    {
+      "name": "Maboa",
+      "polygon": [
+        {
+          "lat": 43.651550999652436,
+          "lng": 11.182399014158868
+        },
+        {
+          "lat": 43.65146560812001,
+          "lng": 11.182280996962213
+        },
+        {
+          "lat": 43.65138409790761,
+          "lng": 11.182382920904779
+        },
+        {
+          "lat": 43.65147337099161,
+          "lng": 11.182506302519464
+        }
+      ],
+      "type": "polygon",
+      "viewport": {
+        "south": 43.65099813584623,
+        "west": 11.181476334257745,
+        "north": 43.651929680524965,
+        "east": 11.183622101469659
+      }
+    },
+    {
+      "name": "Radauti",
+      "lat": 47.84085049999999,
+      "lng": 25.9138305,
+      "type": "marker",
+      "viewport": {
+        "south": 47.78520619677327,
+        "west": 25.778603548437477,
+        "north": 47.895815934638094,
+        "east": 26.053261751562477
+      },
+      "zoom": 11
+    },
+    {
+      "name": "San Casciano",
+      "lat": 43.65835480000001,
+      "lng": 11.1887674,
+      "type": "marker",
+      "viewport": {
+        "south": 43.646607368836534,
+        "west": 11.172621002795395,
+        "north": 43.661511439437575,
+        "east": 11.20695327818602
+      },
+      "zoom": 14
+    },
+    {
+      "name": "Gdansk",
+      "lat": 54.35202520000001,
+      "lng": 18.6466384,
+      "type": "marker",
+      "viewport": {
+        "south": 54.16868504616675,
+        "west": 18.140710743749988,
+        "north": 54.55277244337243,
+        "east": 19.239343556249988
+      },
+      "zoom": 9
+    }
+  ]
+});
+
+
+<Meta title="Components" />
+
+# Map
+
+Based on [React Google Maps Api](https://react-google-maps-api-docs.netlify.com/)
+
+<Preview>
+  <Story name="Map">
+    <State store={store}>
+      {state =>
+        <LoadScript
+          id="script-loader"
+          googleMapsApiKey={process.env.STORYBOOK_GOOGLEMAPS_API_KEY}
+        >
+          <div style={{
+            width: 560,
+            height: 315
+          }}>
+            <Map places={state.places} />
+          </div>
+        </LoadScript>
+      }
+    </State>
+  </Story>
+</Preview>
+

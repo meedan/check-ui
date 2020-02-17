@@ -15,37 +15,33 @@ class Map extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.currentTime !== nextProps.currentTime) {
-      const marker = this.props.places.find(
-        ({ time, duration }) =>
-          time <= nextProps.currentTime &&
-          nextProps.currentTime < time + duration
-      );
+    // if (this.props.currentTime !== nextProps.currentTime) {
+    //   const marker = this.props.places.find(
+    //     ({ time, duration }) =>
+    //       time <= nextProps.currentTime &&
+    //       nextProps.currentTime < time + duration
+    //   );
 
-      if (marker && this.map) {
-        const { viewport, zoom, type } = marker;
-        const { lat, lng } = type === 'marker' ? marker : marker.polygon[0];
+    //   if (marker && this.map) {
+    //     const { viewport, zoom, type } = marker;
+    //     const { lat, lng } = type === 'marker' ? marker : marker.polygon[0];
 
-        this.setState({ marker, center: { lat, lng }, zoom: zoom });
+    //     this.setState({ marker, center: { lat, lng }, zoom: zoom });
 
-        this.map.panTo({ lat, lng });
-        if (zoom) this.map.setZoom(zoom);
-        if (viewport) {
-          this.map.panToBounds(viewport);
-        }
+    //     this.map.panTo({ lat, lng });
+    //     if (zoom) this.map.setZoom(zoom);
+    //     if (viewport) {
+    //       this.map.panToBounds(viewport);
+    //     }
 
-        // // this.map.setCenter({ lat, lng });
-        // this.map.panTo({ lat, lng });
-        // if (zoom) this.map.setZoom(zoom);
-        // if (viewport) setTimeout(() => this.map.panToBounds(viewport), 500);
-      }
+    //     // // this.map.setCenter({ lat, lng });
+    //     // this.map.panTo({ lat, lng });
+    //     // if (zoom) this.map.setZoom(zoom);
+    //     // if (viewport) setTimeout(() => this.map.panToBounds(viewport), 500);
+    //   }
 
-      return false;
-    }
-
-    if (this.props.isCompact !== nextProps.isCompact) {
-      return true;
-    }
+    //   return false;
+    // }
 
     return !equal(this.props.places, nextProps.places);
   }
