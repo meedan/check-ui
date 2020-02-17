@@ -10,11 +10,8 @@ const styles = theme => ({
     width: '224px',
     paddingLeft: 0,
     paddingRight: 0,
-    borderColor: grey[200],
   },
-  rightCol: {
-    borderColor: grey[200],
-  },
+  rightCol: {},
   plain: {
     border: 'none',
   },
