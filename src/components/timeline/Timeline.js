@@ -6,6 +6,7 @@ import { withTheme } from '@material-ui/core/styles';
 
 import Playhead from './playhead/Playhead';
 import Entities from './entities/Entities';
+import Comments from './entities/Comments';
 
 const TIMELINE_OFFSET = 224;
 
@@ -36,9 +37,9 @@ const Timeline = props => {
         }}
       />
       <Table>
+        <Comments {...props} currentTime={currentTime} />
         <Entities
           // skip={skip}
-          // timelineOffset={props.x1}
           // transport={transport}
           currentTime={currentTime}
           duration={duration}
@@ -55,7 +56,6 @@ const Timeline = props => {
         />
         <Entities
           // skip={skip}
-          // timelineOffset={props.x1}
           // transport={transport}
           clips={props.data.videoClips}
           currentTime={currentTime}
@@ -73,7 +73,6 @@ const Timeline = props => {
         />
         <Entities
           // skip={skip}
-          // timelineOffset={props.x1}
           // transport={transport}
           clips={props.data.videoClips}
           currentTime={currentTime}
