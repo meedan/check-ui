@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef } from 'react';
+import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
 
-import Tooltip from '../tooltip/Tooltip';
-import formatSeconds from '../formatSeconds';
+import formatSeconds from '../utils/formatSeconds';
 
 const useStyles = makeStyles(theme => ({
   playheadRoot: {
@@ -109,15 +109,15 @@ export default function Playhead(props) {
       className={`${props.className} ${classes.playheadRoot}`}
       onMouseDown={onHandlePress}
       ref={playheadRoot}>
-      <div
-        className={classes.playheadHandle}
-        onMouseDown={onHandlePress}
-        onMouseUp={onHandleRelease}
-        style={{
-          left: `${pos}px`,
-        }}>
-        <Tooltip isVisible={dragging}>{formatSeconds(val)}</Tooltip>
-      </div>
+      <Tooltip open={dragging} title={formatSeconds(val)} placement="top">
+        <div
+          className={classes.playheadHandle}
+          onMouseDown={onHandlePress}
+          onMouseUp={onHandleRelease}
+          style={{
+            left: `${pos}px`,
+          }}></div>
+      </Tooltip>
     </div>
   );
 }
