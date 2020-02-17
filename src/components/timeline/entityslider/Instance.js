@@ -6,7 +6,7 @@ import { filter, minBy, maxBy } from 'lodash';
 
 import HandlePopover from './HandlePopover';
 import InstancePopover from './InstancePopover';
-import MeTooltip from '../tooltip/Tooltip';
+import Tooltip from '../tooltip/Tooltip';
 import formatSeconds from '../formatSeconds';
 
 const RSInstance = styled(({ ...props }) => <div {...props} />)`
@@ -305,7 +305,7 @@ class Instance extends Component {
                       }}
                       {...bindHover(popupState)}>
                       {isHandleActive ? (
-                        <MeTooltip isVisible>{formatSeconds(value)}</MeTooltip>
+                        <Tooltip isVisible>{formatSeconds(value)}</Tooltip>
                       ) : null}
                     </div>
                   </RSHandle>

@@ -1,24 +1,25 @@
-import { bindPopover } from 'material-ui-popup-state';
-import { func, object } from 'prop-types';
 import Popover from 'material-ui-popup-state/HoverPopover';
+import PropTypes from 'prop-types';
 import React from 'react';
+import { bindPopover } from 'material-ui-popup-state';
 
+import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import DeleteIcon from '@material-ui/icons/Delete';
 
 import CheckIcon from '../../icons/Check';
 import CutIcon from '../../icons/Cut';
 import ExpandIcon from '../../icons/Expand';
 
-const InstancePopover = ({
-  checkInstance,
-  clipInstance,
-  deleteInstance,
-  extendInstance,
-  instance,
-  popupState,
-}) => {
+export default function InstancePopover(props) {
+  const {
+    checkInstance,
+    clipInstance,
+    deleteInstance,
+    extendInstance,
+    instance,
+    popupState,
+  } = props;
   const fireAction = (fn, e) => {
     e.stopPropagation();
     popupState.close();
@@ -62,17 +63,15 @@ const InstancePopover = ({
       </Tooltip>
     </Popover>
   );
-};
-
-export default InstancePopover;
+}
 
 InstancePopover.propTypes = {
-  checkInstance: func,
-  clipInstance: func,
-  deleteInstance: func.isRequired,
-  extendInstance: func.isRequired,
-  instance: object.isRequired,
-  popupState: object.isRequired,
+  checkInstance: PropTypes.func,
+  clipInstance: PropTypes.func,
+  deleteInstance: PropTypes.func.isRequired,
+  extendInstance: PropTypes.func.isRequired,
+  instance: PropTypes.object.isRequired,
+  popupState: PropTypes.object.isRequired,
 };
 
 InstancePopover.defaultProps = {

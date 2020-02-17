@@ -1,5 +1,3 @@
-/** @format */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import deburr from 'lodash/deburr';
@@ -35,7 +33,10 @@ function renderInput(inputProps) {
   );
 }
 
-function renderSuggestion({ suggestion, index, itemProps, highlightedIndex, selectedItem }, onSelect) {
+function renderSuggestion(
+  { suggestion, index, itemProps, highlightedIndex, selectedItem },
+  onSelect
+) {
   const isHighlighted = highlightedIndex === index;
   const isSelected = (selectedItem || '').indexOf(suggestion.name) > -1;
 
@@ -69,7 +70,9 @@ function getSuggestions(value, suggestions = []) {
   return inputLength === 0
     ? []
     : suggestions.filter(suggestion => {
-        const keep = count < 5 && suggestion.name.slice(0, inputLength).toLowerCase() === inputValue;
+        const keep =
+          count < 5 &&
+          suggestion.name.slice(0, inputLength).toLowerCase() === inputValue;
 
         if (keep) {
           count += 1;
@@ -124,7 +127,11 @@ class EntityNameField extends Component {
     this.props.onSubmit(this.state.name);
   };
   onClickAway = () => {
-    if (!this.state.name || this.state.name.length === 0 || this.state.name === this.props.name) {
+    if (
+      !this.state.name ||
+      this.state.name.length === 0 ||
+      this.state.name === this.props.name
+    ) {
       this.props.onCancel();
     } else {
       this.onSubmit();
@@ -136,8 +143,18 @@ class EntityNameField extends Component {
 
     return (
       <ClickAwayListener onClickAway={this.onClickAway}>
-        <Downshift id="downshift-tags" onInputValueChange={e => this.onChange(e)}>
-          {({ getInputProps, getItemProps, getMenuProps, highlightedIndex, inputValue, isOpen, selectedItem }) => (
+        <Downshift
+          id="downshift-tags"
+          onInputValueChange={e => this.onChange(e)}>
+          {({
+            getInputProps,
+            getItemProps,
+            getMenuProps,
+            highlightedIndex,
+            inputValue,
+            isOpen,
+            selectedItem,
+          }) => (
             <div className={classes.container}>
               {renderInput({
                 classes,
@@ -154,7 +171,8 @@ class EntityNameField extends Component {
                   }
                 },
                 InputProps: getInputProps({
-                  placeholder: name && name.length > 0 ? name : 'Enter new name…',
+                  placeholder:
+                    name && name.length > 0 ? name : 'Enter new name…',
                   endAdornment: (
                     <InputAdornment position="end">
                       <Tooltip title="Cancel">
@@ -170,21 +188,25 @@ class EntityNameField extends Component {
                 {isOpen ? (
                   <Paper className={classes.paper} square>
                     {getSuggestions(inputValue, suggestions).length > 0 ? (
-                      <Typography variant="caption" color="textSecondary" className={classes.MenuHeading}>
+                      <Typography
+                        variant="caption"
+                        color="textSecondary"
+                        className={classes.MenuHeading}>
                         In this project:
                       </Typography>
                     ) : null}
-                    {getSuggestions(inputValue, suggestions).map((suggestion, index) =>
-                      renderSuggestion(
-                        {
-                          suggestion,
-                          index,
-                          itemProps: getItemProps({ item: suggestion.name }),
-                          highlightedIndex,
-                          selectedItem,
-                        },
-                        name => this.props.onSubmit(name)
-                      )
+                    {getSuggestions(inputValue, suggestions).map(
+                      (suggestion, index) =>
+                        renderSuggestion(
+                          {
+                            suggestion,
+                            index,
+                            itemProps: getItemProps({ item: suggestion.name }),
+                            highlightedIndex,
+                            selectedItem,
+                          },
+                          name => this.props.onSubmit(name)
+                        )
                     )}
                   </Paper>
                 ) : null}

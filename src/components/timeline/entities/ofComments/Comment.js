@@ -140,8 +140,7 @@ function Comment(props) {
                 vertical: 'top',
                 horizontal: 'center',
               }}
-              disableRestoreFocus
-            >
+              disableRestoreFocus>
               <List dense>
                 <ListItem button onClick={toggleCommentEdit}>
                   <ListItemText>Edit</ListItemText>
@@ -164,8 +163,7 @@ function Comment(props) {
     <El
       hasAddornment={isHovering && !isEditing}
       onMouseEnter={() => setHoveringStatus(true)}
-      onMouseLeave={() => setHoveringStatus(false)}
-    >
+      onMouseLeave={() => setHoveringStatus(false)}>
       <ListItem alignItems="flex-start" className={classes.ListItem} key={id}>
         <ListItemAvatar className={classes.ListItemAvatar}>
           <Tooltip
@@ -173,8 +171,7 @@ function Comment(props) {
               <Typography align="center" color="inherit" variant="caption">
                 {date}
               </Typography>
-            }
-          >
+            }>
             <Avatar
               alt={`${fname} ${lname}`}
               src={avatar}
@@ -196,8 +193,7 @@ function Comment(props) {
               color="textSecondary"
               display="block"
               variant="body2"
-              style={{ fontSize: '13px' }}
-            >
+              style={{ fontSize: '13px' }}>
               {text}
             </Typography>
           )}

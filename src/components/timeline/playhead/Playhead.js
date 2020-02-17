@@ -50,9 +50,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Playhead = props => {
-  const playheadRoot = useRef();
+export default function Playhead(props) {
   const classes = useStyles();
+  const playheadRoot = useRef();
+
   const { currentTime, duration } = props;
 
   const [dragging, setDragging] = React.useState(false);
@@ -119,9 +120,7 @@ const Playhead = props => {
       </div>
     </div>
   );
-};
-
-export default Playhead;
+}
 
 Playhead.propTypes = {
   currentTime: PropTypes.number,

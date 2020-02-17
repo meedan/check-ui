@@ -24,9 +24,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Timeline = props => {
-  const { currentTime, duration, onChange, playing } = props;
+export default function Timeline(props) {
   const classes = useStyles();
+
+  const { currentTime, duration, onChange, playing } = props;
 
   // this stops Entities from re-rendering constantly when moving playhead
   const [skip, setSkip] = React.useState(false);
@@ -95,7 +96,7 @@ const Timeline = props => {
       </Table>
     </div>
   );
-};
+}
 
 Timeline.propTypes = {
   data: PropTypes.shape({
@@ -130,5 +131,3 @@ Timeline.defaultProps = {
   currentTime: 0,
   playing: false,
 };
-
-export default Timeline;

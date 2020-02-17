@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   },
 });
 
-const TableBlock = props => {
+export default function TableBlock(props) {
   const classes = useStyles();
   const { leftColContent, rightColContent } = props;
   return (
@@ -33,7 +33,7 @@ const TableBlock = props => {
       </TableCell>
     </TableRow>
   );
-};
+}
 
 TableBlock.propTypes = {
   leftColContent: PropTypes.oneOfType([
@@ -53,5 +53,3 @@ TableBlock.defaultProps = {
   rightColContent: null,
   section: false,
 };
-
-export default TableBlock;

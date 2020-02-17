@@ -34,7 +34,7 @@ export const onPlayheadChange = (newTime) => {
   playheadStore.set({ currentTime: newTime });
 }
 
-<Meta title="Timeline" />
+<Meta title="Timeline"  />
 
 # Timeline
 
@@ -89,5 +89,61 @@ export const onPlayheadChange = (newTime) => {
         />
       }
      </State>
+  </Story>
+</Preview>
+
+## Entity slider
+
+<Preview>
+  <Story name="Partials » Slider (Clips)">
+    <EntitySlider
+      checkInstance={action('checkInstance')}
+      deleteInstance={action('deleteInstance')}
+      extendInstance={action('extendInstance')}
+      updateInstance={action('updateInstance')}
+      duration={100}
+      instances={[
+        {
+          end_seconds: 50,
+          id: 2,
+          start_seconds: 30,
+        },
+        {
+          end_seconds: 90,
+          id: 3,
+          start_seconds: 70,
+        },
+      ]}
+      onDrag={action('onDrag')}
+      onDragEnd={action('onDragEnd')}
+      onDragStart={action('onDragStart')}
+    />
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="Partials » Slider (Tags)">
+    <EntitySlider
+      clipInstance={action('clipInstance')}
+      deleteInstance={action('deleteInstance')}
+      extendInstance={action('extendInstance')}
+      updateInstance={action('updateInstance')}
+      duration={100}
+      instances={[
+        {
+          end_seconds: 50,
+          id: 2,
+          start_seconds: 30,
+        },
+        {
+          end_seconds: 90,
+          id: 3,
+          start_seconds: 70,
+        },
+      ]}
+      onDrag={action('onDrag')}
+      onDragEnd={action('onDragEnd')}
+      onDragStart={action('onDragStart')}
+    />
   </Story>
 </Preview>

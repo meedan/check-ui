@@ -20,9 +20,9 @@ const useStyles = makeStyles({
   },
 });
 
-const TableSection = props => {
+export default function TableSection(props) {
   const classes = useStyles();
-  const { actions, firstRowContent, children, title } = props;
+  const { actions, children, firstRowContent, title } = props;
   return (
     <TableBody className={classes.root} onMouseLeave={props.onMouseLeave}>
       <TableBlock
@@ -45,7 +45,7 @@ const TableSection = props => {
       {children}
     </TableBody>
   );
-};
+}
 
 TableSection.propTypes = {
   actions: PropTypes.oneOfType([
@@ -56,6 +56,7 @@ TableSection.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]),
+  onMouseLeave: PropTypes.func,
   plain: PropTypes.bool,
   title: PropTypes.string.isRequired,
   firstRowContent: PropTypes.oneOfType([
@@ -68,5 +69,3 @@ TableSection.defaultProps = {
   children: null,
   plain: false,
 };
-
-export default TableSection;

@@ -18,9 +18,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Tooltip = props => {
+export default function Tooltip(props) {
   const classes = useStyles();
+
   const { children, isVisible } = props;
+
   return (
     <div
       className={classes.root}
@@ -28,7 +30,7 @@ const Tooltip = props => {
       style={{ display: isVisible ? 'block' : 'none' }}
     />
   );
-};
+}
 
 Tooltip.propTypes = {
   children: PropTypes.oneOfType([
@@ -41,5 +43,3 @@ Tooltip.propTypes = {
 Tooltip.defaultProps = {
   isVisible: false,
 };
-
-export default Tooltip;

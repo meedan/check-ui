@@ -1,4 +1,4 @@
-import { array, func, number } from 'prop-types';
+import PropTypes from 'prop-types';
 import React, { Component, createRef } from 'react';
 import styled from 'styled-components';
 
@@ -91,17 +91,18 @@ class RangeSlider extends Component {
 export default RangeSlider;
 
 RangeSlider.propTypes = {
-  checkInstance: func,
-  clipInstance: func,
-  deleteInstance: func.isRequired,
-  duration: number.isRequired,
-  extendInstance: func.isRequired,
-  instances: array.isRequired,
-  onDrag: func.isRequired,
-  onDragEnd: func.isRequired,
-  onDragStart: func.isRequired,
-  updateInstance: func.isRequired,
+  checkInstance: PropTypes.func,
+  clipInstance: PropTypes.func,
+  deleteInstance: PropTypes.func.isRequired,
+  duration: PropTypes.number.isRequired,
+  extendInstance: PropTypes.func.isRequired,
+  instances: PropTypes.array.isRequired,
+  onDrag: PropTypes.func.isRequired,
+  onDragEnd: PropTypes.func.isRequired,
+  onDragStart: PropTypes.func.isRequired,
+  updateInstance: PropTypes.func.isRequired,
 };
+
 RangeSlider.defaultProps = {
   checkInstance: null,
   clipInstance: null,
