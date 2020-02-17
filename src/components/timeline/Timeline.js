@@ -2,37 +2,38 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
+import { withTheme } from '@material-ui/core/styles';
 
 import Playhead from './playhead/Playhead';
 import Entities from './entities/Entities';
 
-const SIDE = 224;
+const TIMELINE_OFFSET = 224;
 
 const useStyles = makeStyles({
   timelineRoot: {
     position: 'relative',
+    userSelect: 'none',
   },
 });
 
 const Timeline = props => {
+  const { currentTime, duration, onChange, playing, theme } = props;
   const classes = useStyles();
-  const { currentTime, duration, onChange, playing } = props;
-
-  // console.log({ props });
 
   return (
     <div className={classes.timelineRoot}>
       <Playhead
-        max={duration}
+        currentTime={currentTime}
+        duration={duration}
         onChange={onChange}
         style={{
-          position: 'absolute',
-          top: 0,
-          left: `${SIDE}px`,
-          right: 0,
+          borderLeft: `1px solid ${theme.palette.divider}`,
           bottom: 0,
+          left: `${TIMELINE_OFFSET}px`,
+          position: 'absolute',
+          right: 0,
+          top: 0,
         }}
-        value={currentTime}
       />
       <Table>
         <Entities
@@ -127,4 +128,4 @@ Timeline.defaultProps = {
   playing: false,
 };
 
-export default Timeline;
+export default withTheme(Timeline);

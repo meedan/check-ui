@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef } from 'react';
-import styled from 'styled-components';
 import { makeStyles, withTheme } from '@material-ui/core/styles';
 
 import Tooltip from '../tooltip/Tooltip';
@@ -10,113 +9,111 @@ const useStyles = makeStyles({
   playheadRoot: {
     minHeight: '28px',
     overflow: 'visible',
-    pointerEvents: 'none',
     position: 'relative',
     userSelect: 'none',
   },
+  playheadHandle: {
+    cursor: '-webkit-grab',
+    cursor: 'col-resize',
+    cursor: 'grab',
+    height: '100%',
+    pointerEvents: 'all',
+    position: 'absolute',
+    touchAction: 'pan-x',
+    transform: 'translateX(-50%)',
+    width: '28px',
+    '&:before': {
+      backgroundColor: theme => theme.palette.primary.main,
+      borderRadius: '4px',
+      content: '" "',
+      display: 'block',
+      height: '9px',
+      left: '50%',
+      position: 'absolute',
+      top: '0',
+      transform: 'translate(-55%, -50%)',
+      width: '9px',
+    },
+    '&:after': {
+      borderColor: theme => theme.palette.primary.main,
+      borderStyle: 'solid',
+      borderWidth: '0 0 0 1px',
+      content: '" "',
+      display: 'block',
+      height: '100%',
+      left: '50%',
+      position: 'absolute',
+      top: '0',
+      transform: 'translateX(-50%)',
+      width: '1px',
+    },
+  },
 });
-
-const PlayheadHandle = styled(({ theme, ...props }) => <div {...props} />)`
-  cursor: -webkit-grab;
-  cursor: col-resize;
-  cursor: grab;
-  height: 100%;
-  pointer-events: all;
-  position: absolute;
-  touch-action: pan-x;
-  transform: translateX(-50%);
-  width: 28px;
-  &:before {
-    background-color: ${props => props.theme.palette.primary.main};
-    border-radius: 4px;
-    content: ' ';
-    display: block;
-    height: 9px;
-    left: 50%;
-    position: absolute;
-    top: 0;
-    transform: translate(-55%, -50%);
-    width: 9px;
-  }
-  &:after {
-    border-color: ${props => props.theme.palette.primary.main};
-    border-style: solid;
-    border-width: 0 0 0 1px;
-    content: ' ';
-    display: block;
-    height: 100%;
-    left: 50%;
-    position: absolute;
-    top: 0;
-    transform: translateX(-50%);
-    width: 1px;
-  }
-`;
 
 const Playhead = props => {
   const playheadRoot = useRef();
-  const classes = useStyles();
-  const { value, max, style, theme } = props;
+  const classes = useStyles(props.theme);
+  const { currentTime, duration, style } = props;
 
   const [dragState, setDragState] = React.useState(false);
-  const [localValue, setLocalValue] = React.useState(value);
+  const [localCurrentTime, setLocalCurrentTime] = React.useState(currentTime);
   const [rootRect, setRootRect] = React.useState(null);
 
-  const onMouseDown = e => {
+  const onHandlePress = e => {
     if (!e) return null;
-    const coords = { x: e.pageX };
 
-    if (coords.x <= 0) return null;
-    const v = ((coords.x - rootRect.left) * max) / rootRect.width;
+    if (e.pageX <= 0) return null;
+    const v = ((e.pageX - rootRect.left) * duration) / rootRect.width;
 
-    if (v < 0 || v >= max) return null;
+    if (v < 0 || v >= duration) return null;
     setDragState(true);
-    setLocalValue(v);
+    setLocalCurrentTime(v);
+    props.onChange(v);
   };
-  const onMouseMove = e => {
+  const onHandleMove = e => {
     if (!e || !dragState) return null;
-    const coords = { x: e.pageX };
 
-    if (coords.x <= 0) return null;
-    const v = ((coords.x - rootRect.left) * max) / rootRect.width;
+    if (e.pageX <= 0) return null;
+    const v = ((e.pageX - rootRect.left) * duration) / rootRect.width;
 
-    if (v < 0 || v >= max) return null;
-    setLocalValue(v);
+    if (v < 0 || v >= duration) return null;
+    setLocalCurrentTime(v);
+    props.onChange(v);
   };
-  const onMouseUp = e => {
+  const onHandleRelease = e => {
     setDragState(false);
   };
 
   useEffect(() => {
-    window.addEventListener('mousemove', onMouseMove);
-    return () => window.removeEventListener('mousemove', onMouseMove);
-  }, [onMouseMove]);
+    window.addEventListener('mousemove', onHandleMove);
+    return () => window.removeEventListener('mousemove', onHandleMove);
+  }, [onHandleMove]);
 
   useEffect(() => {
-    window.addEventListener('mouseup', onMouseUp);
-    return () => window.removeEventListener('mouseup', onMouseUp);
-  }, [onMouseUp]);
+    window.addEventListener('mouseup', onHandleRelease);
+    return () => window.removeEventListener('mouseup', onHandleRelease);
+  }, [onHandleRelease]);
 
   useEffect(() => {
     setRootRect(playheadRoot.current.getBoundingClientRect());
   }, [playheadRoot]);
 
-  useEffect(() => {
-    props.onChange(localValue);
-  }, [localValue]);
-
-  const displayValue = dragState ? localValue : value;
+  const val = dragState ? localCurrentTime : currentTime;
+  const pos = rootRect ? (localCurrentTime * rootRect.width) / duration : 0;
 
   return (
-    <div className={classes.playheadRoot} ref={playheadRoot} style={style}>
-      <PlayheadHandle
-        onMouseDown={onMouseDown}
+    <div
+      className={classes.playheadRoot}
+      onMouseDown={onHandlePress}
+      ref={playheadRoot}
+      style={style}>
+      <div
+        className={classes.playheadHandle}
         style={{
-          left: `${localValue}%`,
-        }}
-        theme={theme}>
-        <Tooltip isVisible={dragState}>{formatSeconds(displayValue)}</Tooltip>
-      </PlayheadHandle>
+          left: `${pos}px`,
+        }}>
+        <Tooltip isVisible={dragState}>{formatSeconds(val)}</Tooltip>
+      </div>
     </div>
   );
 };
@@ -124,12 +121,12 @@ const Playhead = props => {
 export default withTheme(Playhead);
 
 Playhead.propTypes = {
-  max: PropTypes.number.isRequired,
+  currentTime: PropTypes.number,
+  duration: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
   style: PropTypes.object,
-  value: PropTypes.number,
 };
 Playhead.defaultProps = {
+  currentTime: 0,
   style: null,
-  value: 0,
 };
