@@ -282,11 +282,11 @@ Instance.propTypes = {
   isLocked: PropTypes.bool,
   lockSiblings: PropTypes.func.isRequired,
   onHandleMove: PropTypes.func.isRequired,
-  // onHandlePress: PropTypes.func.isRequired,
-  // onHandleRelease: PropTypes.func.isRequired,
+  onHandlePress: PropTypes.func.isRequired,
+  onHandleRelease: PropTypes.func.isRequired,
+  sliderRect: PropTypes.object.isRequired,
   start: PropTypes.number.isRequired,
   updateInstance: PropTypes.func.isRequired,
-  sliderRect: PropTypes.object.isRequired,
 };
 
 Instance.defaultProps = {

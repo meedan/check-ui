@@ -27,16 +27,6 @@ export default function Slider(props) {
     setRootRect(sliderRoot.current.getBoundingClientRect());
   }, [sliderRoot]);
 
-  // const onHandlePress = time => {
-  //   console.log('onHandlePress', { time });
-  // };
-  // const onHandleMove = time => {
-  //   props.onDrag(time)
-  // };
-  // const onHandleRelease = time => {
-  //   console.log('onHandleRelease', { time });
-  // };
-
   return (
     <div className={classes.sliderRoot} ref={sliderRoot}>
       {rootRect
