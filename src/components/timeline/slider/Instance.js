@@ -111,13 +111,13 @@ export default function Instance(props) {
       // 1 check if start doesnt go over (end - MIN_LENGTH)
       // 2 check if start doesnt go over RANGE_MIN
       setStart(prevState =>
-        v < end - MIN_LENGTH && v > RANGE_MIN ? v : prevState
+        v < end - MIN_LENGTH && v >= RANGE_MIN ? v : prevState
       );
     } else if (draggingHandle === 'end') {
       // 1 check if end doesnt go over (start + MIN_LENGTH)
       // 2 check if end doesnt go over RANGE_MAX
       setEnd(prevState =>
-        v > start + MIN_LENGTH && v < RANGE_MAX ? v : prevState
+        v > start + MIN_LENGTH && v <= RANGE_MAX ? v : prevState
       );
     }
     props.onHandleMove(draggingHandle === 'start' ? start : end);
