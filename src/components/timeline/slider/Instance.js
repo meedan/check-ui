@@ -1,13 +1,13 @@
 import PopupState, { bindHover } from 'material-ui-popup-state';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import _ from 'lodash';
 import styled from 'styled-components';
-import { array, bool, func, number, object, shape } from 'prop-types';
-import { filter, minBy, maxBy } from 'lodash';
-import Tooltip from '@material-ui/core/Tooltip';
+
+import { Tooltip } from '@material-ui/core';
 
 import HandlePopover from './HandlePopover';
 import InstancePopover from './InstancePopover';
-// import Tooltip from '../tooltip/Tooltip';
 import formatSeconds from '../utils/formatSeconds';
 
 const RSInstance = styled(({ ...props }) => <div {...props} />)`
@@ -140,12 +140,12 @@ class Instance extends Component {
     const { width, left } = wrapper.rect;
     const MIN_LENGTH = (6 * duration) / width;
 
-    const prevInstance = maxBy(
-      filter(instances, i => i.end_seconds <= start),
+    const prevInstance = _.maxBy(
+      _.filter(instances, i => i.end_seconds <= start),
       i => i.end_seconds
     );
-    const nextInstance = minBy(
-      filter(instances, i => i.start_seconds >= end),
+    const nextInstance = _.minBy(
+      _.filter(instances, i => i.start_seconds >= end),
       i => i.start_seconds
     );
     const RANGE_MIN = prevInstance ? prevInstance.end_seconds : 0;
@@ -175,12 +175,12 @@ class Instance extends Component {
     const { end, start } = this.state;
     const { duration, instances } = this.props;
 
-    const prevInstance = maxBy(
-      filter(instances, i => i.end_seconds <= start),
+    const prevInstance = _.maxBy(
+      _.filter(instances, i => i.end_seconds <= start),
       i => i.end_seconds
     );
-    const nextInstance = minBy(
-      filter(instances, i => i.start_seconds >= end),
+    const nextInstance = _.minBy(
+      _.filter(instances, i => i.start_seconds >= end),
       i => i.start_seconds
     );
     const RANGE_MAX = nextInstance ? nextInstance.start_seconds : duration;
@@ -333,24 +333,24 @@ class Instance extends Component {
 export default Instance;
 
 Instance.propTypes = {
-  checkInstance: func,
-  clipInstance: func,
-  deleteInstance: func.isRequired,
-  duration: number.isRequired,
-  end: number.isRequired,
-  extendInstance: func.isRequired,
-  instance: object.isRequired,
-  instances: array.isRequired,
-  isLocked: bool,
-  onDrag: func.isRequired,
-  onDragEnd: func.isRequired,
-  onDragStart: func.isRequired,
-  setDraggedInstance: func.isRequired,
-  start: number.isRequired,
-  updateInstance: func.isRequired,
-  wrapper: shape({
-    rect: object.isRequired,
-    ref: object.isRequired,
+  checkInstance: PropTypes.func,
+  clipInstance: PropTypes.func,
+  deleteInstance: PropTypes.func.isRequired,
+  duration: PropTypes.number.isRequired,
+  end: PropTypes.number.isRequired,
+  extendInstance: PropTypes.func.isRequired,
+  instance: PropTypes.object.isRequired,
+  instances: PropTypes.array.isRequired,
+  isLocked: PropTypes.bool,
+  onDrag: PropTypes.func.isRequired,
+  onDragEnd: PropTypes.func.isRequired,
+  onDragStart: PropTypes.func.isRequired,
+  setDraggedInstance: PropTypes.func.isRequired,
+  start: PropTypes.number.isRequired,
+  updateInstance: PropTypes.func.isRequired,
+  wrapper: PropTypes.shape({
+    rect: PropTypes.object.isRequired,
+    ref: PropTypes.object.isRequired,
   }),
 };
 

@@ -1,29 +1,30 @@
-import Avatar from '@material-ui/core/Avatar';
-import Card from '@material-ui/core/Card';
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
 import React from 'react';
-import TriggerPopover from '@material-ui/core/Popover';
 import {
   usePopupState,
   bindHover,
   bindTrigger,
   bindPopover,
 } from 'material-ui-popup-state/hooks';
-import { withStyles } from '@material-ui/core/styles';
+
+import { Avatar, Card, Popover } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 import CommentThread from './CommentThread';
 import NewThreadPopoover from './NewThreadPopover';
 
-const styles = {
+const useStyles = makeStyles(theme => ({
   avatar: {
     height: 32,
     width: 32,
     border: '1px solid white',
   },
-};
+}));
 
-function CommentPopover(props) {
-  const { classes, commentData } = props;
+export default function CommentPopover(props) {
+  const classes = useStyles();
+
+  const { commentData } = props;
   const { isBeingAdded, user } = commentData;
 
   const readPopupState = usePopupState({
@@ -63,7 +64,7 @@ function CommentPopover(props) {
           />
         </Card>
       </HoverPopover>
-      <TriggerPopover
+      <Popover
         {...bindPopover(editPopupState)}
         anchorOrigin={{
           vertical: 'bottom',
@@ -82,7 +83,7 @@ function CommentPopover(props) {
             isActionable
           />
         </Card>
-      </TriggerPopover>
+      </Popover>
     </>
   );
 
@@ -101,5 +102,3 @@ function CommentPopover(props) {
     </div>
   );
 }
-
-export default withStyles(styles)(CommentPopover);

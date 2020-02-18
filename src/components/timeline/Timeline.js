@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Table from '@material-ui/core/Table';
+
+import { Table } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Comments from './comments/Comments';
@@ -27,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 export default function Timeline(props) {
   const classes = useStyles();
 
-  const { currentTime, duration, onChange, playing } = props;
+  const { currentTime, duration, playing } = props;
 
   // this stops Entities from re-rendering constantly when moving playhead
   const [skip, setSkip] = React.useState(false);
@@ -38,7 +39,7 @@ export default function Timeline(props) {
         className={classes.playhead}
         currentTime={currentTime}
         duration={duration}
-        onChange={onChange}
+        onChange={props.onChange}
         setSkip={setSkip}
       />
       <Table>

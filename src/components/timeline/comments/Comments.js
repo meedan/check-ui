@@ -1,12 +1,12 @@
 // import { connect } from 'react-redux';
 import 'rc-slider/assets/index.css';
-import AddIcon from '@material-ui/icons/Add';
-import IconButton from '@material-ui/core/IconButton';
 import React, { Component } from 'react';
 import Slider from 'rc-slider';
-import Tooltip from '@material-ui/core/Tooltip';
+import _ from 'lodash';
 import styled from 'styled-components';
-import { reduce } from 'lodash';
+
+import AddIcon from '@material-ui/icons/Add';
+import { IconButton, Tooltip } from '@material-ui/core';
 
 import TableSection from '../elements/TableSection';
 import CommentMarker from './CommentMarker';
@@ -74,7 +74,7 @@ class TimelineComments extends Component {
     const { duration } = this.props;
 
     const getMarks = () =>
-      reduce(
+      _.reduce(
         this.state.threads,
         (object, param) => {
           const pos = param.start_seconds;

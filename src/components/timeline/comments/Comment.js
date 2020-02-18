@@ -1,22 +1,25 @@
-import Avatar from '@material-ui/core/Avatar';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Popover from 'material-ui-popup-state/HoverPopover';
 import React, { useState } from 'react';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import {
   usePopupState,
   bindHover,
   bindPopover,
 } from 'material-ui-popup-state/hooks';
+
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import {
+  Avatar,
+  CircularProgress,
+  IconButton,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemSecondaryAction,
+  ListItemText,
+  Tooltip,
+  Typography,
+} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 import CommentForm from './CommentForm';
