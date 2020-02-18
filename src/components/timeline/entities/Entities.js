@@ -3,8 +3,9 @@ import React, { Component } from 'react';
 import produce from 'immer';
 
 import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import { IconButton, Tooltip } from '@material-ui/core';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import EntityControls from './EntityControls';
 import Slider from '../slider/Slider';
