@@ -273,7 +273,7 @@ class EntityControls extends Component {
 
 EntityControls.propTypes = {
   classes: PropTypes.object,
-  entityId: PropTypes.string,
+  entityId: PropTypes.number,
   entityName: PropTypes.string,
   entityType: PropTypes.string,
   isCreating: PropTypes.string,
