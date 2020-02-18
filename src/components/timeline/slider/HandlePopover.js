@@ -1,7 +1,7 @@
 import Popover from 'material-ui-popup-state/HoverPopover';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { bindPopover } from 'material-ui-popup-state';
+import { bindPopover } from 'material-ui-popup-state/hooks';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';

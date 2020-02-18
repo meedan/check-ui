@@ -34,10 +34,8 @@ export default function Slider(props) {
             const { id, start_seconds, end_seconds } = instance;
             return (
               <Instance
-                checkInstance={props.checkInstance}
                 clipInstance={props.clipInstance}
                 deleteInstance={() => props.deleteInstance(id)}
-                extendInstance={() => props.extendInstance(id)}
                 updateInstance={payload => props.updateInstance(id, payload)}
                 //
                 duration={duration}
@@ -61,11 +59,9 @@ export default function Slider(props) {
 }
 
 Slider.propTypes = {
-  checkInstance: PropTypes.func,
   clipInstance: PropTypes.func,
   deleteInstance: PropTypes.func.isRequired,
   duration: PropTypes.number.isRequired,
-  extendInstance: PropTypes.func.isRequired,
   instances: PropTypes.array,
   onDrag: PropTypes.func.isRequired,
   onDragEnd: PropTypes.func.isRequired,
@@ -74,7 +70,6 @@ Slider.propTypes = {
 };
 
 Slider.defaultProps = {
-  checkInstance: null,
   clipInstance: null,
   instances: [],
 };

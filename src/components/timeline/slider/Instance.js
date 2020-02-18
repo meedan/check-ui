@@ -216,10 +216,8 @@ export default function Instance(props) {
       </div>
       {!draggingHandle ? (
         <InstancePopover
-          checkInstance={props.checkInstance}
           clipInstance={props.clipInstance}
           deleteInstance={props.deleteInstance}
-          extendInstance={props.extendInstance}
           instance={props.instance}
           popupState={instancePopupState}
         />
@@ -271,12 +269,10 @@ export default function Instance(props) {
 }
 
 Instance.propTypes = {
-  checkInstance: PropTypes.func,
   clipInstance: PropTypes.func,
   deleteInstance: PropTypes.func.isRequired,
   duration: PropTypes.number.isRequired,
   end: PropTypes.number.isRequired,
-  extendInstance: PropTypes.func.isRequired,
   instance: PropTypes.object.isRequired,
   instances: PropTypes.array.isRequired,
   isLocked: PropTypes.bool,
@@ -290,7 +286,6 @@ Instance.propTypes = {
 };
 
 Instance.defaultProps = {
-  checkInstance: null,
   clipInstance: null,
   isLocked: null,
 };

@@ -7,19 +7,10 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import CheckIcon from '../../icons/Check';
 import CutIcon from '../../icons/Cut';
-import ExpandIcon from '../../icons/Expand';
 
 export default function InstancePopover(props) {
-  const {
-    checkInstance,
-    clipInstance,
-    deleteInstance,
-    extendInstance,
-    instance,
-    popupState,
-  } = props;
+  const { clipInstance, deleteInstance, instance, popupState } = props;
   const fireAction = (fn, e) => {
     e.stopPropagation();
     popupState.close();
@@ -32,7 +23,7 @@ export default function InstancePopover(props) {
         vertical: 'bottom',
         horizontal: 'center',
       }}
-      id="InstancePopover"
+      id="instancePopover"
       transformOrigin={{
         vertical: 'top',
         horizontal: 'center',
@@ -44,18 +35,6 @@ export default function InstancePopover(props) {
           </IconButton>
         </Tooltip>
       ) : null}
-      {checkInstance ? (
-        <Tooltip title="Open in Check">
-          <IconButton onClick={e => fireAction(checkInstance, e)}>
-            <CheckIcon fontSize="small" />
-          </IconButton>
-        </Tooltip>
-      ) : null}
-      <Tooltip title="Extend full-length">
-        <IconButton onClick={e => fireAction(extendInstance, e)}>
-          <ExpandIcon fontSize="small" />
-        </IconButton>
-      </Tooltip>
       <Tooltip title="Delete">
         <IconButton onClick={e => fireAction(deleteInstance, e)}>
           <DeleteIcon fontSize="small" />
@@ -66,15 +45,12 @@ export default function InstancePopover(props) {
 }
 
 InstancePopover.propTypes = {
-  checkInstance: PropTypes.func,
   clipInstance: PropTypes.func,
   deleteInstance: PropTypes.func.isRequired,
-  extendInstance: PropTypes.func.isRequired,
   instance: PropTypes.object.isRequired,
   popupState: PropTypes.object.isRequired,
 };
 
 InstancePopover.defaultProps = {
-  checkInstance: null,
   clipInstance: null,
 };

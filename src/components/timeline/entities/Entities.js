@@ -182,10 +182,6 @@ class Entities extends Component {
     this.props.update({ [this.props.entitiesyKey]: entities });
   };
 
-  checkInstance = instanceId => {
-    console.log('checkInstance', instanceId);
-  };
-
   deleteEntity = id => {
     const entities = produce(this.props.entities, nextEntities => {
       const i = nextEntities.findIndex(t => t.id === id);
@@ -296,16 +292,16 @@ class Entities extends Component {
     this.props.update({ videoClips });
   };
 
-  extendInstance = (entityId, instanceId) => {
-    const entities = produce(this.props.entities, nextEntities => {
-      const ti = nextEntities.findIndex(t => t.id === entityId);
-      const i = nextEntities[ti].instances.find(i => i.id === instanceId);
-      i.start_seconds = 0;
-      i.end_seconds = this.props.duration;
-      nextEntities[ti].instances = [i];
-    });
-    this.props.update({ [this.props.entitiesyKey]: entities });
-  };
+  // extendInstance = (entityId, instanceId) => {
+  //   const entities = produce(this.props.entities, nextEntities => {
+  //     const ti = nextEntities.findIndex(t => t.id === entityId);
+  //     const i = nextEntities[ti].instances.find(i => i.id === instanceId);
+  //     i.start_seconds = 0;
+  //     i.end_seconds = this.props.duration;
+  //     nextEntities[ti].instances = [i];
+  //   });
+  //   this.props.update({ [this.props.entitiesyKey]: entities });
+  // };
 
   updateInstance = (entityId, instanceId, { start_seconds, end_seconds }) => {
     console.log((entityId, instanceId, { start_seconds, end_seconds }));
@@ -402,14 +398,9 @@ class Entities extends Component {
                               this.duplicateAsClip(entity.id, instanceId)
                           : null
                       }
-                      checkInstance={
-                        entityType === 'clip'
-                          ? instanceId => this.checkInstance(instanceId)
-                          : null
-                      }
-                      extendInstance={instanceId =>
-                        this.extendInstance(entity.id, instanceId)
-                      }
+                      // extendInstance={instanceId =>
+                      //   this.extendInstance(entity.id, instanceId)
+                      // }
                       duration={duration}
                       instances={instances}
                       updateInstance={(instanceId, payload) =>
