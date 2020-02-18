@@ -7,5 +7,6 @@ module.exports = {
     '@storybook/addon-links/register',
     '@storybook/addon-viewport/register',
     'storybook-dark-mode/register',
+    '@storybook/addon-knobs/register',
   ],
 };
