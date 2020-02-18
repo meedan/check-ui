@@ -30,14 +30,17 @@ export default function Slider(props) {
 
   const onHandlePress = args => {
     setDragging(true);
+    // console.log('onHandlePress', { args });
     props.onDragStart(args);
   };
   const onHandleMove = args => {
     if (!dragging) return null;
+    // console.log('onHandleMove', { args });
     props.onDrag(args);
   };
   const onHandleRelease = args => {
     setDragging(false);
+    // console.log('onHandleRelease', { args });
     props.onDragEnd(args);
   };
 
@@ -60,14 +63,13 @@ export default function Slider(props) {
                 //
                 duration={duration}
                 end={end_seconds}
-                id={id}
                 instance={instance}
                 instances={instances}
                 isLocked={draggedInstance && draggedInstance !== id}
                 key={id}
-                setDraggedInstance={setDraggedInstance}
+                lockSiblings={() => setDraggedInstance(id)}
                 start={start_seconds}
-                wrapper={rootRect}
+                sliderRect={rootRect}
               />
             );
           })

@@ -45,7 +45,7 @@ export default function Instance(props) {
   const classes = useStyles()();
 
   const { isLocked, duration, instances } = props;
-  const { left, width } = props.wrapper;
+  const { left, width } = props.sliderRect;
 
   const [end, setEnd] = useState(props.end);
   const [start, setStart] = useState(props.start);
@@ -98,12 +98,12 @@ export default function Instance(props) {
     if (!e || !edge) return null;
     // e.persist();
     setDraggingHandle(edge);
-    // props.setDraggedInstance(props.id);
-    // props.onHandlePress(edge);
+    props.lockSiblings();
+    props.onHandlePress(edge === 'start' ? start : end);
   };
   const onHandleMove = e => {
     if (!draggingHandle) return null;
-    if (e.pageX <= -50 || e.pageX >= left + width + 50) return null;
+    if (e.pageX <= -100 || e.pageX >= left + width + 100) return null;
 
     let v = ((e.pageX - left) * duration) / width;
 
@@ -120,20 +120,18 @@ export default function Instance(props) {
         v > start + MIN_LENGTH && v < RANGE_MAX ? v : prevState
       );
     }
-
-    // props.onChange(v);
-    // if (dragging) props.onHandleMove(dragging);
+    props.onHandleMove(draggingHandle === 'start' ? start : end);
   };
   const onHandleRelease = e => {
-    // props.onHandleRelease(dragging);
     // props.updateInstance({
     //   end_seconds: end,
     //   start_seconds: start,
     // });
-    // props.setDraggedInstance(null);
 
     if (!draggingHandle) return null;
+    props.onHandleRelease(draggingHandle === 'start' ? start : end);
     setDraggingHandle(null);
+    props.lockSiblings(null);
   };
   const onHandleLeave = () => {
     if (draggingHandle) return null;
@@ -282,13 +280,13 @@ Instance.propTypes = {
   instance: PropTypes.object.isRequired,
   instances: PropTypes.array.isRequired,
   isLocked: PropTypes.bool,
+  lockSiblings: PropTypes.func.isRequired,
   onHandleMove: PropTypes.func.isRequired,
   onHandlePress: PropTypes.func.isRequired,
   onHandleRelease: PropTypes.func.isRequired,
-  setDraggedInstance: PropTypes.func.isRequired,
   start: PropTypes.number.isRequired,
   updateInstance: PropTypes.func.isRequired,
-  wrapper: PropTypes.object.isRequired,
+  sliderRect: PropTypes.object.isRequired,
 };
 
 Instance.defaultProps = {
