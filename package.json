@@ -5,7 +5,7 @@
   "repository": "git@github.com:meedan/check-ui.git",
   "license": "MIT",
   "dependencies": {
-    "@material-ui/core": "4.9.2",
+    "@material-ui/core": "4.9.3",
     "@material-ui/icons": "4.9.1",
     "@react-google-maps/api": "^1.8.3",
     "@rehooks/component-size": "1.0.3",
@@ -13,7 +13,7 @@
     "downshift": "5.0.0",
     "fast-deep-equal": "^3.1.1",
     "material-ui-popup-state": "1.5.3",
-    "rc-slider": "8.7.1",
+    "rc-slider": "9.2.1",
     "react": "16.12.0",
     "react-dom": "16.12.0",
     "react-player": "^1.15.2"

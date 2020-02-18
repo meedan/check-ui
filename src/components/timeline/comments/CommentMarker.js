@@ -1,13 +1,15 @@
-/** @format */
-
-import React from 'react';
-import { usePopupState, bindHover, bindTrigger, bindPopover } from 'material-ui-popup-state/hooks';
-import HoverPopover from 'material-ui-popup-state/HoverPopover';
-
-import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
+import HoverPopover from 'material-ui-popup-state/HoverPopover';
+import React from 'react';
 import TriggerPopover from '@material-ui/core/Popover';
+import {
+  usePopupState,
+  bindHover,
+  bindTrigger,
+  bindPopover,
+} from 'material-ui-popup-state/hooks';
+import { withStyles } from '@material-ui/core/styles';
 
 import CommentThread from './CommentThread';
 import NewThreadPopoover from './NewThreadPopover';
@@ -55,7 +57,10 @@ function CommentPopover(props) {
         disableRestoreFocus
         onClick={e => e.stopPropagation()}>
         <Card>
-          <CommentThread commentData={commentData} closePopup={readPopupState.close} />
+          <CommentThread
+            commentData={commentData}
+            closePopup={readPopupState.close}
+          />
         </Card>
       </HoverPopover>
       <TriggerPopover
@@ -71,7 +76,11 @@ function CommentPopover(props) {
         disableRestoreFocus
         onClick={e => e.stopPropagation()}>
         <Card>
-          <CommentThread closePopup={editPopupState.close} commentData={commentData} isActionable />
+          <CommentThread
+            closePopup={editPopupState.close}
+            commentData={commentData}
+            isActionable
+          />
         </Card>
       </TriggerPopover>
     </>

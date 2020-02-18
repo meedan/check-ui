@@ -15,7 +15,7 @@ const theme = createMuiTheme({
   overrides: {
     MuiTooltip: {
       tooltip: {
-        backgroundColor: grey[800],
+        backgroundColor: grey[900],
         fontSize: mui.typography.pxToRem(13),
         fontWeight: mui.typography.fontWeightRegular,
       },
@@ -64,13 +64,7 @@ const theme = createMuiTheme({
     },
     MuiTableCell: {
       root: {
-        borderColor: grey[200],
-      },
-      paddingDense: {
-        paddingBottom: 6,
-        paddingLeft: 12,
-        paddingRight: 12,
-        paddingTop: 6,
+        borderBottom: `1px solid ${grey[200]}`,
       },
     },
     MuiMenuItem: {
@@ -102,7 +96,7 @@ const theme = createMuiTheme({
   // Palette
   palette: {
     common: {
-      black: '#212121',
+      black: grey[900],
       white: '#fff',
     },
     primary: {
@@ -117,6 +111,7 @@ const theme = createMuiTheme({
       dark: '#212121',
       contrastText: '#fff',
     },
+    divider: grey[200],
   },
 
   // Shape

@@ -1,13 +1,3 @@
-import React, { useState } from 'react';
-import {
-  usePopupState,
-  bindHover,
-  bindPopover,
-} from 'material-ui-popup-state/hooks';
-import Popover from 'material-ui-popup-state/HoverPopover';
-import styled from 'styled-components';
-
-import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
@@ -17,8 +7,17 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import Typography from '@material-ui/core/Typography';
+import Popover from 'material-ui-popup-state/HoverPopover';
+import React, { useState } from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
+import styled from 'styled-components';
+import {
+  usePopupState,
+  bindHover,
+  bindPopover,
+} from 'material-ui-popup-state/hooks';
+import { withStyles } from '@material-ui/core/styles';
 
 import CommentForm from './CommentForm';
 
@@ -140,8 +139,7 @@ function Comment(props) {
                 vertical: 'top',
                 horizontal: 'center',
               }}
-              disableRestoreFocus
-            >
+              disableRestoreFocus>
               <List dense>
                 <ListItem button onClick={toggleCommentEdit}>
                   <ListItemText>Edit</ListItemText>
@@ -164,8 +162,7 @@ function Comment(props) {
     <El
       hasAddornment={isHovering && !isEditing}
       onMouseEnter={() => setHoveringStatus(true)}
-      onMouseLeave={() => setHoveringStatus(false)}
-    >
+      onMouseLeave={() => setHoveringStatus(false)}>
       <ListItem alignItems="flex-start" className={classes.ListItem} key={id}>
         <ListItemAvatar className={classes.ListItemAvatar}>
           <Tooltip
@@ -173,8 +170,7 @@ function Comment(props) {
               <Typography align="center" color="inherit" variant="caption">
                 {date}
               </Typography>
-            }
-          >
+            }>
             <Avatar
               alt={`${fname} ${lname}`}
               src={avatar}
@@ -196,8 +192,7 @@ function Comment(props) {
               color="textSecondary"
               display="block"
               variant="body2"
-              style={{ fontSize: '13px' }}
-            >
+              style={{ fontSize: '13px' }}>
               {text}
             </Typography>
           )}

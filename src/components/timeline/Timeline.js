@@ -1,33 +1,49 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
+import React from 'react';
 import Table from '@material-ui/core/Table';
+import { makeStyles } from '@material-ui/core/styles';
 
-import Playhead from './playhead/Playhead';
+import Comments from './comments/Comments';
 import Entities from './entities/Entities';
+import Playhead from './playhead/Playhead';
 
-const useStyles = makeStyles({
+const TIMELINE_OFFSET = 224;
+
+const useStyles = makeStyles(theme => ({
   timelineRoot: {
     position: 'relative',
+    userSelect: 'none',
   },
-});
+  playhead: {
+    borderLeft: `1px solid ${theme.palette.divider}`,
+    bottom: 0,
+    left: `${TIMELINE_OFFSET}px`,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+  },
+}));
 
-const Timeline = props => {
+export default function Timeline(props) {
   const classes = useStyles();
-  const { currentTime, duration, onChange } = props;
+
+  const { currentTime, duration, onChange, playing } = props;
+
+  // this stops Entities from re-rendering constantly when moving playhead
+  const [skip, setSkip] = React.useState(false);
+
   return (
     <div className={classes.timelineRoot}>
       <Playhead
-        max={duration}
+        className={classes.playhead}
+        currentTime={currentTime}
+        duration={duration}
         onChange={onChange}
-        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
-        value={currentTime}
+        setSkip={setSkip}
       />
-      <Table padding="checkbox">
+      <Table>
+        <Comments {...props} currentTime={currentTime} />
         <Entities
-          // playing={playing}
-          // skip={skip}
-          // timelineOffset={props.x1}
           // transport={transport}
           currentTime={currentTime}
           duration={duration}
@@ -38,13 +54,12 @@ const Timeline = props => {
           onAfterChange={args => console.log('onAfterChange', args)}
           onBeforeChange={args => console.log('onBeforeChange', args)}
           onChange={args => console.log('onChange', args)}
+          playing={playing}
+          skip={skip}
           suggestions={props.data.project.projectclips}
           title="Clips"
         />
         <Entities
-          // playing={playing}
-          // skip={skip}
-          // timelineOffset={props.x1}
           // transport={transport}
           clips={props.data.videoClips}
           currentTime={currentTime}
@@ -56,13 +71,12 @@ const Timeline = props => {
           onAfterChange={args => console.log('onAfterChange', args)}
           onBeforeChange={args => console.log('onBeforeChange', args)}
           onChange={args => console.log('onChange', args)}
+          playing={playing}
+          skip={skip}
           suggestions={props.data.project.projecttags}
           title="Tags"
         />
         <Entities
-          // playing={playing}
-          // skip={skip}
-          // timelineOffset={props.x1}
           // transport={transport}
           clips={props.data.videoClips}
           currentTime={currentTime}
@@ -74,23 +88,46 @@ const Timeline = props => {
           onAfterChange={args => console.log('onAfterChange', args)}
           onBeforeChange={args => console.log('onBeforeChange', args)}
           onChange={args => console.log('onChange', args)}
+          playing={playing}
+          skip={skip}
           suggestions={props.data.project.projectplaces}
           title="Places"
         />
       </Table>
     </div>
   );
-};
+}
 
 Timeline.propTypes = {
+  data: PropTypes.shape({
+    commentThreads: PropTypes.array,
+    project: PropTypes.shape({
+      projectclips: PropTypes.array,
+      projectplaces: PropTypes.array,
+      projecttags: PropTypes.array,
+    }),
+    videoClips: PropTypes.array,
+    videoPlaces: PropTypes.array,
+    videoTags: PropTypes.array,
+  }),
   currentTime: PropTypes.number,
-  duration: PropTypes.number,
+  duration: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
+  playing: PropTypes.bool,
 };
 
 Timeline.defaultProps = {
+  data: {
+    commentThreads: [],
+    project: {
+      projectclips: [],
+      projectplaces: [],
+      projecttags: [],
+    },
+    videoClips: [],
+    videoPlaces: [],
+    videoTags: [],
+  },
   currentTime: 0,
-  duration: null,
+  playing: false,
 };
-
-export default Timeline;

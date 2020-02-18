@@ -17,8 +17,7 @@ function EntityDeleteModal(props) {
       maxWidth="xs"
       onClick={e => e.stopPropagation()}
       onClose={onCancel}
-      open
-    >
+      open>
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
         <DialogContentText>

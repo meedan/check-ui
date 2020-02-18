@@ -1,14 +1,11 @@
-/** @format */
+import Avatar from '@material-ui/core/Avatar';
+import Grid from '@material-ui/core/Grid';
+import Popover from '@material-ui/core/Popover';
+import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
+import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 
-import React, { Component } from 'react'
-import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state'
-import Popover from '@material-ui/core/Popover'
-
-import { withStyles } from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
-import Avatar from '@material-ui/core/Avatar'
-
-import CommentForm from './CommentForm'
+import CommentForm from './CommentForm';
 
 const styles = {
   avatar: {
@@ -20,31 +17,31 @@ const styles = {
     margin: '16px',
     width: '200px',
   },
-}
+};
 
 class NewCommentThreadPopover extends Component {
   constructor(props) {
-    super(props)
-    this.avatarRef = null
+    super(props);
+    this.avatarRef = null;
     this.state = {
       hasPopover: false,
-    }
+    };
   }
 
   componentDidMount() {
-    this.setState({ hasPopover: true })
+    this.setState({ hasPopover: true });
   }
 
   handleStartNewThread(text) {
-    console.group('handleStartNewThread()')
-    console.log({ text })
-    console.groupEnd()
+    console.group('handleStartNewThread()');
+    console.log({ text });
+    console.groupEnd();
   }
 
   render() {
-    const { classes, commentData } = this.props
-    const { user } = commentData
-    const open = Boolean(this.avatarRef)
+    const { classes, commentData } = this.props;
+    const { user } = commentData;
+    const open = Boolean(this.avatarRef);
     return (
       <div ref={el => (this.avatarRef = el)}>
         {open ? (
@@ -77,10 +74,14 @@ class NewCommentThreadPopover extends Component {
                     <CommentForm
                       isCreating
                       onCancel={() => {
-                        this.setState({ hasPopover: false }, () => this.props.stopNewCommentThread())
+                        this.setState({ hasPopover: false }, () =>
+                          this.props.stopNewCommentThread()
+                        );
                       }}
                       onSubmit={text => {
-                        this.setState({ hasPopover: false }, () => this.props.saveNewCommentThread(text))
+                        this.setState({ hasPopover: false }, () =>
+                          this.props.saveNewCommentThread(text)
+                        );
                       }}
                     />
                   </Grid>
@@ -90,8 +91,8 @@ class NewCommentThreadPopover extends Component {
           </PopupState>
         ) : null}
       </div>
-    )
+    );
   }
 }
 
-export default withStyles(styles)(NewCommentThreadPopover)
+export default withStyles(styles)(NewCommentThreadPopover);

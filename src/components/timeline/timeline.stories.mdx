@@ -2,118 +2,148 @@ import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
 import { State, Store } from "@sambego/storybook-state";
 import { action } from '@storybook/addon-actions';
 
+import Playhead from './playhead/Playhead';
+import Slider from './slider/Slider';
 import Timeline from './Timeline';
-import EntitySlider from './entityslider/EntitySlider';
 
 import data from './timeline.data.json';
 
-export const store = new Store({
+export const plainTimelineStore = new Store({
   currentTime: 50,
-  duration: 100,
+  duration: 1000,
+});
+export const richTimelineStore = new Store({
+  currentTime: 50,
+  duration: 1000,
+});
+export const playheadStore = new Store({
+  currentTime: 0,
+  duration: 10000,
 });
 
-export const onChange = newTime => {
-  action('onChange')(newTime);
-  store.set({ currentTime: newTime });
+export const onPlainTimelineChange = (newTime) => {
+  action('onTimelineChange')(newTime);
+  plainTimelineStore.set({ currentTime: newTime });
+}
+export const onRichTimelineChange = (newTime) => {
+  action('onTimelineChange')(newTime);
+  richTimelineStore.set({ currentTime: newTime });
+}
+export const onPlayheadChange = (newTime) => {
+  action('onPlayheadChange')(newTime);
+  playheadStore.set({ currentTime: newTime });
 }
 
-<Meta title="Components/Timeline" />
+<Meta title="Timeline"  />
 
 # Timeline
 
+## Plain
+
 <Preview>
-  <Story name="Timeline">
-    <State store={store}>
+  <Story name="Plain">
+    <State store={plainTimelineStore}>
+      {state =>
+        <Timeline
+          duration={state.duration}
+          onChange={onPlainTimelineChange}
+        />
+      }
+     </State>
+  </Story>
+</Preview>
+
+## Rich
+
+<Preview>
+  <Story name="Rich">
+    <State store={richTimelineStore}>
       {state =>
         <Timeline
           currentTime={state.currentTime}
           data={data}
           duration={state.duration}
-          onChange={onChange}
+          onChange={onRichTimelineChange}
         />
       }
      </State>
   </Story>
 </Preview>
+
+## Prop types
 
 <Props of={Timeline} />
 
 # Partials
 
-## Entity slider
+## Playhead
 
 <Preview>
-  <Story name="Entity Slider — Clips" >
-    <State store={store}>
+  <Story name="Partials » Playhead">
+    <State store={playheadStore}>
       {state =>
-        <EntitySlider
-          checkInstance={id => console.log('checkInstance, id: ', id)}
-          deleteInstance={id => console.log('deleteInstance, id: ', id)}
-          updateInstance={(id, payload) =>
-            console.log('updateInstance, id, payload: ', id, payload)
-          }
-          extendInstance={id => console.log('extendInstance, id: ', id)}
-          duration={100}
-          instances={[
-            {
-              end_seconds: 5,
-              id: 1,
-              start_seconds: 0,
-            },
-            {
-              end_seconds: 50,
-              id: 2,
-              start_seconds: 30,
-            },
-            {
-              end_seconds: 90,
-              id: 3,
-              start_seconds: 70,
-            },
-          ]}
-          onDrag={newTime => console.log('onDrag: newTime', newTime)}
-          onDragEnd={newTime => console.log('onDragEnd: newTime', newTime)}
-          onDragStart={newTime => console.log('onDragStart: newTime', newTime)}
+        <Playhead
+          currentTime={state.currentTime}
+          duration={state.duration}
+          onChange={onPlayheadChange}
         />
       }
      </State>
   </Story>
 </Preview>
 
+## Entity slider
+
 <Preview>
-  <Story name="Entity Slider — Tags" >
-    <State store={store}>
-      {state =>
-        <EntitySlider
-          clipInstance={id => console.log('clipInstance, id: ', id)}
-          deleteInstance={id => console.log('deleteInstance, id: ', id)}
-          updateInstance={(id, payload) =>
-            console.log('updateInstance, id, payload: ', id, payload)
-          }
-          extendInstance={id => console.log('extendInstance, id: ', id)}
-          duration={100}
-          instances={[
-            {
-              end_seconds: 5,
-              id: 1,
-              start_seconds: 0,
-            },
-            {
-              end_seconds: 50,
-              id: 2,
-              start_seconds: 30,
-            },
-            {
-              end_seconds: 90,
-              id: 3,
-              start_seconds: 70,
-            },
-          ]}
-          onDrag={newTime => console.log('onDrag: newTime', newTime)}
-          onDragEnd={newTime => console.log('onDragEnd: newTime', newTime)}
-          onDragStart={newTime => console.log('onDragStart: newTime', newTime)}
-        />
-      }
-     </State>
+  <Story name="Partials » Slider (Clips)">
+    <Slider
+      checkInstance={action('checkInstance')}
+      deleteInstance={action('deleteInstance')}
+      extendInstance={action('extendInstance')}
+      updateInstance={action('updateInstance')}
+      duration={100}
+      instances={[
+        {
+          end_seconds: 50,
+          id: 2,
+          start_seconds: 30,
+        },
+        {
+          end_seconds: 90,
+          id: 3,
+          start_seconds: 70,
+        },
+      ]}
+      onDrag={action('onDrag')}
+      onDragEnd={action('onDragEnd')}
+      onDragStart={action('onDragStart')}
+    />
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="Partials » Slider (Tags)">
+    <Slider
+      clipInstance={action('clipInstance')}
+      deleteInstance={action('deleteInstance')}
+      extendInstance={action('extendInstance')}
+      updateInstance={action('updateInstance')}
+      duration={100}
+      instances={[
+        {
+          end_seconds: 50,
+          id: 2,
+          start_seconds: 30,
+        },
+        {
+          end_seconds: 90,
+          id: 3,
+          start_seconds: 70,
+        },
+      ]}
+      onDrag={action('onDrag')}
+      onDragEnd={action('onDragEnd')}
+      onDragStart={action('onDragStart')}
+    />
   </Story>
 </Preview>

@@ -3,11 +3,12 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { array, bool, func, number, object, shape } from 'prop-types';
 import { filter, minBy, maxBy } from 'lodash';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import HandlePopover from './HandlePopover';
 import InstancePopover from './InstancePopover';
-import MeTooltip from '../tooltip/Tooltip';
-import formatSeconds from '../formatSeconds';
+// import Tooltip from '../tooltip/Tooltip';
+import formatSeconds from '../utils/formatSeconds';
 
 const RSInstance = styled(({ ...props }) => <div {...props} />)`
   backface-visibility: visible;
@@ -297,18 +298,20 @@ class Instance extends Component {
                     onMouseLeave={this.onHandleLeave}
                     style={{ left: edge === 'start' ? `${x1}px` : `${x2}px` }}
                     pos={edge}>
-                    <div
-                      style={{
-                        height: `28px`,
-                        transform: 'translateX(-10px)',
-                        width: `24px`,
-                      }}
-                      {...bindHover(popupState)}>
-                      {isHandleActive ? (
-                        <MeTooltip isVisible>{formatSeconds(value)}</MeTooltip>
-                      ) : null}
-                    </div>
+                    <Tooltip
+                      open={this.state.dragging === edge && isHandleActive}
+                      placement="top"
+                      title={formatSeconds(value)}>
+                      <div
+                        style={{
+                          height: `28px`,
+                          transform: 'translateX(-10px)',
+                          width: `24px`,
+                        }}
+                        {...bindHover(popupState)}></div>
+                    </Tooltip>
                   </RSHandle>
+
                   {!this.state.dragging ? (
                     <HandlePopover
                       id={`${edge}Popover`}

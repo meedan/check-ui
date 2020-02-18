@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
-import { func } from 'prop-types';
-
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
+import { func } from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
   Grid: {
@@ -23,7 +22,12 @@ function CommentForm(props) {
   };
 
   return (
-    <Grid container direction="column" spacing={1} wrap="nowrap" className={props.classes.Grid}>
+    <Grid
+      container
+      direction="column"
+      spacing={1}
+      wrap="nowrap"
+      className={props.classes.Grid}>
       <Grid item>
         <TextField
           autoFocus
@@ -48,7 +52,11 @@ function CommentForm(props) {
       </Grid>
 
       <Grid item>
-        <Grid container direction="row-reverse" justify="space-between" wrap="nowrap">
+        <Grid
+          container
+          direction="row-reverse"
+          justify="space-between"
+          wrap="nowrap">
           <Grid item>
             <Button
               color="primary"

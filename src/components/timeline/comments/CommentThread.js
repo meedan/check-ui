@@ -1,8 +1,3 @@
-/** @format */
-
-import React, { Component } from 'react';
-import { func, bool, object } from 'prop-types';
-
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
@@ -10,15 +5,16 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
+import React, { Component } from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import grey from '@material-ui/core/colors/grey';
+import { func, bool, object } from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
 import Comment from './Comment';
 import CommentForm from './CommentForm';
-
-import formatTime from '../formatTime';
+import formatTime from '../utils/formatTime';
 
 const styles = {
   List: {
@@ -60,12 +56,21 @@ class CommentThread extends Component {
   render() {
     const { classes, commentData } = this.props;
     const { isActionable } = this.state;
-    const { c_pretty_created_date, replies, start_seconds, text, user, id } = commentData;
+    const {
+      c_pretty_created_date,
+      replies,
+      start_seconds,
+      text,
+      user,
+      id,
+    } = commentData;
     const threadId = id;
 
     return (
       <List
-        onClick={!isActionable ? () => this.setState({ isActionable: true }) : null}
+        onClick={
+          !isActionable ? () => this.setState({ isActionable: true }) : null
+        }
         dense
         component="div"
         subheader={
@@ -79,9 +84,14 @@ class CommentThread extends Component {
               <ListItemSecondaryAction>
                 {isActionable ? (
                   this.state.isProcessing ? (
-                    <CircularProgress size={16} className={classes.buttonProgress} />
+                    <CircularProgress
+                      size={16}
+                      className={classes.buttonProgress}
+                    />
                   ) : (
-                    <IconButton aria-label="Delete thread" onClick={() => this.handleThreadDelete(threadId)}>
+                    <IconButton
+                      aria-label="Delete thread"
+                      onClick={() => this.handleThreadDelete(threadId)}>
                       <Tooltip title="Delete thread">
                         <DeleteIcon fontSize="small" />
                       </Tooltip>
@@ -122,7 +132,10 @@ class CommentThread extends Component {
         {isActionable ? (
           <ListItem>
             <ListItemText>
-              <CommentForm onCancel={this.props.closePopup} onSubmit={this.handleThreadReply} />
+              <CommentForm
+                onCancel={this.props.closePopup}
+                onSubmit={this.handleThreadReply}
+              />
             </ListItemText>
           </ListItem>
         ) : null}

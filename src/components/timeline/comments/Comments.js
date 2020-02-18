@@ -1,18 +1,17 @@
+// import { connect } from 'react-redux';
 import 'rc-slider/assets/index.css';
-import { reduce } from 'lodash';
-import React, { Component } from 'react';
-import Slider from 'rc-slider';
-import styled from 'styled-components';
-import { connect } from 'react-redux';
-
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
+import React, { Component } from 'react';
+import Slider from 'rc-slider';
 import Tooltip from '@material-ui/core/Tooltip';
+import styled from 'styled-components';
+import { reduce } from 'lodash';
 
-import TableSection from './TableSection';
-import CommentMarker from './ofComments/CommentMarker';
+import TableSection from '../elements/TableSection';
+import CommentMarker from './CommentMarker';
 
-import { pause } from '../../reducers/player';
+// import { pause } from '../../reducers/player';
 
 const SliderWrapper = styled.div`
   .rc-slider-disabled,
@@ -121,8 +120,7 @@ class TimelineComments extends Component {
   }
 }
 
-// export default React.memo(props => <TimelineComments {...props} />);
-export default connect(
-  null,
-  { pause }
-)(React.memo(props => <TimelineComments {...props} />));
+export default React.memo(props => <TimelineComments {...props} />);
+// export default connect(null, { pause })(
+//   React.memo(props => <TimelineComments {...props} />)
+// );
