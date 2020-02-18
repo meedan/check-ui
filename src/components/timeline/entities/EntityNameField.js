@@ -5,7 +5,6 @@ import deburr from 'lodash/deburr';
 
 import {
   ClickAwayListener,
-  CloseIcon,
   IconButton,
   InputAdornment,
   MenuItem,
@@ -14,6 +13,7 @@ import {
   Tooltip,
   Typography,
 } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import grey from '@material-ui/core/colors/grey';
 import { withStyles } from '@material-ui/core/styles';
 

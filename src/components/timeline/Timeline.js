@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { Table } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import Comments from './comments/Comments';
 import Entities from './entities/Entities';

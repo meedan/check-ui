@@ -1,145 +1,179 @@
-import PopupState, { bindHover } from 'material-ui-popup-state';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import _ from 'lodash';
-import styled from 'styled-components';
+import { usePopupState, bindHover } from 'material-ui-popup-state/hooks';
 
-import { Tooltip } from '@material-ui/core';
+import Tooltip from '@material-ui/core/Tooltip';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import HandlePopover from './HandlePopover';
 import InstancePopover from './InstancePopover';
 import formatSeconds from '../utils/formatSeconds';
 
-const RSInstance = styled(({ ...props }) => <div {...props} />)`
-  backface-visibility: visible;
-  background: rgba(71, 123, 181, 0.4);
-  bottom: 0;
-  position: absolute;
-  top: 0;
-  &:hover {
-    z-index: 3000;
-  }
-`;
+const useStyles = () =>
+  makeStyles(theme => ({
+    instance: {
+      backfaceVisibility: 'visible',
+      background: 'rgba(71, 123, 181, 0.4)',
+      bottom: '0',
+      position: 'absolute',
+      top: '0',
+      '&:hover': {
+        zIndex: '3000',
+      },
+    },
+    handle: {
+      background: 'rgba(71, 123, 181, 1)',
+      bottom: '0',
+      cursor: 'ew-resize',
+      position: 'absolute',
+      top: '0',
+      transition: 'transform 250ms, opacity 250ms, width 250ms',
+      zIndex: '2000',
+      '&:hover': {
+        opacity: '1 !important',
+      },
+    },
+    handleThumb: {
+      height: '28px',
+      transform: 'translateX(-12px)',
+      width: '24px',
+    },
+  }));
 
-const RSHandle = styled(({ isDragging, isVisible, pos, ...props }) => (
-  <div {...props} />
-))`
-  background: rgba(71, 123, 181, 1);
-  bottom: 0;
-  cursor: ew-resize;
-  opacity: ${({ isVisible }) => (isVisible ? '1' : '0')};
-  position: absolute;
-  top: 0;
-  transform: ${({ pos }) => (pos === 'end' ? `translateX(-50%)` : ``)};
-  transition: transform 250ms, opacity 250ms, width 250ms;
-  width: ${({ isDragging }) => (isDragging ? 1 : 4)}px;
-  z-index: 2000;
-  &:hover {
-    opacity: 1 !important;
-  }
-`;
+export default function Instance(props) {
+  const { isLocked, duration, instances } = props;
+  const { left, width } = props.wrapper;
 
-class Instance extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      dragging: null,
-      overHandle: null,
-      overInstance: null,
-    };
+  const [end, setEnd] = useState(props.end);
+  const [start, setStart] = useState(props.start);
 
-    this.onMouseDown = this.onMouseDown.bind(this);
-    this.onMouseMove = this.onMouseMove.bind(this);
-    this.onMouseUp = this.onMouseUp.bind(this);
+  const [dragging, setDragging] = useState(null);
+  const [hoveringHandle, setHoveringHandle] = useState(null);
 
-    this.onHandleEnter = this.onHandleEnter.bind(this);
-    this.onHandleLeave = this.onHandleLeave.bind(this);
-    this.onInstanceEnter = this.onInstanceEnter.bind(this);
-    this.onInstanceLeave = this.onInstanceLeave.bind(this);
+  const [hoveringInstance, setHoveringInstance] = useState(false);
 
-    this.setNewTime = this.setNewTime.bind(this);
-    this.moveHandle = this.moveHandle.bind(this);
-  }
+  const instancePopupState = usePopupState({
+    variant: 'popover',
+    popupId: 'instancePopover',
+  });
+  const handlePopupState = {
+    start: usePopupState({
+      variant: 'popover',
+      popupId: 'startHandlePopover',
+    }),
+    end: usePopupState({
+      variant: 'popover',
+      popupId: 'endHandlePopover',
+    }),
+  };
 
-  componentDidMount() {
-    this.setState({
-      end: this.props.end,
-      start: this.props.start,
-    });
-    document.addEventListener('mousemove', this.onMouseMove.bind(this));
-    document.addEventListener('mouseup', this.onMouseUp.bind(this));
-  }
+  useEffect(() => {
+    window.addEventListener('mousemove', onHandleMove);
+    return () => window.removeEventListener('mousemove', onHandleMove);
+  }, [onHandleMove]);
 
-  componentDidUpdate(prevProps) {
-    if (
-      this.props.end !== prevProps.end ||
-      this.props.start !== prevProps.start
-    ) {
-      this.setState({
-        end: this.props.end,
-        start: this.props.start,
-      });
-    }
-  }
+  useEffect(() => {
+    window.addEventListener('mouseup', onHandleRelease);
+    return () => window.removeEventListener('mouseup', onHandleRelease);
+  }, [onHandleRelease]);
 
-  componentWillUnmount() {
-    document.removeEventListener('mousemove', this.onMouseMove.bind(this));
-    document.removeEventListener('mouseup', this.onMouseUp.bind(this));
-  }
+  useEffect(() => {
+    setStart(props.start);
+  }, [props.start]);
 
-  onInstanceEnter() {
-    this.setState({ overInstance: true });
-  }
+  useEffect(() => {
+    setEnd(props.end);
+  }, [props.end]);
 
-  onInstanceLeave() {
-    this.setState({ overInstance: null, overHandle: null });
-  }
+  // const setNewTime = e => {
+  //   if (!e || !dragging) return null;
+  //   // console.log('setNewTime', e);
 
-  onHandleEnter(e, edge) {
-    this.setState({ overHandle: edge });
-  }
+  //   const MIN_LENGTH = (6 * duration) / width;
+  //   const prevInstance = _.maxBy(
+  //     _.filter(instances, i => i.end_seconds <= start),
+  //     i => i.end_seconds
+  //   );
+  //   const nextInstance = _.minBy(
+  //     _.filter(instances, i => i.start_seconds >= end),
+  //     i => i.start_seconds
+  //   );
+  //   const RANGE_MIN = prevInstance ? prevInstance.end_seconds : 0;
+  //   const RANGE_MAX = nextInstance ? nextInstance.start_seconds : duration;
+  //   if (e.pageX <= 0) return null;
+  //   let newTime = ((e.pageX - left) * duration) / width;
+  //   if (dragging === 'start' && newTime > end - MIN_LENGTH) {
+  //     newTime = end - MIN_LENGTH < 0 ? 0 : end - MIN_LENGTH;
+  //     setStart(prevState =>
+  //       newTime >= RANGE_MIN && newTime <= RANGE_MAX ? newTime : prevState
+  //     );
+  //   }
+  //   if (dragging === 'end' && newTime < start + MIN_LENGTH) {
+  //     newTime = start + MIN_LENGTH > duration ? duration : start + MIN_LENGTH;
+  //     setEnd(prevState =>
+  //       newTime >= RANGE_MIN && newTime <= RANGE_MAX ? newTime : prevState
+  //     );
+  //   }
+  // };
 
-  onHandleLeave() {
-    this.setState(prevState => ({
-      overHandle: null,
-      overInstance: prevState.overInstance ? prevState.overInstance : null,
-    }));
-  }
+  const onInstanceEnter = () => {
+    // console.log('onInstanceEnter');
+    setHoveringInstance(true);
+  };
+  const onInstanceLeave = () => {
+    // console.log('onInstanceLeave');
+    setHoveringInstance(false);
+    // setHoveringHandle(null);
+  };
 
-  onMouseDown(e, edge) {
-    e.persist();
-    this.setState({ dragging: edge }, () => {
-      this.props.setDraggedInstance(this.props.id);
-      this.setNewTime(e);
-      this.props.onDragStart(this.state[edge]);
-    });
-  }
-  onMouseMove(e) {
-    this.setNewTime(e);
-    if (this.state.dragging) this.props.onDrag(this.state[this.state.dragging]);
-  }
-  onMouseUp(e) {
-    if (!this.state.dragging) return null;
-    this.props.onDragEnd(this.state[this.state.dragging]);
-    this.props.updateInstance({
-      end_seconds: this.state.end,
-      start_seconds: this.state.start,
-    });
-    this.setState({ dragging: null });
-    this.props.setDraggedInstance(null);
-    return null;
-  }
+  const onHandleEnter = edge => {
+    // console.log('onHandleEnter', edge);
+    // setHoveringHandle(edge);
+  };
+  const onHandlePress = (e, edge) => {
+    if (!e || !edge) return null;
+    console.log('onHandlePress', e, edge);
 
-  setNewTime(e) {
-    if (!e) return null;
-    const coords = { x: e.pageX, y: e.pageY };
+    // e.persist();
+    setDragging(edge);
 
-    if (!this.state.dragging) return null;
-    const { duration, wrapper, instances } = this.props;
-    const { dragging, end, start } = this.state;
-    const { width, left } = wrapper.rect;
-    const MIN_LENGTH = (6 * duration) / width;
+    // props.setDraggedInstance(props.id);
 
+    // setNewTime(e);
+    // props.onHandlePress(edge);
+  };
+  const onHandleMove = e => {
+    if (!dragging) return null;
+    console.log('onHandleMove', e);
+
+    // if (e.pageX <= 0) return null;
+    // const v = ((e.pageX - rootRect.left) * duration) / rootRect.width;
+    // setTime(v < 0 ? 0 : v > duration ? duration : v);
+    // props.onChange(v);
+
+    // setNewTime(e);
+    // if (dragging) props.onHandleMove(dragging);
+  };
+  const onHandleRelease = e => {
+    console.log('onHandleRelease', e);
+
+    // props.onHandleRelease(dragging);
+    // props.updateInstance({
+    //   end_seconds: end,
+    //   start_seconds: start,
+    // });
+    // props.setDraggedInstance(null);
+
+    if (!dragging) return null;
+    setDragging(null);
+  };
+  const onHandleLeave = () => {
+    if (dragging) return null;
+    setHoveringHandle(null);
+    // setHoveringInstance(prevState => (prevState ? prevState : null));
+  };
+  const onHandleShift = (edge, dir) => {
     const prevInstance = _.maxBy(
       _.filter(instances, i => i.end_seconds <= start),
       i => i.end_seconds
@@ -148,189 +182,126 @@ class Instance extends Component {
       _.filter(instances, i => i.start_seconds >= end),
       i => i.start_seconds
     );
-    const RANGE_MIN = prevInstance ? prevInstance.end_seconds : 0;
-    const RANGE_MAX = nextInstance ? nextInstance.start_seconds : duration;
 
-    if (coords.x <= 0) return null;
-    let newTime = ((coords.x - left) * duration) / width;
-
-    if (dragging === 'start' && newTime > end - MIN_LENGTH) {
-      newTime = end - MIN_LENGTH < 0 ? 0 : end - MIN_LENGTH;
-    }
-    if (dragging === 'end' && newTime < start + MIN_LENGTH) {
-      newTime = start + MIN_LENGTH > duration ? duration : start + MIN_LENGTH;
-    }
-
-    this.setState(prevState => ({
-      [dragging]:
-        newTime >= RANGE_MIN && newTime <= RANGE_MAX
-          ? newTime
-          : prevState[dragging],
-    }));
-
-    return null;
-  }
-
-  moveHandle(edge, dir) {
-    const { end, start } = this.state;
-    const { duration, instances } = this.props;
-
-    const prevInstance = _.maxBy(
-      _.filter(instances, i => i.end_seconds <= start),
-      i => i.end_seconds
-    );
-    const nextInstance = _.minBy(
-      _.filter(instances, i => i.start_seconds >= end),
-      i => i.start_seconds
-    );
+    // TODO: make sure that 'start' can’t go over 'end' - UNIT (and the other way around)
     const RANGE_MAX = nextInstance ? nextInstance.start_seconds : duration;
     const RANGE_MIN = prevInstance ? prevInstance.end_seconds : 0;
-    const UNIT = duration / this.props.wrapper.rect.width;
+    const UNIT = duration / width;
 
-    const calcVal = prevState => {
+    // TODO: clean the rest of this up
+    const val = prevState => {
       if (dir === 'fwd') {
-        return prevState[edge] + UNIT < RANGE_MAX
-          ? prevState[edge] + UNIT
-          : RANGE_MAX;
+        return prevState + UNIT < RANGE_MAX ? prevState + UNIT : RANGE_MAX;
+      } else if (dir === 'bwd') {
+        return prevState - UNIT > RANGE_MIN ? prevState - UNIT : RANGE_MIN;
       }
-      if (dir === 'bwd') {
-        return prevState[edge] - UNIT > RANGE_MIN
-          ? prevState[edge] - UNIT
-          : RANGE_MIN;
-      }
-      return null;
     };
-    this.setState(
-      prevState => ({
-        [edge]: calcVal(prevState),
-      }),
-      () =>
-        this.props.updateInstance({
-          start_seconds: this.state.start,
-          end_seconds: this.state.end,
-        })
-    );
-  }
 
-  render() {
-    if (!this.props.wrapper) return null;
-    if (!this.props.wrapper.ref) return null;
+    if (dir === 'fwd') {
+      edge === 'end'
+        ? setEnd(prevState => val(prevState))
+        : setStart(prevState => val(prevState));
+    } else if (dir === 'bwd') {
+      edge === 'end'
+        ? setEnd(prevState => val(prevState))
+        : setStart(prevState => val(prevState));
+    }
 
-    const { isLocked, duration, wrapper } = this.props;
-    const { end, start } = this.state;
-    const { width } = wrapper.rect;
+    props.updateInstance({ start_seconds: start, end_seconds: end });
+  };
 
-    const x1 = (start * width) / duration;
-    const x2 = (end * width) / duration;
+  const classes = useStyles()();
 
-    const instanceLength = end - start;
-    const instanceWidth = (instanceLength * width) / duration;
+  const x1 = (start * width) / duration;
+  const x2 = (end * width) / duration;
 
-    const handles = [
-      {
-        edge: 'end',
-        value: this.state.end,
-      },
-      {
-        edge: 'start',
-        value: this.state.start,
-      },
-    ];
+  const instanceLength = end - start;
+  const instanceWidth = (instanceLength * width) / duration;
 
-    // console.group("Instance.js");
-    // console.log(this.state);
-    // console.groupEnd();
+  const handles = [
+    {
+      edge: 'end',
+      value: end,
+    },
+    {
+      edge: 'start',
+      value: start,
+    },
+  ];
 
-    return (
-      <>
-        <PopupState variant="popover" popupId="InstancePopover">
-          {popupState => (
-            <>
-              <RSInstance
-                style={{
-                  left: `${x1}px`,
-                  width: `${instanceWidth}px`,
-                  zIndex: this.state.overInstance ? `1000` : `default`,
-                }}
-                onMouseEnter={!isLocked ? this.onInstanceEnter : null}
-                onMouseLeave={!isLocked ? this.onInstanceLeave : null}>
-                {!isLocked ? (
-                  <div
-                    {...bindHover(popupState)}
-                    style={{ width: `100%`, height: `28px` }}
-                  />
-                ) : null}
-              </RSInstance>
-              {!this.state.dragging ? (
-                <InstancePopover
-                  checkInstance={this.props.checkInstance}
-                  clipInstance={this.props.clipInstance}
-                  deleteInstance={this.props.deleteInstance}
-                  extendInstance={this.props.extendInstance}
-                  instance={this.props.instance}
-                  popupState={popupState}
+  return (
+    <>
+      <div
+        className={classes.instance}
+        style={{
+          left: `${x1}px`,
+          width: `${instanceWidth}px`,
+          zIndex: hoveringInstance ? `1000` : `default`,
+        }}
+        onMouseEnter={!isLocked ? onInstanceEnter : null}
+        onMouseLeave={!isLocked ? onInstanceLeave : null}>
+        {!isLocked ? (
+          <div
+            {...bindHover(instancePopupState)}
+            style={{ width: `100%`, height: `28px` }}
+          />
+        ) : null}
+      </div>
+      {!dragging ? (
+        <InstancePopover
+          checkInstance={props.checkInstance}
+          clipInstance={props.clipInstance}
+          deleteInstance={props.deleteInstance}
+          extendInstance={props.extendInstance}
+          instance={props.instance}
+          popupState={instancePopupState}
+        />
+      ) : null}
+
+      {handles.map(handle => {
+        const { edge, value } = handle;
+
+        const isDragged = dragging === edge;
+        const isHovered = hoveringHandle === edge;
+        const isActive = isDragged || isHovered;
+
+        return (
+          <Fragment key={`${edge}Popover`}>
+            <div
+              className={classes.handle}
+              onMouseDown={e => onHandlePress(e, edge)}
+              onMouseEnter={() => onHandleEnter(edge)}
+              onMouseLeave={onHandleLeave}
+              style={{
+                left: edge === 'start' ? `${x1}px` : `${x2}px`,
+                opacity: isActive || handlePopupState[edge].isOpen ? '1' : '0',
+                transform: edge === 'end' ? 'translateX(-100%)' : 'none',
+                width: dragging ? '1px' : '3px',
+              }}>
+              <Tooltip
+                open={isDragged}
+                placement="top"
+                title={formatSeconds(value)}>
+                <div
+                  className={classes.handleThumb}
+                  {...bindHover(handlePopupState[edge])}
                 />
-              ) : null}
-            </>
-          )}
-        </PopupState>
-
-        {handles.map(handle => {
-          const { edge, value } = handle;
-          const isHandleActive =
-            this.state.dragging === edge || this.state.overHandle === edge;
-          return (
-            <PopupState
-              key={`${edge}Popover`}
-              popupId={`${edge}Popover`}
-              variant="popover">
-              {popupState => (
-                <>
-                  <RSHandle
-                    isDragging={this.state.dragging === edge}
-                    isVisible={
-                      isHandleActive ||
-                      (this.state.overInstance && !this.state.dragging) ||
-                      popupState.isOpen
-                    }
-                    onMouseDown={e => this.onMouseDown(e, edge)}
-                    onMouseEnter={e => this.onHandleEnter(e, edge)}
-                    onMouseLeave={this.onHandleLeave}
-                    style={{ left: edge === 'start' ? `${x1}px` : `${x2}px` }}
-                    pos={edge}>
-                    <Tooltip
-                      open={this.state.dragging === edge && isHandleActive}
-                      placement="top"
-                      title={formatSeconds(value)}>
-                      <div
-                        style={{
-                          height: `28px`,
-                          transform: 'translateX(-10px)',
-                          width: `24px`,
-                        }}
-                        {...bindHover(popupState)}></div>
-                    </Tooltip>
-                  </RSHandle>
-
-                  {!this.state.dragging ? (
-                    <HandlePopover
-                      id={`${edge}Popover`}
-                      moveBackward={() => this.moveHandle(edge, 'bwd')}
-                      moveForward={() => this.moveHandle(edge, 'fwd')}
-                      popupState={popupState}
-                    />
-                  ) : null}
-                </>
-              )}
-            </PopupState>
-          );
-        })}
-      </>
-    );
-  }
+              </Tooltip>
+            </div>
+            {!dragging ? (
+              <HandlePopover
+                id={`${edge}HandlePopover`}
+                moveBackward={() => onHandleShift(edge, 'bwd')}
+                moveForward={() => onHandleShift(edge, 'fwd')}
+                popupState={handlePopupState[edge]}
+              />
+            ) : null}
+          </Fragment>
+        );
+      })}
+    </>
+  );
 }
-
-export default Instance;
 
 Instance.propTypes = {
   checkInstance: PropTypes.func,
@@ -342,21 +313,17 @@ Instance.propTypes = {
   instance: PropTypes.object.isRequired,
   instances: PropTypes.array.isRequired,
   isLocked: PropTypes.bool,
-  onDrag: PropTypes.func.isRequired,
-  onDragEnd: PropTypes.func.isRequired,
-  onDragStart: PropTypes.func.isRequired,
+  onHandleMove: PropTypes.func.isRequired,
+  onHandleRelease: PropTypes.func.isRequired,
+  onHandlePress: PropTypes.func.isRequired,
   setDraggedInstance: PropTypes.func.isRequired,
   start: PropTypes.number.isRequired,
   updateInstance: PropTypes.func.isRequired,
-  wrapper: PropTypes.shape({
-    rect: PropTypes.object.isRequired,
-    ref: PropTypes.object.isRequired,
-  }),
+  wrapper: PropTypes.object.isRequired,
 };
 
 Instance.defaultProps = {
   checkInstance: null,
   clipInstance: null,
   isLocked: null,
-  wrapper: null,
 };

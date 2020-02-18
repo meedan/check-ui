@@ -1,109 +1,96 @@
 import PropTypes from 'prop-types';
-import React, { Component, createRef } from 'react';
-import styled from 'styled-components';
+import React, { useEffect, useRef, useState } from 'react';
+
+import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import Instance from './Instance';
 
-const RSWrapper = styled.div`
-  height: 28px;
-  position: relative;
-  width: 100%;
-  user-select: none;
-`;
+const useStyles = makeStyles(theme => ({
+  sliderRoot: {
+    height: '28px',
+    position: 'relative',
+    userSelect: 'none',
+    width: '100%',
+  },
+}));
 
-class RangeSlider extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      draggedInstance: null,
-    };
-    this.setDraggedInstance = this.setDraggedInstance.bind(this);
-    this.updateRef = this.updateRef.bind(this);
-    this.wrapperRef = createRef();
-  }
+export default function Slider(props) {
+  const classes = useStyles();
+  const sliderRoot = useRef();
 
-  static getDerivedStateFromProps({ instances = [] }) {
-    return { instances };
-  }
+  const { duration, instances } = props;
 
-  componentDidMount() {
-    this.updateRef();
-    window.addEventListener('resize', this.updateRef.bind(this));
-  }
+  const [draggedInstance, setDraggedInstance] = useState();
+  const [dragging, setDragging] = useState(false);
+  const [rootRect, setRootRect] = useState(null);
 
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.updateRef.bind(this));
-  }
+  useEffect(() => {
+    setRootRect(sliderRoot.current.getBoundingClientRect());
+  }, [sliderRoot]);
 
-  setDraggedInstance(id) {
-    console.log('setDraggedInstance', id);
-    this.setState({ draggedInstance: id || null });
-  }
+  const onHandlePress = args => {
+    setDragging(true);
+    props.onDragStart(args);
+  };
+  const onHandleMove = args => {
+    if (!dragging) return null;
+    props.onDrag(args);
+  };
+  const onHandleRelease = args => {
+    setDragging(false);
+    props.onDragEnd(args);
+  };
 
-  updateRef() {
-    if (!this.wrapperRef) return null;
-    if (!this.wrapperRef.current) return null;
-    this.setState({
-      wrapper: {
-        ref: this.wrapperRef.current,
-        rect: this.wrapperRef.current.getBoundingClientRect(),
-      },
-    });
-    return null;
-  }
-
-  render() {
-    const { duration } = this.props;
-    const { draggedInstance, instances, wrapper } = this.state;
-
-    return (
-      <RSWrapper ref={this.wrapperRef}>
-        {instances.map(instance => {
-          const { id, start_seconds, end_seconds } = instance;
-          return (
-            <Instance
-              checkInstance={this.props.checkInstance}
-              clipInstance={this.props.clipInstance}
-              deleteInstance={() => this.props.deleteInstance(id)}
-              duration={duration}
-              end={end_seconds}
-              extendInstance={() => this.props.extendInstance(id)}
-              id={id}
-              instance={instance}
-              instances={instances}
-              isLocked={draggedInstance && draggedInstance !== id}
-              key={id}
-              onDrag={payload => this.props.onDrag(payload)}
-              onDragEnd={payload => this.props.onDragEnd(payload)}
-              onDragStart={payload => this.props.onDragStart(payload)}
-              setDraggedInstance={this.setDraggedInstance}
-              start={start_seconds}
-              updateInstance={payload => this.props.updateInstance(id, payload)}
-              wrapper={wrapper}
-            />
-          );
-        })}
-      </RSWrapper>
-    );
-  }
+  return (
+    <div className={classes.sliderRoot} ref={sliderRoot}>
+      {rootRect
+        ? instances.map(instance => {
+            const { id, start_seconds, end_seconds } = instance;
+            return (
+              <Instance
+                onHandleMove={onHandleMove}
+                onHandlePress={onHandlePress}
+                onHandleRelease={onHandleRelease}
+                //
+                checkInstance={props.checkInstance}
+                clipInstance={props.clipInstance}
+                deleteInstance={() => props.deleteInstance(id)}
+                extendInstance={() => props.extendInstance(id)}
+                updateInstance={payload => props.updateInstance(id, payload)}
+                //
+                duration={duration}
+                end={end_seconds}
+                id={id}
+                instance={instance}
+                instances={instances}
+                isLocked={draggedInstance && draggedInstance !== id}
+                key={id}
+                setDraggedInstance={setDraggedInstance}
+                start={start_seconds}
+                wrapper={rootRect}
+              />
+            );
+          })
+        : null}
+    </div>
+  );
 }
 
-export default RangeSlider;
-
-RangeSlider.propTypes = {
+Slider.propTypes = {
   checkInstance: PropTypes.func,
   clipInstance: PropTypes.func,
   deleteInstance: PropTypes.func.isRequired,
   duration: PropTypes.number.isRequired,
   extendInstance: PropTypes.func.isRequired,
-  instances: PropTypes.array.isRequired,
+  instances: PropTypes.array,
   onDrag: PropTypes.func.isRequired,
   onDragEnd: PropTypes.func.isRequired,
   onDragStart: PropTypes.func.isRequired,
   updateInstance: PropTypes.func.isRequired,
 };
 
-RangeSlider.defaultProps = {
+Slider.defaultProps = {
   checkInstance: null,
   clipInstance: null,
+  instances: [],
 };
