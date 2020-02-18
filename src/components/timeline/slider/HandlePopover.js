@@ -5,15 +5,10 @@ import { bindPopover } from 'material-ui-popup-state';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
+import { IconButton, Tooltip } from '@material-ui/core';
 
-export default function HandlePopover({
-  id,
-  moveBackward,
-  moveForward,
-  popupState,
-}) {
+export default function HandlePopover(props) {
+  const { id, moveBackward, moveForward, popupState } = props;
   return (
     <Popover
       {...bindPopover(popupState)}

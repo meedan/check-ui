@@ -1,17 +1,18 @@
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
+import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import TextField from '@material-ui/core/TextField';
-import { func } from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 
-const styles = {
-  Grid: {
+import { Button, Grid, TextField } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+  grid: {
     width: '200px',
   },
-};
+}));
 
-function CommentForm(props) {
+export default function CommentForm(props) {
+  const classes = useStyles();
+
   const { isCreating, isEditing, value } = props;
 
   const [comment, setComment] = useState(value);
@@ -27,7 +28,7 @@ function CommentForm(props) {
       direction="column"
       spacing={1}
       wrap="nowrap"
-      className={props.classes.Grid}>
+      className={classes.Grid}>
       <Grid item>
         <TextField
           autoFocus
@@ -50,7 +51,6 @@ function CommentForm(props) {
           type="text"
         />
       </Grid>
-
       <Grid item>
         <Grid
           container
@@ -78,9 +78,7 @@ function CommentForm(props) {
   );
 }
 
-export default withStyles(styles)(CommentForm);
-
 CommentForm.propTypes = {
-  onCancel: func.isRequired,
-  onSubmit: func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };

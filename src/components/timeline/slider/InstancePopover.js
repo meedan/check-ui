@@ -1,11 +1,10 @@
 import Popover from 'material-ui-popup-state/HoverPopover';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { bindPopover } from 'material-ui-popup-state';
+import { bindPopover } from 'material-ui-popup-state/hooks';
 
 import DeleteIcon from '@material-ui/icons/Delete';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
+import { Tooltip, IconButton } from '@material-ui/core';
 
 import CheckIcon from '../../icons/Check';
 import CutIcon from '../../icons/Cut';

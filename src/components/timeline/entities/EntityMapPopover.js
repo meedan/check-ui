@@ -1,22 +1,24 @@
 import React, { Component } from 'react';
+import equal from 'fast-deep-equal';
 import styled from 'styled-components';
 import { GoogleMap, Marker, Polygon } from '@react-google-maps/api';
-import equal from 'fast-deep-equal';
 
-import { withStyles } from '@material-ui/core/styles';
 import AddLocationIcon from '@material-ui/icons/AddLocation';
-import Button from '@material-ui/core/Button';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import FormatShapesIcon from '@material-ui/icons/FormatShapes';
-import grey from '@material-ui/core/colors/grey';
-import IconButton from '@material-ui/core/IconButton';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import TextField from '@material-ui/core/TextField';
-import Tooltip from '@material-ui/core/Tooltip';
+import grey from '@material-ui/core/colors/grey';
+import { withStyles } from '@material-ui/core/styles';
+import {
+  Button,
+  IconButton,
+  InputAdornment,
+  Paper,
+  Popper,
+  TextField,
+  Tooltip,
+} from '@material-ui/core';
 
 const Separator = styled.span`
   border-left: 1px solid ${grey[200]};

@@ -1,17 +1,20 @@
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Popover from 'material-ui-popup-state/HoverPopover';
 import PopupState, { bindHover, bindPopover } from 'material-ui-popup-state';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
-import { array, func, object, string } from 'prop-types';
+
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import {
+  CircularProgress,
+  Grid,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Tooltip,
+  Typography,
+} from '@material-ui/core/';
 import { withStyles } from '@material-ui/core/styles';
 
 import EntityDeleteModal from './EntityDeleteModal';
@@ -269,14 +272,14 @@ class EntityControls extends Component {
 }
 
 EntityControls.propTypes = {
-  classes: object,
-  entityId: string,
-  entityName: string,
-  entityType: string,
-  isCreating: string,
-  startNewInstance: func,
-  stopNewEntity: func,
-  suggestions: array,
+  classes: PropTypes.object,
+  entityId: PropTypes.string,
+  entityName: PropTypes.string,
+  entityType: PropTypes.string,
+  isCreating: PropTypes.string,
+  startNewInstance: PropTypes.func,
+  stopNewEntity: PropTypes.func,
+  suggestions: PropTypes.array,
 };
 
 EntityControls.defaultProps = {};

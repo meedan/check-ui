@@ -1,14 +1,16 @@
 import React from 'react';
 
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Typography from '@material-ui/core/Typography';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Typography,
+} from '@material-ui/core';
 
-function EntityDeleteModal(props) {
+export default function EntityDeleteModal(props) {
   const { onCancel, onConfirm, name, title } = props;
   return (
     <Dialog
@@ -38,5 +40,3 @@ function EntityDeleteModal(props) {
     </Dialog>
   );
 }
-
-export default EntityDeleteModal;

@@ -1,27 +1,30 @@
-import Avatar from '@material-ui/core/Avatar';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Popover from 'material-ui-popup-state/HoverPopover';
 import React, { useState } from 'react';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import {
   usePopupState,
   bindHover,
   bindPopover,
 } from 'material-ui-popup-state/hooks';
-import { withStyles } from '@material-ui/core/styles';
+
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import {
+  Avatar,
+  CircularProgress,
+  IconButton,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemSecondaryAction,
+  ListItemText,
+  Tooltip,
+  Typography,
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 import CommentForm from './CommentForm';
 
-const styles = {
+const useStyles = makeStyles(theme => ({
   avatar: {
     height: 28,
     width: 28,
@@ -36,8 +39,19 @@ const styles = {
   ListItemAvatar: {
     minWidth: '40px',
   },
-  savingProgress: {},
-};
+  mask: {
+    alignItems: 'center',
+    background: 'rgba(255, 255, 255, 0.66)',
+    bottom: '0',
+    display: 'flex',
+    justifyContent: 'center',
+    left: '0',
+    position: 'absolute',
+    right: '0',
+    top: '0',
+    zIndex: '2',
+  },
+}));
 
 const ElSideControls = styled.div`
   visibility: hidden;
@@ -54,24 +68,12 @@ const El = styled.div`
       : ''};
 `;
 
-const Mask = styled.div`
-  align-items: center;
-  background: rgba(255, 255, 255, 0.66);
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  z-index: 2;
-`;
+export default function Comment(props) {
+  const classes = useStyles();
 
-function Comment(props) {
   const {
     isRoot,
     isActionable,
-    classes,
     id,
     threadId,
     fname,
@@ -201,13 +203,11 @@ function Comment(props) {
           {displayActions()}
         </ListItemSecondaryAction>
         {isProcessing && (
-          <Mask>
-            <CircularProgress size={22} className={classes.savingProgress} />
-          </Mask>
+          <div className={classes.mask}>
+            <CircularProgress size={22} />
+          </div>
         )}
       </ListItem>
     </El>
   );
 }
-
-export default withStyles(styles)(Comment);
