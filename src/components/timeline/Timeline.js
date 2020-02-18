@@ -52,9 +52,9 @@ export default function Timeline(props) {
           entitiesyKey="videoClips"
           entityType="clip"
           key="clip"
-          onAfterChange={args => console.log('onAfterChange', args)}
-          onBeforeChange={args => console.log('onBeforeChange', args)}
-          onChange={args => console.log('onChange', args)}
+          onAfterChange={() => setSkip(false)}
+          onBeforeChange={() => setSkip(true)}
+          onChange={props.onChange}
           playing={playing}
           skip={skip}
           suggestions={props.data.project.projectclips}
@@ -69,9 +69,9 @@ export default function Timeline(props) {
           entitiesyKey="videoTags"
           entityType="tag"
           key="tag"
-          onAfterChange={args => console.log('onAfterChange', args)}
-          onBeforeChange={args => console.log('onBeforeChange', args)}
-          onChange={args => console.log('onChange', args)}
+          onAfterChange={() => setSkip(false)}
+          onBeforeChange={() => setSkip(true)}
+          onChange={props.onChange}
           playing={playing}
           skip={skip}
           suggestions={props.data.project.projecttags}
@@ -86,9 +86,9 @@ export default function Timeline(props) {
           entitiesyKey="videoPlaces"
           entityType="location"
           key="location"
-          onAfterChange={args => console.log('onAfterChange', args)}
-          onBeforeChange={args => console.log('onBeforeChange', args)}
-          onChange={args => console.log('onChange', args)}
+          onAfterChange={() => setSkip(false)}
+          onBeforeChange={() => setSkip(true)}
+          onChange={props.onChange}
           playing={playing}
           skip={skip}
           suggestions={props.data.project.projectplaces}
@@ -118,6 +118,7 @@ Timeline.propTypes = {
 };
 
 Timeline.defaultProps = {
+  currentTime: 0,
   data: {
     commentThreads: [],
     project: {
@@ -129,6 +130,7 @@ Timeline.defaultProps = {
     videoPlaces: [],
     videoTags: [],
   },
-  currentTime: 0,
+  onAfterChange: null,
+  onBeforeChange: null,
   playing: false,
 };

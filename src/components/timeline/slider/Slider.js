@@ -21,28 +21,21 @@ export default function Slider(props) {
   const { duration, instances } = props;
 
   const [draggedInstance, setDraggedInstance] = useState();
-  const [dragging, setDragging] = useState(false);
   const [rootRect, setRootRect] = useState(null);
 
   useEffect(() => {
     setRootRect(sliderRoot.current.getBoundingClientRect());
   }, [sliderRoot]);
 
-  const onHandlePress = time => {
-    setDragging(true);
-    // console.log('onHandlePress', { time });
-    props.onDragStart(time);
-  };
-  const onHandleMove = time => {
-    if (!dragging) return null;
-    // console.log('onHandleMove', { time });
-    props.onDrag(time);
-  };
-  const onHandleRelease = time => {
-    setDragging(false);
-    // console.log('onHandleRelease', { time });
-    props.onDragEnd(time);
-  };
+  // const onHandlePress = time => {
+  //   console.log('onHandlePress', { time });
+  // };
+  // const onHandleMove = time => {
+  //   props.onDrag(time)
+  // };
+  // const onHandleRelease = time => {
+  //   console.log('onHandleRelease', { time });
+  // };
 
   return (
     <div className={classes.sliderRoot} ref={sliderRoot}>
@@ -51,10 +44,6 @@ export default function Slider(props) {
             const { id, start_seconds, end_seconds } = instance;
             return (
               <Instance
-                onHandleMove={onHandleMove}
-                onHandlePress={onHandlePress}
-                onHandleRelease={onHandleRelease}
-                //
                 checkInstance={props.checkInstance}
                 clipInstance={props.clipInstance}
                 deleteInstance={() => props.deleteInstance(id)}
@@ -68,8 +57,11 @@ export default function Slider(props) {
                 isLocked={draggedInstance && draggedInstance !== id}
                 key={id}
                 lockSiblings={() => setDraggedInstance(id)}
-                start={start_seconds}
+                onHandleMove={props.onDrag}
+                onHandlePress={props.onDragStart}
+                onHandleRelease={props.onDragEnd}
                 sliderRect={rootRect}
+                start={start_seconds}
               />
             );
           })
