@@ -28,20 +28,20 @@ export default function Slider(props) {
     setRootRect(sliderRoot.current.getBoundingClientRect());
   }, [sliderRoot]);
 
-  const onHandlePress = args => {
+  const onHandlePress = time => {
     setDragging(true);
-    // console.log('onHandlePress', { args });
-    props.onDragStart(args);
+    // console.log('onHandlePress', { time });
+    props.onDragStart(time);
   };
-  const onHandleMove = args => {
+  const onHandleMove = time => {
     if (!dragging) return null;
-    // console.log('onHandleMove', { args });
-    props.onDrag(args);
+    // console.log('onHandleMove', { time });
+    props.onDrag(time);
   };
-  const onHandleRelease = args => {
+  const onHandleRelease = time => {
     setDragging(false);
-    // console.log('onHandleRelease', { args });
-    props.onDragEnd(args);
+    // console.log('onHandleRelease', { time });
+    props.onDragEnd(time);
   };
 
   return (
