@@ -34,13 +34,15 @@ export const onPlayheadChange = (newTime) => {
   playheadStore.set({ currentTime: newTime });
 }
 
-<Meta title="Timeline"  />
+<Meta title="Components/Timeline" component={Timeline} />
 
 # Timeline
 
+`@import { Timeline } from '@check/ui';`
+
 ## Plain
 
-<Preview>
+<Preview withToolbar={true}>
   <Story name="Plain">
     <State store={plainTimelineStore}>
       {state =>
@@ -55,7 +57,7 @@ export const onPlayheadChange = (newTime) => {
 
 ## Rich
 
-<Preview>
+<Preview withToolbar={true}>
   <Story name="Rich">
     <State store={richTimelineStore}>
       {state =>
