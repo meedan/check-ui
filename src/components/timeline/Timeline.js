@@ -111,7 +111,7 @@ Timeline.propTypes = {
     videoPlaces: PropTypes.array,
     videoTags: PropTypes.array,
   }),
-  currentTime: PropTypes.number,
+  currentTime: PropTypes.number.isRequired,
   duration: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
   playing: PropTypes.bool,

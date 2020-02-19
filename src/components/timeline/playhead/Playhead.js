@@ -59,7 +59,6 @@ export default function Playhead(props) {
 
   const [dragging, setDragging] = React.useState(false);
   const [rootRect, setRootRect] = React.useState(null);
-  const [time, setTime] = React.useState(currentTime);
 
   const onHandlePress = e => {
     if (!e) return null;
@@ -68,8 +67,7 @@ export default function Playhead(props) {
     const v = ((e.pageX - rootRect.left) * duration) / rootRect.width;
 
     setDragging(true);
-    setTime(v < 0 ? 0 : v > duration ? duration : v);
-    props.onChange(v);
+    props.onChange(v < 0 ? 0 : v > duration ? duration : v);
   };
   const onHandleMove = e => {
     if (!e || !dragging) return null;
@@ -77,8 +75,7 @@ export default function Playhead(props) {
     if (e.pageX <= 0) return null;
     const v = ((e.pageX - rootRect.left) * duration) / rootRect.width;
 
-    setTime(v < 0 ? 0 : v > duration ? duration : v);
-    props.onChange(v);
+    props.onChange(v < 0 ? 0 : v > duration ? duration : v);
   };
   const onHandleRelease = e => {
     setDragging(false);
@@ -102,19 +99,17 @@ export default function Playhead(props) {
     if (props && props.setSkip) props.setSkip(dragging);
   }, [dragging]);
 
-  useEffect(() => {
-    setTime(currentTime);
-  }, [currentTime]);
-
-  const val = dragging ? time : currentTime;
-  const pos = rootRect ? (time * rootRect.width) / duration : 0;
+  const pos = rootRect ? (currentTime * rootRect.width) / duration : 0;
 
   return (
     <div
       className={`${props.className} ${classes.playheadRoot}`}
       onMouseDown={onHandlePress}
       ref={playheadRoot}>
-      <Tooltip open={dragging} title={formatSeconds(val)} placement="top">
+      <Tooltip
+        open={dragging}
+        title={formatSeconds(currentTime)}
+        placement="top">
         <div
           className={classes.playheadHandle}
           onMouseDown={onHandlePress}
@@ -128,10 +123,7 @@ export default function Playhead(props) {
 }
 
 Playhead.propTypes = {
-  currentTime: PropTypes.number,
+  currentTime: PropTypes.number.isRequired,
   duration: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
-};
-Playhead.defaultProps = {
-  currentTime: 0,
 };

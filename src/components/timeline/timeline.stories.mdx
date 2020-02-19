@@ -35,7 +35,7 @@ export const onPlayheadChange = (newTime) => {
   playheadStore.set({ currentTime: newTime });
 }
 
-<Meta title="Components/Timeline" component={Timeline} decorators={[withKnobs]}/>
+<Meta title="Components/Timeline" component={Timeline} decorators={[withKnobs]} />
 
 # Timeline
 
@@ -48,6 +48,7 @@ export const onPlayheadChange = (newTime) => {
     <State store={plainTimelineStore}>
       {state =>
         <Timeline
+          currentTime={state.currentTime}
           duration={state.duration}
           onChange={onPlainTimelineChange}
         />
