@@ -103,7 +103,7 @@ export default function Instance(props) {
   };
   const onHandleMove = e => {
     if (!draggingHandle) return null;
-    if (e.pageX <= -100 || e.pageX >= left + width + 100) return null;
+    if (e.pageX <= left - 100 || e.pageX >= left + width + 100) return null;
 
     let v = ((e.pageX - left) * duration) / width;
 

@@ -63,7 +63,11 @@ export default function Playhead(props) {
   const onHandlePress = e => {
     if (!e) return null;
 
-    if (e.pageX <= 0) return null;
+    if (
+      e.pageX <= rootRect.left - 100 ||
+      e.pageX >= rootRect.left + rootRect.width + 100
+    )
+      return null;
     const v = ((e.pageX - rootRect.left) * duration) / rootRect.width;
 
     setDragging(true);
@@ -77,7 +81,7 @@ export default function Playhead(props) {
 
     props.onChange(v < 0 ? 0 : v > duration ? duration : v);
   };
-  const onHandleRelease = e => {
+  const onHandleRelease = () => {
     setDragging(false);
   };
 
