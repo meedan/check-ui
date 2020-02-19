@@ -1,6 +1,7 @@
 import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
 import { State, Store } from "@sambego/storybook-state";
 import { action } from '@storybook/addon-actions';
+import { number, withKnobs } from '@storybook/addon-knobs';
 
 import Playhead from './playhead/Playhead';
 import Slider from './slider/Slider';
@@ -9,7 +10,7 @@ import Timeline from './Timeline';
 import data from './timeline.data.json';
 
 export const plainTimelineStore = new Store({
-  currentTime: 50,
+  currentTime: 0,
   duration: 1000,
 });
 export const richTimelineStore = new Store({
@@ -34,7 +35,7 @@ export const onPlayheadChange = (newTime) => {
   playheadStore.set({ currentTime: newTime });
 }
 
-<Meta title="Components/Timeline" component={Timeline} />
+<Meta title="Components/Timeline" component={Timeline} decorators={[withKnobs]}/>
 
 # Timeline
 
@@ -66,6 +67,23 @@ export const onPlayheadChange = (newTime) => {
           data={data}
           duration={state.duration}
           onChange={onRichTimelineChange}
+        />
+      }
+     </State>
+  </Story>
+</Preview>
+
+## Controlled
+
+<Preview withToolbar={true}>
+  <Story name="Controlled">
+    <State store={richTimelineStore}>
+      {state =>
+        <Timeline
+          currentTime={number('Time', 100, {min: 0, max: 1000, step: 1, range: true})}
+          data={data}
+          duration={state.duration}
+          onChange={action('onTimelineChange')}
         />
       }
      </State>

@@ -102,6 +102,10 @@ export default function Playhead(props) {
     if (props && props.setSkip) props.setSkip(dragging);
   }, [dragging]);
 
+  useEffect(() => {
+    setTime(currentTime);
+  }, [currentTime]);
+
   const val = dragging ? time : currentTime;
   const pos = rootRect ? (time * rootRect.width) / duration : 0;
 
