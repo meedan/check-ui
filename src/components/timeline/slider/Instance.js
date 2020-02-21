@@ -36,8 +36,8 @@ const useStyles = () =>
     },
     handleThumb: {
       height: '28px',
-      transform: 'translateX(-12px)',
-      width: '24px',
+      transform: 'translateX(-9px)',
+      width: '18px',
     },
   }));
 
@@ -120,7 +120,8 @@ export default function Instance(props) {
         v > start + MIN_LENGTH && v <= RANGE_MAX ? v : prevState
       );
     }
-    props.onHandleMove(draggingHandle === 'start' ? start : end);
+    // props.onHandleMove(draggingHandle === 'start' ? start : end);
+    props.updateInstance({ start_seconds: start, end_seconds: end });
   };
   const onHandleRelease = e => {
     // props.updateInstance({
