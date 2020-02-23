@@ -1,26 +1,23 @@
 import Popover from 'material-ui-popup-state/HoverPopover';
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import {
   usePopupState,
   bindHover,
   bindPopover,
 } from 'material-ui-popup-state/hooks';
 
+import Avatar from '@material-ui/core/Avatar';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import {
-  Avatar,
-  CircularProgress,
-  IconButton,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemSecondaryAction,
-  ListItemText,
-  Tooltip,
-  Typography,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import CommentForm from './CommentForm';
 
@@ -29,15 +26,15 @@ const useStyles = makeStyles(theme => ({
     height: 28,
     width: 28,
   },
-  ListItem: {
+  item: {
     width: '240px',
   },
-  listItemSecondaryAction: {
+  itemAvatar: {
+    minWidth: '40px',
+  },
+  secondaryAction: {
     top: 8,
     transform: 'none',
-  },
-  ListItemAvatar: {
-    minWidth: '40px',
   },
   mask: {
     alignItems: 'center',
@@ -53,50 +50,36 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ElSideControls = styled.div`
-  visibility: hidden;
-`;
-
-const El = styled.div`
-  ${({ hasAddornment }) =>
-    hasAddornment
-      ? `
-  ${ElSideControls} {
-    visibility: visible;
-  }
-`
-      : ''};
-`;
-
 export default function Comment(props) {
   const classes = useStyles();
 
   const {
-    isRoot,
-    isActionable,
-    id,
-    threadId,
-    fname,
-    lname,
     avatar,
     date,
+    fname,
+    id,
+    isActionable,
+    isRoot,
+    lname,
     text,
+    threadId,
   } = props;
 
   const [isEditing, setEditingStatus] = useState(false);
-  const [isProcessing, setProcessingStatus] = useState(false);
   const [isHovering, setHoveringStatus] = useState(false);
+  const [isProcessing, setProcessingStatus] = useState(false);
 
   const popupState = usePopupState({
     popupId: 'MoreMenuItem',
     variant: 'popover',
   });
 
-  const toggleCommentEdit = () => {
+  const onCommentEditToggle = () => {
     setEditingStatus(true);
     popupState.close();
   };
-  const handleCommentEdit = text => {
+
+  const onCommentEdit = text => {
     // TODO: wire this up to save changes to the comment
     // the first comment will have `isRoot` prop set
     // the first comment can be accessed with `id`
@@ -106,67 +89,65 @@ export default function Comment(props) {
     setEditingStatus(false);
     setTimeout(() => setProcessingStatus(false), 1000); // TODO: make this real
 
-    console.group('handleCommentEdit()');
+    console.group('onCommentEdit()');
     console.log(isRoot ? { id } : `${id} > ${threadId}`);
     console.log({ text });
     console.groupEnd();
   };
-  const handleCommentDelete = () => {
+  const onCommentDelete = () => {
     // TODO: wire this up to delete comment
     setProcessingStatus(true);
     setEditingStatus(false);
     setTimeout(() => setProcessingStatus(false), 1000); // TODO: make this real
     popupState.close();
-    console.group('handleCommentDelete()');
+    console.group('onCommentDelete()');
     console.log({ threadId });
     console.log({ id });
     console.groupEnd();
   };
 
   const displayActions = () => {
-    if (isActionable) {
-      return (
-        <>
-          <ElSideControls>
-            <IconButton {...bindHover(popupState)}>
-              <MoreVertIcon />
-            </IconButton>
-            <Popover
-              {...bindPopover(popupState)}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'center',
-              }}
-              disableRestoreFocus>
-              <List dense>
-                <ListItem button onClick={toggleCommentEdit}>
-                  <ListItemText>Edit</ListItemText>
-                </ListItem>
-                {!isRoot ? (
-                  <ListItem button onClick={handleCommentDelete}>
-                    <ListItemText>Delete</ListItemText>
-                  </ListItem>
-                ) : null}
-              </List>
-            </Popover>
-          </ElSideControls>
-        </>
-      );
-    }
-    return null;
+    if (!isActionable) return null;
+    return (
+      <div
+        style={{
+          visibility: isHovering && !isEditing ? 'visible' : 'hidden',
+        }}>
+        <IconButton {...bindHover(popupState)}>
+          <MoreVertIcon />
+        </IconButton>
+        <Popover
+          {...bindPopover(popupState)}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+          disableRestoreFocus>
+          <List dense>
+            <ListItem button onClick={onCommentEditToggle}>
+              <ListItemText>Edit</ListItemText>
+            </ListItem>
+            {!isRoot ? (
+              <ListItem button onClick={onCommentDelete}>
+                <ListItemText>Delete</ListItemText>
+              </ListItem>
+            ) : null}
+          </List>
+        </Popover>
+      </div>
+    );
   };
 
   return (
-    <El
-      hasAddornment={isHovering && !isEditing}
+    <div
       onMouseEnter={() => setHoveringStatus(true)}
       onMouseLeave={() => setHoveringStatus(false)}>
-      <ListItem alignItems="flex-start" className={classes.ListItem} key={id}>
-        <ListItemAvatar className={classes.ListItemAvatar}>
+      <ListItem alignItems="flex-start" className={classes.item}>
+        <ListItemAvatar className={classes.itemAvatar}>
           <Tooltip
             title={
               <Typography align="center" color="inherit" variant="caption">
@@ -186,20 +167,20 @@ export default function Comment(props) {
             <CommentForm
               isEditing
               onCancel={() => setEditingStatus(false)}
-              onSubmit={text => handleCommentEdit(text, id)}
+              onSubmit={text => onCommentEdit(text, id)}
               value={text}
             />
           ) : (
             <Typography
               color="textSecondary"
               display="block"
-              variant="body2"
-              style={{ fontSize: '13px' }}>
+              style={{ fontSize: '13px' }}
+              variant="body2">
               {text}
             </Typography>
           )}
         </ListItemText>
-        <ListItemSecondaryAction className={classes.listItemSecondaryAction}>
+        <ListItemSecondaryAction className={classes.secondaryAction}>
           {displayActions()}
         </ListItemSecondaryAction>
         {isProcessing && (
@@ -208,6 +189,6 @@ export default function Comment(props) {
           </div>
         )}
       </ListItem>
-    </El>
+    </div>
   );
 }
