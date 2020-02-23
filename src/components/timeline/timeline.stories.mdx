@@ -11,10 +11,27 @@ import data from './timeline.data.json';
 
 export const plainTimelineStore = new Store({
   currentTime: 0,
+  data: {
+    commentThreads: [],
+    project: {
+      projectclips: [],
+      projectplaces: [],
+      projecttags: [],
+    },
+    videoClips: [],
+    videoPlaces: [],
+    videoTags: [],
+  },
   duration: 1000,
 });
 export const richTimelineStore = new Store({
   currentTime: 50,
+  data: data,
+  duration: 1000,
+});
+export const controlledTimelineStore = new Store({
+  currentTime: 50,
+  data: data,
   duration: 1000,
 });
 export const playheadStore = new Store({
@@ -26,9 +43,21 @@ export const onPlainTimelineChange = (newTime) => {
   action('onTimelineChange')(newTime);
   plainTimelineStore.set({ currentTime: newTime });
 }
+export const onPlainTimelineUpdate = (data) => {
+  action('onPlainTimelineUpdate')(data);
+  plainTimelineStore.set({ data: data });
+}
 export const onRichTimelineChange = (newTime) => {
   action('onTimelineChange')(newTime);
   richTimelineStore.set({ currentTime: newTime });
+}
+export const onRichTimelineUpdate = (data) => {
+  action('onRichTimelineUpdate')(data);
+  richTimelineStore.set({ data: data });
+}
+export const onControlledTimelineUpdate = (data) => {
+  action('onControlledTimelineUpdate')(data);
+  controlledTimelineStore.set({ data: data });
 }
 export const onPlayheadChange = (newTime) => {
   action('onPlayheadChange')(newTime);
@@ -49,8 +78,9 @@ export const onPlayheadChange = (newTime) => {
       {state =>
         <Timeline
           currentTime={state.currentTime}
+          data={state.data}
           duration={state.duration}
-          onChange={onPlainTimelineChange}
+          onTimeChange={onPlainTimelineChange}
         />
       }
      </State>
@@ -65,9 +95,9 @@ export const onPlayheadChange = (newTime) => {
       {state =>
         <Timeline
           currentTime={state.currentTime}
-          data={data}
+          data={state.data}
           duration={state.duration}
-          onChange={onRichTimelineChange}
+          onTimeChange={onRichTimelineChange}
         />
       }
      </State>
@@ -78,13 +108,13 @@ export const onPlayheadChange = (newTime) => {
 
 <Preview withToolbar={true}>
   <Story name="Controlled">
-    <State store={richTimelineStore}>
+    <State store={controlledTimelineStore}>
       {state =>
         <Timeline
           currentTime={number('Time', 100, {min: 0, max: 1000, step: 1, range: true})}
-          data={data}
+          data={state.data}
           duration={state.duration}
-          onChange={action('onTimelineChange')}
+          onTimeChange={action('onTimeChange')}
         />
       }
      </State>

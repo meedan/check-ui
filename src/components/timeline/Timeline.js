@@ -28,7 +28,8 @@ const useStyles = makeStyles(theme => ({
 export default function Timeline(props) {
   const classes = useStyles();
 
-  const { currentTime, duration, playing } = props;
+  const { currentTime, duration, playing, data } = props;
+  const { project, videoClips, videoPlaces, videoTags } = data;
 
   // this stops Entities from re-rendering constantly when moving playhead
   const [skip, setSkip] = React.useState(false);
@@ -39,7 +40,7 @@ export default function Timeline(props) {
         className={classes.playhead}
         currentTime={currentTime}
         duration={duration}
-        onChange={props.onChange}
+        onChange={props.onTimeChange}
         setSkip={setSkip}
       />
       <Table>
@@ -48,50 +49,50 @@ export default function Timeline(props) {
           // transport={transport}
           currentTime={currentTime}
           duration={duration}
-          entities={props.data.videoClips}
+          entities={videoClips}
           entitiesyKey="videoClips"
           entityType="clip"
           key="clip"
           onAfterChange={() => setSkip(false)}
           onBeforeChange={() => setSkip(true)}
-          onChange={props.onChange}
+          onChange={props.onTimeChange}
           playing={playing}
           skip={skip}
-          suggestions={props.data.project.projectclips}
+          suggestions={project.projectclips}
           title="Clips"
         />
         <Entities
           // transport={transport}
-          clips={props.data.videoClips}
+          clips={videoClips}
           currentTime={currentTime}
           duration={duration}
-          entities={props.data.videoTags}
+          entities={videoTags}
           entitiesyKey="videoTags"
           entityType="tag"
           key="tag"
           onAfterChange={() => setSkip(false)}
           onBeforeChange={() => setSkip(true)}
-          onChange={props.onChange}
+          onChange={props.onTimeChangeTime}
           playing={playing}
           skip={skip}
-          suggestions={props.data.project.projecttags}
+          suggestions={project.projecttags}
           title="Tags"
         />
         <Entities
           // transport={transport}
-          clips={props.data.videoClips}
+          clips={videoClips}
           currentTime={currentTime}
           duration={duration}
-          entities={props.data.videoPlaces}
+          entities={videoPlaces}
           entitiesyKey="videoPlaces"
           entityType="location"
           key="location"
           onAfterChange={() => setSkip(false)}
           onBeforeChange={() => setSkip(true)}
-          onChange={props.onChange}
+          onChange={props.onTimeChange}
           playing={playing}
           skip={skip}
-          suggestions={props.data.project.projectplaces}
+          suggestions={project.projectplaces}
           title="Places"
         />
       </Table>
@@ -113,7 +114,7 @@ Timeline.propTypes = {
   }),
   currentTime: PropTypes.number.isRequired,
   duration: PropTypes.number.isRequired,
-  onChange: PropTypes.func.isRequired,
+  onTimeChange: PropTypes.func.isRequired,
   playing: PropTypes.bool,
 };
 
