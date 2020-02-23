@@ -1,98 +1,100 @@
+import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
+import React, { useRef } from 'react';
+
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import Popover from '@material-ui/core/Popover';
-import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
-import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import CommentForm from './CommentForm';
 
-const styles = {
+const useStyles = makeStyles(theme => ({
   avatar: {
     height: 32,
     width: 32,
     border: '1px solid white',
   },
-  Grid: {
+  grid: {
     margin: '16px',
     width: '200px',
   },
-};
+}));
 
-class NewCommentThreadPopover extends Component {
-  constructor(props) {
-    super(props);
-    this.avatarRef = null;
-    this.state = {
-      hasPopover: false,
-    };
-  }
+export default function NewCommentThreadPopover(props) {
+  const classes = useStyles();
+  const popoverRoot = useRef();
 
-  componentDidMount() {
-    this.setState({ hasPopover: true });
-  }
+  const { user } = props.commentData;
 
-  handleStartNewThread(text) {
-    console.group('handleStartNewThread()');
+  const onNewThreadStart = () => {
+    console.group('onNewThreadStart()');
     console.log({ text });
     console.groupEnd();
-  }
+  };
 
-  render() {
-    const { classes, commentData } = this.props;
-    const { user } = commentData;
-    const open = Boolean(this.avatarRef);
-    return (
-      <div ref={el => (this.avatarRef = el)}>
-        {open ? (
-          <PopupState variant="popover" popupId="newCommentThread">
-            {popupState => (
-              <>
-                <Avatar
-                  {...bindTrigger(popupState)}
-                  alt={`${user.first_name} ${user.last_name}`}
-                  className={classes.avatar}
-                  src={user.profile_img_url}
-                />
-                <Popover
-                  {...bindPopover(popupState)}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center',
-                  }}
-                  anchorEl={this.avatarRef}
-                  disableRestoreFocus
-                  open={this.state.hasPopover}
-                  onEscapeKeyDown={this.props.stopNewCommentThread}
-                  onBackdropClick={this.props.stopNewCommentThread}
-                  onClick={e => e.stopPropagation()}
-                  transformOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center',
-                  }}>
-                  <Grid className={classes.Grid}>
-                    <CommentForm
-                      isCreating
-                      onCancel={() => {
-                        this.setState({ hasPopover: false }, () =>
-                          this.props.stopNewCommentThread()
-                        );
-                      }}
-                      onSubmit={text => {
-                        this.setState({ hasPopover: false }, () =>
-                          this.props.saveNewCommentThread(text)
-                        );
-                      }}
-                    />
-                  </Grid>
-                </Popover>
-              </>
-            )}
-          </PopupState>
-        ) : null}
-      </div>
-    );
-  }
+  return (
+    <div ref={popoverRoot}>
+      {open ? (
+        <PopupState variant="popover" popupId="newCommentThread">
+          {popupState => (
+            <>
+              <Avatar
+                {...bindTrigger(popupState)}
+                alt={`${user.first_name} ${user.last_name}`}
+                className={classes.avatar}
+                src={user.profile_img_url}
+              />
+              <Popover
+                {...bindPopover(popupState)}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center',
+                }}
+                anchorEl={this.avatarRef}
+                disableRestoreFocus
+                open={this.state.hasPopover}
+                onEscapeKeyDown={props.stopNewCommentThread}
+                onBackdropClick={props.stopNewCommentThread}
+                onClick={e => e.stopPropagation()}
+                transformOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}>
+                <Grid className={classes.grid}>
+                  <CommentForm
+                    isCreating
+                    onCancel={() => {
+                      this.setState({ hasPopover: false }, () =>
+                        props.stopNewCommentThread()
+                      );
+                    }}
+                    onSubmit={text => {
+                      this.setState({ hasPopover: false }, () =>
+                        props.saveNewCommentThread(text)
+                      );
+                    }}
+                  />
+                </Grid>
+              </Popover>
+            </>
+          )}
+        </PopupState>
+      ) : null}
+    </div>
+  );
 }
 
-export default withStyles(styles)(NewCommentThreadPopover);
+// class NewCommentThreadPopover extends Component {
+//     this.state = {
+//       hasPopover: false,
+//     };
+//   }
+
+//   componentDidMount() {
+//     this.setState({ hasPopover: true });
+//   }
+
+//   render() {
+//     const open = Boolean(this.avatarRef);
+//   }
+// }

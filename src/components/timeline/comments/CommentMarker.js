@@ -7,8 +7,10 @@ import {
   bindPopover,
 } from 'material-ui-popup-state/hooks';
 
-import { Avatar, Card, Popover } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import Avatar from '@material-ui/core/Avatar';
+import Card from '@material-ui/core/Card';
+import Popover from '@material-ui/core/Popover';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import CommentThread from './CommentThread';
 import NewThreadPopoover from './NewThreadPopover';

@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
-import { Button, Grid, TextField } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 
 const useStyles = makeStyles(theme => ({
   grid: {
@@ -12,7 +14,6 @@ const useStyles = makeStyles(theme => ({
 
 export default function CommentForm(props) {
   const classes = useStyles();
-
   const { isCreating, isEditing, value } = props;
 
   const [comment, setComment] = useState(value);
@@ -61,14 +62,13 @@ export default function CommentForm(props) {
             <Button
               color="primary"
               disabled={!comment || comment.length === 0}
-              mini
               onClick={() => props.onSubmit(comment)}
               size="small">
               {isEditing || isCreating ? 'Save' : 'Reply'}
             </Button>
           </Grid>
           <Grid item>
-            <Button mini onClick={onCancel} size="small">
+            <Button onClick={onCancel} size="small">
               {isCreating || isCreating ? 'Cancel' : 'Close'}
             </Button>
           </Grid>
