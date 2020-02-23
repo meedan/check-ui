@@ -14,6 +14,7 @@ const useStyles = makeStyles(theme => ({
     userSelect: 'none',
   },
   playheadHandle: {
+    background: 'rgba(0,0,0,0.04)',
     cursor: '-webkit-grab',
     cursor: 'col-resize',
     cursor: 'grab',
@@ -22,7 +23,7 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     touchAction: 'pan-x',
     transform: 'translateX(-50%)',
-    width: '28px',
+    width: '14px',
     '&:before': {
       backgroundColor: theme.palette.primary.main,
       borderRadius: '4px',
