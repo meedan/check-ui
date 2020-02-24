@@ -40,7 +40,7 @@ export const playheadStore = new Store({
 });
 
 export const onPlainTimelineChange = (newTime) => {
-  action('onTimelineChange')(newTime);
+  action('onTimeChange')(newTime);
   plainTimelineStore.set({ currentTime: newTime });
 }
 export const onPlainTimelineUpdate = (data) => {
@@ -48,7 +48,7 @@ export const onPlainTimelineUpdate = (data) => {
   plainTimelineStore.set({ data: data });
 }
 export const onRichTimelineChange = (newTime) => {
-  action('onTimelineChange')(newTime);
+  action('onTimeChange')(newTime);
   richTimelineStore.set({ currentTime: newTime });
 }
 export const onRichTimelineUpdate = (data) => {
@@ -60,8 +60,20 @@ export const onControlledTimelineUpdate = (data) => {
   controlledTimelineStore.set({ data: data });
 }
 export const onPlayheadChange = (newTime) => {
-  action('onPlayheadChange')(newTime);
+  action('onTimeChange')(newTime);
   playheadStore.set({ currentTime: newTime });
+}
+export const onCommentDelete = (threadId, commentId, callback) => {
+  action('onCommentDelete')(threadId, commentId, callback);
+  if (callback) setTimeout(callback, 3000);
+}
+export const onCommentEdit = (threadId, commentId, text, callback) => {
+  action('onCommentDelete')(threadId, commentId, text, callback);
+  if (callback) setTimeout(callback, 3000);
+}
+export const onCommentCreate = (threadId, text, callback) => {
+  action('onCommentCreate')(threadId, text, callback);
+  if (callback) setTimeout(callback, 3000);
 }
 
 <Meta title="Components/Timeline" component={Timeline} decorators={[withKnobs]} />
@@ -80,6 +92,12 @@ export const onPlayheadChange = (newTime) => {
           currentTime={state.currentTime}
           data={state.data}
           duration={state.duration}
+          onBeforeCommentThreadCreate={action('onBeforeCommentThreadCreate')}
+          onCommentCreate={onCommentCreate}
+          onCommentDelete={action('onCommentDelete')}
+          onCommentEdit={action('onCommentEdit')}
+          onCommentThreadCreate={action('onCommentThreadCreate')}
+          onCommentThreadDelete={action('onCommentThreadDelete')}
           onTimeChange={onPlainTimelineChange}
         />
       }
@@ -97,6 +115,12 @@ export const onPlayheadChange = (newTime) => {
           currentTime={state.currentTime}
           data={state.data}
           duration={state.duration}
+          onBeforeCommentThreadCreate={action('onBeforeCommentThreadCreate')}
+          onCommentCreate={onCommentCreate}
+          onCommentDelete={action('onCommentDelete')}
+          onCommentEdit={action('onCommentEdit')}
+          onCommentThreadCreate={action('onCommentThreadCreate')}
+          onCommentThreadDelete={action('onCommentThreadDelete')}
           onTimeChange={onRichTimelineChange}
         />
       }
@@ -114,6 +138,12 @@ export const onPlayheadChange = (newTime) => {
           currentTime={number('Time', 100, {min: 0, max: 1000, step: 1, range: true})}
           data={state.data}
           duration={state.duration}
+          onBeforeCommentThreadCreate={action('onBeforeCommentThreadCreate')}
+          onCommentCreate={onCommentCreate}
+          onCommentDelete={action('onCommentDelete')}
+          onCommentEdit={action('onCommentEdit')}
+          onCommentThreadCreate={action('onCommentThreadCreate')}
+          onCommentThreadDelete={action('onCommentThreadDelete')}
           onTimeChange={action('onTimeChange')}
         />
       }

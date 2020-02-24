@@ -7,8 +7,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Comments from './comments/Comments';
 import Entities from './entities/Entities';
 import Playhead from './playhead/Playhead';
-
-const TIMELINE_OFFSET = 224;
+import config from './utils/config';
 
 const useStyles = makeStyles(theme => ({
   timelineRoot: {
@@ -18,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   playhead: {
     borderLeft: `1px solid ${theme.palette.divider}`,
     bottom: 0,
-    left: `${TIMELINE_OFFSET}px`,
+    left: `${config.TIMELINE_OFFSET}px`,
     position: 'absolute',
     right: 0,
     top: 0,
@@ -29,7 +28,7 @@ export default function Timeline(props) {
   const classes = useStyles();
 
   const { currentTime, duration, playing, data } = props;
-  const { project, videoClips, videoPlaces, videoTags } = data;
+  const { commentThreads, project, videoClips, videoPlaces, videoTags } = data;
 
   // this stops Entities from re-rendering constantly when moving playhead
   const [skip, setSkip] = React.useState(false);
@@ -44,7 +43,17 @@ export default function Timeline(props) {
         setSkip={setSkip}
       />
       <Table>
-        <Comments {...props} currentTime={currentTime} />
+        <Comments
+          currentTime={currentTime}
+          duration={duration}
+          onBeforeCommentThreadCreate={props.onBeforeCommentThreadCreate}
+          onCommentCreate={props.onCommentCreate}
+          onCommentDelete={props.onCommentDelete}
+          onCommentEdit={props.onCommentEdit}
+          onCommentThreadCreate={props.onCommentThreadCreate}
+          onCommentThreadDelete={props.onCommentThreadDelete}
+          threads={commentThreads}
+        />
         <Entities
           // transport={transport}
           currentTime={currentTime}
@@ -114,6 +123,11 @@ Timeline.propTypes = {
   }),
   currentTime: PropTypes.number.isRequired,
   duration: PropTypes.number.isRequired,
+  onCommentCreate: PropTypes.func.isRequired,
+  onCommentDelete: PropTypes.func.isRequired,
+  onCommentEdit: PropTypes.func.isRequired,
+  onCommentThreadCreate: PropTypes.func.isRequired,
+  onCommentThreadDelete: PropTypes.func.isRequired,
   onTimeChange: PropTypes.func.isRequired,
   playing: PropTypes.bool,
 };

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Popover from 'material-ui-popup-state/HoverPopover';
 import React, { useState } from 'react';
 import {
@@ -19,7 +20,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
-import CommentForm from './CommentForm';
+import Form from './Form';
 
 const useStyles = makeStyles(theme => ({
   avatar: {
@@ -57,7 +58,6 @@ export default function Comment(props) {
     avatar,
     date,
     fname,
-    id,
     isActionable,
     isRoot,
     lname,
@@ -65,45 +65,42 @@ export default function Comment(props) {
     threadId,
   } = props;
 
-  const [isEditing, setEditingStatus] = useState(false);
-  const [isHovering, setHoveringStatus] = useState(false);
-  const [isProcessing, setProcessingStatus] = useState(false);
+  const [isEditing, setEditingState] = useState(false);
+  const [isHovering, setHoveringState] = useState(false);
+  const [isProcessing, setProcessingState] = useState(false);
+
+  // make obvious what is what
+  const commentId = props.id;
 
   const popupState = usePopupState({
     popupId: 'MoreMenuItem',
     variant: 'popover',
   });
 
+  const onCommentStop = () => {
+    console.log('—— onCommentStop()');
+    setEditingState(false);
+    popupState.close();
+  };
+
   const onCommentEditToggle = () => {
-    setEditingStatus(true);
+    console.log('—— onCommentEditToggle()');
+    setEditingState(true);
     popupState.close();
   };
 
   const onCommentEdit = text => {
-    // TODO: wire this up to save changes to the comment
-    // the first comment will have `isRoot` prop set
-    // the first comment can be accessed with `id`
-    // subsequent comments have also threadId (which is first comment’s id)
-
-    setProcessingStatus(true);
-    setEditingStatus(false);
-    setTimeout(() => setProcessingStatus(false), 1000); // TODO: make this real
-
-    console.group('onCommentEdit()');
-    console.log(isRoot ? { id } : `${id} > ${threadId}`);
-    console.log({ text });
-    console.groupEnd();
+    console.log('—— onCommentEdit()');
+    setProcessingState(true);
+    setEditingState(false);
+    props.onCommentEdit(threadId, commentId, text);
   };
+
   const onCommentDelete = () => {
-    // TODO: wire this up to delete comment
-    setProcessingStatus(true);
-    setEditingStatus(false);
-    setTimeout(() => setProcessingStatus(false), 1000); // TODO: make this real
-    popupState.close();
-    console.group('onCommentDelete()');
-    console.log({ threadId });
-    console.log({ id });
-    console.groupEnd();
+    console.log('—— onCommentDelete()');
+    setProcessingState(true);
+    setEditingState(false);
+    props.onCommentDelete(threadId, commentId, popupState.close());
   };
 
   const displayActions = () => {
@@ -144,8 +141,8 @@ export default function Comment(props) {
 
   return (
     <div
-      onMouseEnter={() => setHoveringStatus(true)}
-      onMouseLeave={() => setHoveringStatus(false)}>
+      onMouseEnter={() => setHoveringState(true)}
+      onMouseLeave={() => setHoveringState(false)}>
       <ListItem alignItems="flex-start" className={classes.item}>
         <ListItemAvatar className={classes.itemAvatar}>
           <Tooltip
@@ -164,10 +161,9 @@ export default function Comment(props) {
         <ListItemText>
           <Typography variant="body2">{`${fname} ${lname}`}</Typography>
           {isEditing ? (
-            <CommentForm
-              isEditing
-              onCancel={() => setEditingStatus(false)}
-              onSubmit={text => onCommentEdit(text, id)}
+            <Form
+              onCancel={onCommentStop}
+              onSubmit={text.length > 0 ? onCommentEdit : onCommentStop}
               value={text}
             />
           ) : (
@@ -192,3 +188,9 @@ export default function Comment(props) {
     </div>
   );
 }
+
+Comment.propTypes = {
+  onCommentCreate: PropTypes.func.isRequired,
+  onCommentDelete: PropTypes.func.isRequired,
+  onCommentEdit: PropTypes.func.isRequired,
+};

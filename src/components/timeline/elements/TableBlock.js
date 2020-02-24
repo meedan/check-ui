@@ -5,9 +5,15 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
+import config from '../utils/config';
+
 const useStyles = makeStyles({
   leftCol: {
-    width: '224px',
+    width: `${config.TIMELINE_OFFSET}px`,
+    paddingLeft: 0,
+    paddingRight: 0,
+  },
+  rightCol: {
     paddingLeft: 0,
     paddingRight: 0,
   },
@@ -18,16 +24,18 @@ const useStyles = makeStyles({
 
 export default function TableBlock(props) {
   const classes = useStyles();
-  const { leftColContent, rightColContent } = props;
+  const { leftColContent, plain, rightColContent } = props;
   return (
     <TableRow>
       <TableCell
-        className={`${classes.leftCol} ${props.plain ? classes.plain : null}`}
+        className={classes.leftCol}
+        style={plain ? { border: 'none' } : {}}
         padding={!props.section ? 'none' : 'default'}>
         {leftColContent}
       </TableCell>
       <TableCell
-        className={`${classes.rightCol} ${props.plain ? classes.plain : null}`}
+        className={classes.rightCol}
+        style={plain ? { border: 'none' } : {}}
         padding={!props.section ? 'none' : 'default'}>
         {rightColContent}
       </TableCell>

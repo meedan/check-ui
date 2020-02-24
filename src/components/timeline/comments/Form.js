@@ -14,14 +14,24 @@ const useStyles = makeStyles(theme => ({
 
 export default function CommentForm(props) {
   const classes = useStyles();
-  const { isCreating, isEditing, value } = props;
+  const { value } = props;
 
   const [comment, setComment] = useState(value);
+
+  const onChange = e => {
+    setComment(e.target.value);
+  };
 
   const onCancel = () => {
     setComment(value);
     props.onCancel();
   };
+
+  const onSubmit = () => {
+    if (comment.length > 0) props.onSubmit(comment);
+  };
+
+  const isCreating = !value || value.length === 0;
 
   return (
     <Grid
@@ -42,12 +52,12 @@ export default function CommentForm(props) {
             onKeyPress: e => {
               if (e.key === 'Enter') {
                 e.preventDefault();
-                return comment.length > 0 ? props.onSubmit(comment) : null;
+                onSubmit();
               }
             },
           }}
-          onChange={e => setComment(e.currentTarget.value)}
-          placeholder={isEditing ? 'Enter comment' : 'New comment'}
+          onChange={onChange}
+          placeholder={isCreating ? 'New comment' : 'Enter comment'}
           required
           type="text"
         />
@@ -62,14 +72,14 @@ export default function CommentForm(props) {
             <Button
               color="primary"
               disabled={!comment || comment.length === 0}
-              onClick={() => props.onSubmit(comment)}
+              onClick={onSubmit}
               size="small">
-              {isEditing || isCreating ? 'Save' : 'Reply'}
+              {isCreating ? 'Save' : 'Reply'}
             </Button>
           </Grid>
           <Grid item>
             <Button onClick={onCancel} size="small">
-              {isCreating || isCreating ? 'Cancel' : 'Close'}
+              {isCreating ? 'Cancel' : 'Close'}
             </Button>
           </Grid>
         </Grid>
