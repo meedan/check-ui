@@ -3,6 +3,7 @@ import { State, Store } from "@sambego/storybook-state";
 import { action } from '@storybook/addon-actions';
 import { number, withKnobs } from '@storybook/addon-knobs';
 
+import Comments from './comments/Comments';
 import Playhead from './playhead/Playhead';
 import Slider from './slider/Slider';
 import Timeline from './Timeline';
@@ -75,6 +76,12 @@ export const onCommentCreate = (threadId, text, callback) => {
   action('onCommentCreate')(threadId, text, callback);
   if (callback) setTimeout(callback, 3000);
 }
+export const onCommentThreadDelete = (threadId, callback) => {
+  action('onCommentThreadDelete')(threadId, callback);
+  console.log({callback})
+  console.log({threadId})
+  if (callback) setTimeout(callback, 3000);
+}
 
 <Meta title="Components/Timeline" component={Timeline} decorators={[withKnobs]} />
 
@@ -97,7 +104,7 @@ export const onCommentCreate = (threadId, text, callback) => {
           onCommentDelete={action('onCommentDelete')}
           onCommentEdit={action('onCommentEdit')}
           onCommentThreadCreate={action('onCommentThreadCreate')}
-          onCommentThreadDelete={action('onCommentThreadDelete')}
+          onCommentThreadDelete={onCommentThreadDelete}
           onTimeChange={onPlainTimelineChange}
         />
       }
@@ -120,7 +127,7 @@ export const onCommentCreate = (threadId, text, callback) => {
           onCommentDelete={action('onCommentDelete')}
           onCommentEdit={action('onCommentEdit')}
           onCommentThreadCreate={action('onCommentThreadCreate')}
-          onCommentThreadDelete={action('onCommentThreadDelete')}
+          onCommentThreadDelete={onCommentThreadDelete}
           onTimeChange={onRichTimelineChange}
         />
       }
@@ -143,7 +150,7 @@ export const onCommentCreate = (threadId, text, callback) => {
           onCommentDelete={action('onCommentDelete')}
           onCommentEdit={action('onCommentEdit')}
           onCommentThreadCreate={action('onCommentThreadCreate')}
-          onCommentThreadDelete={action('onCommentThreadDelete')}
+          onCommentThreadDelete={onCommentThreadDelete}
           onTimeChange={action('onTimeChange')}
         />
       }
@@ -173,13 +180,56 @@ export const onCommentCreate = (threadId, text, callback) => {
   </Story>
 </Preview>
 
+## Comments
+
+<Preview>
+  <Story name="Partials » Commments (Plain)">
+    <Comments 
+      duration={1000}
+      onCommentCreate={action('onCommentCreate')}
+      onCommentDelete={action('onCommentDelete')}
+      onCommentEdit={action('onCommentEdit')}
+      onCommentThreadCreate={action('onCommentThreadCreate')}
+      onCommentThreadDelete={action('onCommentThreadDelete')}
+    />
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="Partials » Commments (Rich)">
+    <Comments 
+      duration={1000}
+      onCommentCreate={action('onCommentCreate')}
+      onCommentDelete={action('onCommentDelete')}
+      onCommentEdit={action('onCommentEdit')}
+      onCommentThreadCreate={action('onCommentThreadCreate')}
+      onCommentThreadDelete={action('onCommentThreadDelete')}
+      threads={data.commentThreads}
+    />
+  </Story>
+</Preview>
+
 ## Slider
+
+<Preview>
+  <Story name="Partials » Slider (Plain)">
+    <Slider
+      deleteInstance={action('deleteInstance')}
+      duration={100}
+      instances={[]}
+      onDrag={action('onDrag')}
+      onDragEnd={action('onDragEnd')}
+      onDragStart={action('onDragStart')}
+      updateInstance={action('updateInstance')}
+      threads={data.commentThreads}
+    />
+  </Story>
+</Preview>
 
 <Preview>
   <Story name="Partials » Slider (Clips)">
     <Slider
       deleteInstance={action('deleteInstance')}
-      updateInstance={action('updateInstance')}
       duration={100}
       instances={[
         {
@@ -196,6 +246,7 @@ export const onCommentCreate = (threadId, text, callback) => {
       onDrag={action('onDrag')}
       onDragEnd={action('onDragEnd')}
       onDragStart={action('onDragStart')}
+      updateInstance={action('updateInstance')}
     />
   </Story>
 </Preview>
@@ -205,7 +256,6 @@ export const onCommentCreate = (threadId, text, callback) => {
     <Slider
       clipInstance={action('clipInstance')}
       deleteInstance={action('deleteInstance')}
-      updateInstance={action('updateInstance')}
       duration={100}
       instances={[
         {
@@ -222,6 +272,7 @@ export const onCommentCreate = (threadId, text, callback) => {
       onDrag={action('onDrag')}
       onDragEnd={action('onDragEnd')}
       onDragStart={action('onDragStart')}
+      updateInstance={action('updateInstance')}
     />
   </Story>
 </Preview>

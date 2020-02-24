@@ -12,6 +12,7 @@ const useStyles = makeStyles(theme => ({
     overflowX: 'visible',
     position: 'relative',
     userSelect: 'none',
+    zIndex: 500,
   },
   playheadHandle: {
     background: 'rgba(0,0,0,0.04)',
@@ -24,6 +25,7 @@ const useStyles = makeStyles(theme => ({
     touchAction: 'pan-x',
     transform: 'translateX(-50%)',
     width: '14px',
+    // zIndex: 100,
     '&:before': {
       backgroundColor: theme.palette.primary.main,
       borderRadius: '4px',

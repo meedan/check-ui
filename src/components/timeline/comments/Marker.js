@@ -60,29 +60,35 @@ export default function Marker(props) {
         {...bindTrigger(editPopupState)}
       />
       <HoverPopover
-        disableRestoreFocus
-        onClick={e => e.stopPropagation()}
         {...bindPopover(readPopupState)}
-        {...popoverProps}>
+        {...popoverProps}
+        disableRestoreFocus
+        onClick={e => e.stopPropagation()}>
         <Card>
           <Thread
-            closePopup={readPopupState.close}
-            thread={thread}
             {...props}
+            onClose={readPopupState.close}
+            thread={thread}
+            onCommentThreadDelete={threadId => {
+              props.onCommentThreadDelete(threadId, readPopupState.close);
+            }}
           />
         </Card>
       </HoverPopover>
       <Popover
-        disableRestoreFocus
-        onClick={e => e.stopPropagation()}
         {...bindPopover(editPopupState)}
-        {...popoverProps}>
+        {...popoverProps}
+        disableRestoreFocus
+        onClick={e => e.stopPropagation()}>
         <Card>
           <Thread
-            closePopup={editPopupState.close}
-            isActionable
-            thread={thread}
             {...props}
+            isActionable
+            onClose={editPopupState.close}
+            onCommentThreadDelete={threadId => {
+              props.onCommentThreadDelete(threadId, editPopupState.close);
+            }}
+            thread={thread}
           />
         </Card>
       </Popover>

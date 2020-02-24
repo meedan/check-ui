@@ -34,7 +34,6 @@ export default function Thread(props) {
   const classes = useStyles();
   const {
     c_pretty_created_date,
-    id,
     replies,
     start_seconds,
     text,
@@ -42,7 +41,7 @@ export default function Thread(props) {
   } = props.thread;
 
   // make clear what is what
-  const threadId = id;
+  const threadId = props.thread.id;
 
   const [isActionable, setActionableState] = useState(props.isActionable);
   const [isProcessing, setProcessingState] = useState(false);
@@ -52,13 +51,9 @@ export default function Thread(props) {
     props.onCommentCreate(threadId, text, setProcessingState(false));
   };
 
-  const onThreadDelete = threadId => {
-    // TODO: wire deleting comment thread here
-    console.group('onThreadDelete()');
-    console.log({ threadId });
-    console.groupEnd();
+  const onCommentThreadDelete = () => {
     setProcessingState(true);
-    setTimeout(() => props.closePopup(), 1000);
+    props.onCommentThreadDelete(threadId);
   };
 
   return (
@@ -84,7 +79,7 @@ export default function Thread(props) {
                 ) : (
                   <IconButton
                     aria-label="Delete thread"
-                    onClick={() => onThreadDelete(threadId)}>
+                    onClick={onCommentThreadDelete}>
                     <Tooltip title="Delete thread">
                       <DeleteIcon fontSize="small" />
                     </Tooltip>
@@ -128,7 +123,7 @@ export default function Thread(props) {
       {isActionable ? (
         <ListItem>
           <ListItemText>
-            <Form onCancel={props.closePopup} onSubmit={onCommentCreate} />
+            <Form onCancel={props.onClose} onSubmit={onCommentCreate} />
           </ListItemText>
         </ListItem>
       ) : null}
@@ -137,10 +132,11 @@ export default function Thread(props) {
 }
 
 Thread.propTypes = {
-  closePopup: PropTypes.func.isRequired,
-  isActionable: PropTypes.bool,
-  onCommentCreate: PropTypes.func.isRequired,
-  thread: PropTypes.object,
+  onClose: PropTypes.func.isRequired,
+  onCommentThreadDelete: PropTypes.func.isRequired,
+  thread: PropTypes.object.isRequired,
+  // isActionable: PropTypes.bool,
+  // onCommentCreate: PropTypes.func.isRequired,
 };
 
 Thread.defaultProps = {

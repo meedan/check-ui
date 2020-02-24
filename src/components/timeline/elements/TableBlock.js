@@ -1,45 +1,61 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import config from '../utils/config';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
+  row: {
+    alignItems: 'center',
+    display: 'flex',
+    flexWrap: 'nowrap',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
   leftCol: {
-    width: `${config.TIMELINE_OFFSET}px`,
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    display: 'flex',
+    flex: `0 0 ${config.TIMELINE_OFFSET}px`,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    minHeight: '48px',
     paddingLeft: 0,
     paddingRight: 0,
   },
   rightCol: {
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    display: 'flex',
+    flex: `1 1 auto`,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    minHeight: '48px',
     paddingLeft: 0,
     paddingRight: 0,
   },
   plain: {
     border: 'none',
   },
-});
+}));
 
 export default function TableBlock(props) {
   const classes = useStyles();
   const { leftColContent, plain, rightColContent } = props;
   return (
-    <TableRow>
-      <TableCell
+    <div className={classes.row}>
+      <div
         className={classes.leftCol}
         style={plain ? { border: 'none' } : {}}
         padding={!props.section ? 'none' : 'default'}>
-        {leftColContent}
-      </TableCell>
-      <TableCell
+        <div>{leftColContent}</div>
+      </div>
+      <div
         className={classes.rightCol}
         style={plain ? { border: 'none' } : {}}
         padding={!props.section ? 'none' : 'default'}>
-        {rightColContent}
-      </TableCell>
-    </TableRow>
+        <div>{rightColContent}</div>
+      </div>
+    </div>
   );
 }
 

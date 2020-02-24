@@ -14,11 +14,11 @@ import TableSection from '../elements/TableSection';
 
 const useStyles = makeStyles(theme => ({
   sliderRoot: {
-    zIndex: 500,
     '& .rc-slider-mark-text': {
       height: '32px',
       width: '32px',
       transform: 'translateY(-27px) !important',
+      zIndex: 600,
     },
     '& .rc-slider-disabled, & .rc-slider-disabled .rc-slider-rail': {
       background: 'transparent',

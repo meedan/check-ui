@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Table from '@material-ui/core/Table';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import Comments from './comments/Comments';
@@ -42,69 +41,67 @@ export default function Timeline(props) {
         onChange={props.onTimeChange}
         setSkip={setSkip}
       />
-      <Table>
-        <Comments
-          currentTime={currentTime}
-          duration={duration}
-          onBeforeCommentThreadCreate={props.onBeforeCommentThreadCreate}
-          onCommentCreate={props.onCommentCreate}
-          onCommentDelete={props.onCommentDelete}
-          onCommentEdit={props.onCommentEdit}
-          onCommentThreadCreate={props.onCommentThreadCreate}
-          onCommentThreadDelete={props.onCommentThreadDelete}
-          threads={commentThreads}
-        />
-        <Entities
-          // transport={transport}
-          currentTime={currentTime}
-          duration={duration}
-          entities={videoClips}
-          entitiesyKey="videoClips"
-          entityType="clip"
-          key="clip"
-          onAfterChange={() => setSkip(false)}
-          onBeforeChange={() => setSkip(true)}
-          onChange={props.onTimeChange}
-          playing={playing}
-          skip={skip}
-          suggestions={project.projectclips}
-          title="Clips"
-        />
-        <Entities
-          // transport={transport}
-          clips={videoClips}
-          currentTime={currentTime}
-          duration={duration}
-          entities={videoTags}
-          entitiesyKey="videoTags"
-          entityType="tag"
-          key="tag"
-          onAfterChange={() => setSkip(false)}
-          onBeforeChange={() => setSkip(true)}
-          onChange={props.onTimeChangeTime}
-          playing={playing}
-          skip={skip}
-          suggestions={project.projecttags}
-          title="Tags"
-        />
-        <Entities
-          // transport={transport}
-          clips={videoClips}
-          currentTime={currentTime}
-          duration={duration}
-          entities={videoPlaces}
-          entitiesyKey="videoPlaces"
-          entityType="location"
-          key="location"
-          onAfterChange={() => setSkip(false)}
-          onBeforeChange={() => setSkip(true)}
-          onChange={props.onTimeChange}
-          playing={playing}
-          skip={skip}
-          suggestions={project.projectplaces}
-          title="Places"
-        />
-      </Table>
+      <Comments
+        currentTime={currentTime}
+        duration={duration}
+        onBeforeCommentThreadCreate={props.onBeforeCommentThreadCreate}
+        onCommentCreate={props.onCommentCreate}
+        onCommentDelete={props.onCommentDelete}
+        onCommentEdit={props.onCommentEdit}
+        onCommentThreadCreate={props.onCommentThreadCreate}
+        onCommentThreadDelete={props.onCommentThreadDelete}
+        threads={commentThreads}
+      />
+      <Entities
+        // transport={transport}
+        currentTime={currentTime}
+        duration={duration}
+        entities={videoClips}
+        entitiesyKey="videoClips"
+        entityType="clip"
+        key="clip"
+        onAfterChange={() => setSkip(false)}
+        onBeforeChange={() => setSkip(true)}
+        onChange={props.onTimeChange}
+        playing={playing}
+        skip={skip}
+        suggestions={project.projectclips}
+        title="Clips"
+      />
+      <Entities
+        // transport={transport}
+        clips={videoClips}
+        currentTime={currentTime}
+        duration={duration}
+        entities={videoTags}
+        entitiesyKey="videoTags"
+        entityType="tag"
+        key="tag"
+        onAfterChange={() => setSkip(false)}
+        onBeforeChange={() => setSkip(true)}
+        onChange={props.onTimeChangeTime}
+        playing={playing}
+        skip={skip}
+        suggestions={project.projecttags}
+        title="Tags"
+      />
+      <Entities
+        // transport={transport}
+        clips={videoClips}
+        currentTime={currentTime}
+        duration={duration}
+        entities={videoPlaces}
+        entitiesyKey="videoPlaces"
+        entityType="location"
+        key="location"
+        onAfterChange={() => setSkip(false)}
+        onBeforeChange={() => setSkip(true)}
+        onChange={props.onTimeChange}
+        playing={playing}
+        skip={skip}
+        suggestions={project.projectplaces}
+        title="Places"
+      />
     </div>
   );
 }

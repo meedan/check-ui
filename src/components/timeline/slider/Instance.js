@@ -18,8 +18,9 @@ const useStyles = () =>
       bottom: '0',
       position: 'absolute',
       top: '0',
+      zIndex: 500,
       '&:hover': {
-        zIndex: '3000',
+        zIndex: '500',
       },
     },
     handle: {
@@ -29,7 +30,7 @@ const useStyles = () =>
       position: 'absolute',
       top: '0',
       transition: 'transform 250ms, opacity 250ms, width 250ms',
-      zIndex: '2000',
+      zIndex: '500',
       '&:hover': {
         opacity: '1 !important',
       },
@@ -204,7 +205,7 @@ export default function Instance(props) {
         style={{
           left: `${x1}px`,
           width: `${instanceWidth}px`,
-          zIndex: hoveringInstance ? `1000` : `default`,
+          zIndex: hoveringInstance ? `500` : `default`,
         }}
         onMouseEnter={!isLocked ? onInstanceEnter : null}
         onMouseLeave={!isLocked ? onInstanceLeave : null}>
