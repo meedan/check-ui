@@ -6,6 +6,7 @@ import {
   bindHover,
   bindTrigger,
   bindPopover,
+  anchorRef,
 } from 'material-ui-popup-state/hooks';
 
 import Avatar from '@material-ui/core/Avatar';
@@ -16,16 +17,20 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import NewThread from './NewThread';
 import Thread from './Thread';
 
-const useStyles = makeStyles(theme => ({
-  avatar: {
-    height: 32,
-    width: 32,
-    border: '1px solid white',
-  },
-}));
+const useStyles = () =>
+  makeStyles(theme => ({
+    avatar: {
+      height: 32,
+      width: 32,
+      border: '1px solid white',
+    },
+    hoverCard: {
+      cursor: 'pointer',
+    },
+  }));
 
 export default function Marker(props) {
-  const classes = useStyles();
+  const classes = useStyles()();
 
   const { thread } = props;
   const { isBeingAdded, user } = thread;
@@ -50,21 +55,28 @@ export default function Marker(props) {
     },
   };
 
+  const onToggleActionable = e => {
+    e.stopPropagation();
+    readPopupState.close();
+    editPopupState.open();
+  };
+
   const existingThread = (
     <>
       <Avatar
-        alt={`${user.first_name} ${user.last_name}`}
-        className={classes.avatar}
-        src={user.profile_img_url}
         {...bindHover(readPopupState)}
         {...bindTrigger(editPopupState)}
+        alt={`${user.first_name} ${user.last_name}`}
+        className={classes.avatar}
+        ref={anchorRef(editPopupState)}
+        src={user.profile_img_url}
       />
       <HoverPopover
         {...bindPopover(readPopupState)}
         {...popoverProps}
         disableRestoreFocus
-        onClick={e => e.stopPropagation()}>
-        <Card>
+        onClick={onToggleActionable}>
+        <Card className={classes.hoverCard}>
           <Thread
             {...props}
             onClose={readPopupState.close}
@@ -83,7 +95,7 @@ export default function Marker(props) {
         <Card>
           <Thread
             {...props}
-            isActionable
+            isActionable={true}
             onClose={editPopupState.close}
             onCommentThreadDelete={threadId => {
               props.onCommentThreadDelete(threadId, editPopupState.close);
