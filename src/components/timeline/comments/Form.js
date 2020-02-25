@@ -17,6 +17,7 @@ export default function CommentForm(props) {
   const { value } = props;
 
   const [comment, setComment] = useState(value);
+  const [saving, setSaving] = useState(false);
 
   const onChange = e => {
     setComment(e.target.value);
@@ -28,7 +29,8 @@ export default function CommentForm(props) {
   };
 
   const onSubmit = () => {
-    if (comment.length > 0) props.onSubmit(comment);
+    setSaving(true);
+    if (comment.length > 0) props.onSubmit(comment, () => setSaving(false));
   };
 
   const isCreating = !value || value.length === 0;
@@ -44,6 +46,7 @@ export default function CommentForm(props) {
         <TextField
           autoFocus
           defaultValue={comment}
+          disabled={saving}
           fullWidth
           id="comment"
           inputProps={{
@@ -71,14 +74,14 @@ export default function CommentForm(props) {
           <Grid item>
             <Button
               color="primary"
-              disabled={!comment || comment.length === 0}
+              disabled={!comment || comment.length === 0 || saving}
               onClick={onSubmit}
               size="small">
-              {isCreating ? 'Save' : 'Reply'}
+              {isCreating ? 'Reply' : 'Save'}
             </Button>
           </Grid>
           <Grid item>
-            <Button onClick={onCancel} size="small">
+            <Button disabled={saving} onClick={onCancel} size="small">
               {isCreating ? 'Cancel' : 'Close'}
             </Button>
           </Grid>
