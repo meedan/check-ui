@@ -22,6 +22,12 @@ export const plainTimelineStore = new Store({
     videoClips: [],
     videoPlaces: [],
     videoTags: [],
+    user: { 
+      first_name: "Mark",
+      id: 2376,
+      last_name: "Boas",
+      profile_img_url: "https://lh4.googleusercontent.com/-KAQP-uwuJ-U/AAAAAAAAAAI/AAAAAAAAAA8/m1-ILT1IqWs/s100/photo.jpg",
+    },
   },
   duration: 1000,
 });
@@ -187,6 +193,12 @@ export const onCommentThreadCreate = (time, text, callback) => {
   <Story name="Partials » Commments (Plain)">
     <Comments 
       duration={1000}
+      user={{
+        first_name: "Mark",
+        id: 2376,
+        last_name: "Boas",
+        profile_img_url: "https://lh4.googleusercontent.com/-KAQP-uwuJ-U/AAAAAAAAAAI/AAAAAAAAAA8/m1-ILT1IqWs/s100/photo.jpg",
+      }}
       onCommentCreate={action('onCommentCreate')}
       onCommentDelete={onCommentDelete}
       onCommentEdit={action('onCommentEdit')}
@@ -200,6 +212,12 @@ export const onCommentThreadCreate = (time, text, callback) => {
   <Story name="Partials » Commments (Rich)">
     <Comments 
       duration={1000}
+      user={{
+        first_name: "Mark",
+        id: 2376,
+        last_name: "Boas",
+        profile_img_url: "https://lh4.googleusercontent.com/-KAQP-uwuJ-U/AAAAAAAAAAI/AAAAAAAAAA8/m1-ILT1IqWs/s100/photo.jpg",
+      }}
       onCommentCreate={action('onCommentCreate')}
       onCommentDelete={onCommentDelete}
       onCommentEdit={action('onCommentEdit')}
