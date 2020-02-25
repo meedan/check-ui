@@ -33,6 +33,7 @@
     "@storybook/addon-viewport": "5.3.14",
     "@storybook/addons": "5.3.14",
     "@storybook/react": "5.3.14",
+    "@storybook/storybook-deployer": "^2.8.2",
     "babel-eslint": "10.0.3",
     "babel-loader": "8.0.6",
     "css-loader": "3.4.2",
@@ -55,7 +56,8 @@
     "build-storybook": "build-storybook",
     "start": "start-storybook -p 8080 --ci",
     "clean-dist": "rm -rf ./dist",
-    "build": "yarn run clean-dist && NODE_ENV=production `yarn bin`/babel ./src --out-dir ./dist"
+    "build": "yarn run clean-dist && NODE_ENV=production `yarn bin`/babel ./src --out-dir ./dist",
+    "deploy": "storybook-to-ghpages"
   },
   "husky": {
     "hooks": {
