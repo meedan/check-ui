@@ -64,22 +64,23 @@ export const onPlayheadChange = (newTime) => {
   action('onTimeChange')(newTime);
   playheadStore.set({ currentTime: newTime });
 }
-export const onCommentDelete = (threadId, commentId, callback) => {
-  action('onCommentDelete')(threadId, commentId, callback);
-  if (callback) setTimeout(callback, 3000);
+export const onCommentDelete = (threadId, commentId) => {
+  action('onCommentDelete')(threadId, commentId);
 }
 export const onCommentEdit = (threadId, commentId, text, callback) => {
-  action('onCommentDelete')(threadId, commentId, text, callback);
+  action('onCommentDelete')(threadId, commentId, text, 'callback');
   if (callback) setTimeout(callback, 3000);
 }
 export const onCommentCreate = (threadId, text, callback) => {
-  action('onCommentCreate')(threadId, text, callback);
+  action('onCommentCreate')(threadId, text, 'callback');
   if (callback) setTimeout(callback, 3000);
 }
 export const onCommentThreadDelete = (threadId, callback) => {
-  action('onCommentThreadDelete')(threadId, callback);
-  console.log({callback})
-  console.log({threadId})
+  action('onCommentThreadDelete')(threadId, 'callback');
+  if (callback) setTimeout(callback, 3000);
+}
+export const onCommentThreadCreate = (time, text, callback) => {
+  action('onCommentThreadCreate')(time, text, 'callback');
   if (callback) setTimeout(callback, 3000);
 }
 
@@ -101,9 +102,9 @@ export const onCommentThreadDelete = (threadId, callback) => {
           duration={state.duration}
           onBeforeCommentThreadCreate={action('onBeforeCommentThreadCreate')}
           onCommentCreate={onCommentCreate}
-          onCommentDelete={action('onCommentDelete')}
-          onCommentEdit={action('onCommentEdit')}
-          onCommentThreadCreate={action('onCommentThreadCreate')}
+          onCommentDelete={onCommentDelete}
+          onCommentEdit={onCommentEdit}
+          onCommentThreadCreate={onCommentThreadCreate}
           onCommentThreadDelete={onCommentThreadDelete}
           onTimeChange={onPlainTimelineChange}
         />
@@ -124,9 +125,9 @@ export const onCommentThreadDelete = (threadId, callback) => {
           duration={state.duration}
           onBeforeCommentThreadCreate={action('onBeforeCommentThreadCreate')}
           onCommentCreate={onCommentCreate}
-          onCommentDelete={action('onCommentDelete')}
-          onCommentEdit={action('onCommentEdit')}
-          onCommentThreadCreate={action('onCommentThreadCreate')}
+          onCommentDelete={onCommentDelete}
+          onCommentEdit={onCommentEdit}
+          onCommentThreadCreate={onCommentThreadCreate}
           onCommentThreadDelete={onCommentThreadDelete}
           onTimeChange={onRichTimelineChange}
         />
@@ -147,9 +148,9 @@ export const onCommentThreadDelete = (threadId, callback) => {
           duration={state.duration}
           onBeforeCommentThreadCreate={action('onBeforeCommentThreadCreate')}
           onCommentCreate={onCommentCreate}
-          onCommentDelete={action('onCommentDelete')}
-          onCommentEdit={action('onCommentEdit')}
-          onCommentThreadCreate={action('onCommentThreadCreate')}
+          onCommentDelete={onCommentDelete}
+          onCommentEdit={onCommentEdit}
+          onCommentThreadCreate={onCommentThreadCreate}
           onCommentThreadDelete={onCommentThreadDelete}
           onTimeChange={action('onTimeChange')}
         />
@@ -187,7 +188,7 @@ export const onCommentThreadDelete = (threadId, callback) => {
     <Comments 
       duration={1000}
       onCommentCreate={action('onCommentCreate')}
-      onCommentDelete={action('onCommentDelete')}
+      onCommentDelete={onCommentDelete}
       onCommentEdit={action('onCommentEdit')}
       onCommentThreadCreate={action('onCommentThreadCreate')}
       onCommentThreadDelete={action('onCommentThreadDelete')}
@@ -200,7 +201,7 @@ export const onCommentThreadDelete = (threadId, callback) => {
     <Comments 
       duration={1000}
       onCommentCreate={action('onCommentCreate')}
-      onCommentDelete={action('onCommentDelete')}
+      onCommentDelete={onCommentDelete}
       onCommentEdit={action('onCommentEdit')}
       onCommentThreadCreate={action('onCommentThreadCreate')}
       onCommentThreadDelete={action('onCommentThreadDelete')}
