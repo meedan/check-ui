@@ -88,11 +88,6 @@ export default function Comments(props) {
     setNewTime(currentTime);
   }, [currentTime]);
 
-  // console.group('Comments.js');
-  // console.log({ newTime });
-  // console.log({ markers });
-  // console.groupEnd();
-
   return (
     <TableSection
       title="Comments"

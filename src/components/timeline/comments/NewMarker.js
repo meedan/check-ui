@@ -80,10 +80,10 @@ export default function NewThreadPopover(props) {
       <Popover
         {...bindPopover(thisPopupState)}
         {...popoverProps}
-        // onBackdropClick={props.stopNewThread}
-        // onEscapeKeyDown={props.stopNewThread}
         disableRestoreFocus
-        onClick={e => e.stopPropagation()}>
+        onBackdropClick={props.onCommentThreadStop}
+        onClick={e => e.stopPropagation()}
+        onEscapeKeyDown={props.onCommentThreadStop}>
         <Grid className={classes.grid}>
           <Form
             onCancel={onCommentThreadStop}
