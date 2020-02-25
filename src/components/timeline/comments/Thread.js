@@ -17,38 +17,38 @@ import Comment from './Comment';
 import Form from './Form';
 import formatTime from '../utils/formatTime';
 
-const useStyles = makeStyles(theme => ({
-  List: {
-    maxHeight: '300px',
-    overflowY: 'auto',
-  },
-  ListSubheader: {
-    background: grey[200],
-  },
-  buttonProgress: {
-    marginRight: 8,
-  },
-}));
+const useStyles = isActionable =>
+  makeStyles(theme => ({
+    list: {
+      cursor: isActionable ? 'pointer' : 'inherit',
+      maxHeight: '300px',
+      overflowY: 'auto',
+    },
+    subheader: {
+      background: grey[200],
+    },
+    buttonProgress: {
+      marginRight: 8,
+    },
+  }));
 
 export default function Thread(props) {
-  const classes = useStyles();
-  const {
-    c_pretty_created_date,
-    replies,
-    start_seconds,
-    text,
-    user,
-  } = props.thread;
+  const classes = useStyles(props.isActionable)();
+  const { isActionable, thread } = props;
+  const { c_pretty_created_date, replies, start_seconds, text, user } = thread;
 
   // make clear what is what
-  const threadId = props.thread.id;
+  const threadId = thread.id;
 
-  const [isActionable, setActionableState] = useState(props.isActionable);
   const [isProcessing, setProcessingState] = useState(false);
 
-  const onCommentCreate = text => {
+  const onCommentCreate = (text, formCallback) => {
     setProcessingState(true);
-    props.onCommentCreate(threadId, text, setProcessingState(false));
+    const callback = () => {
+      formCallback();
+      setProcessingState(false);
+    };
+    props.onCommentCreate(threadId, text, callback);
   };
 
   const onCommentThreadDelete = () => {
@@ -56,43 +56,44 @@ export default function Thread(props) {
     props.onCommentThreadDelete(threadId);
   };
 
+  console.group('Thread');
+  console.log({ isActionable });
+  console.groupEnd();
+
   return (
     <List
-      onClick={!isActionable ? () => setActionableState(true) : null}
       dense
       component="div"
       subheader={
-        <>
-          <ListItem component="div" className={classes.ListSubheader}>
-            <ListItemText>
-              <Typography color="textSecondary" variant="overline">
-                {formatTime(start_seconds)}
-              </Typography>
-            </ListItemText>
+        <ListItem component="div" className={classes.subheader}>
+          <ListItemText>
+            <Typography color="textSecondary" variant="overline">
+              {formatTime(start_seconds)}
+            </Typography>
+          </ListItemText>
+          {isActionable ? (
             <ListItemSecondaryAction>
-              {isActionable ? (
-                isProcessing ? (
-                  <CircularProgress
-                    size={16}
-                    className={classes.buttonProgress}
-                  />
-                ) : (
-                  <IconButton
-                    aria-label="Delete thread"
-                    onClick={onCommentThreadDelete}>
-                    <Tooltip title="Delete thread">
-                      <DeleteIcon fontSize="small" />
-                    </Tooltip>
-                  </IconButton>
-                )
-              ) : null}
+              {isProcessing ? (
+                <CircularProgress
+                  size={16}
+                  className={classes.buttonProgress}
+                />
+              ) : (
+                <IconButton
+                  aria-label="Delete thread"
+                  onClick={onCommentThreadDelete}>
+                  <Tooltip title="Delete thread">
+                    <DeleteIcon fontSize="small" />
+                  </Tooltip>
+                </IconButton>
+              )}
             </ListItemSecondaryAction>
-          </ListItem>
-        </>
+          ) : null}
+        </ListItem>
       }
-      style={{ cursor: isActionable ? 'pointer' : 'inherit' }}
-      className={classes.List}>
+      className={classes.list}>
       <Comment
+        {...props}
         avatar={user.profile_img_url}
         date={c_pretty_created_date}
         fname={user.first_name}
@@ -102,11 +103,11 @@ export default function Thread(props) {
         lname={user.last_name}
         text={text}
         threadId={threadId}
-        {...props}
       />
       {replies.map((reply, i) => {
         return (
           <Comment
+            {...props}
             avatar={reply.user.profile_img_url}
             date={reply.c_pretty_created_date}
             fname={reply.user.first_name}
@@ -116,7 +117,6 @@ export default function Thread(props) {
             lname={reply.user.last_name}
             text={reply.text}
             threadId={reply.thread_id}
-            {...props}
           />
         );
       })}
@@ -133,10 +133,10 @@ export default function Thread(props) {
 
 Thread.propTypes = {
   onClose: PropTypes.func.isRequired,
+  onCommentCreate: PropTypes.func.isRequired,
   onCommentThreadDelete: PropTypes.func.isRequired,
   thread: PropTypes.object.isRequired,
-  // isActionable: PropTypes.bool,
-  // onCommentCreate: PropTypes.func.isRequired,
+  isActionable: PropTypes.bool,
 };
 
 Thread.defaultProps = {
