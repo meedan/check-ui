@@ -1,6 +1,6 @@
 import 'rc-slider/assets/index.css';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Slider from 'rc-slider';
 import _ from 'lodash';
 
@@ -10,6 +10,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import Marker from './Marker';
+import NewMarker from './NewMarker';
 import TableSection from '../elements/TableSection';
 
 const useStyles = makeStyles(theme => ({
@@ -35,19 +36,23 @@ const useStyles = makeStyles(theme => ({
 export default function Comments(props) {
   const classes = useStyles();
 
-  const { duration, currentTime, user } = props;
+  const { duration, currentTime, threads, user } = props;
 
-  const [threads, setThreads] = useState(props.threads);
+  const [newTime, setNewTime] = useState(0);
+  const [isCreating, setCreatingState] = useState(false);
 
-  const onStartNewThread = () => {
-    // adds a temp object as last to the existing threads array
-    // setThreads(...threads, {
-    //   key: 'value',
-    // });
+  const onCommentThreadStart = () => {
+    setCreatingState(true);
   };
-  const onStopNewThread = () => {
-    // removes last object added by result of onStartNewThread()
-    setThreads(threads.splice(-1, 1));
+  const onCommentThreadStop = () => {
+    setCreatingState(false);
+  };
+  const onCommentThreadCreate = (text, popupCallback) => {
+    const callback = () => {
+      popupCallback();
+      setCreatingState(false);
+    };
+    props.onCommentThreadCreate(newTime, text, callback);
   };
 
   const markers = _.reduce(
@@ -55,20 +60,36 @@ export default function Comments(props) {
     (object, param) => ({
       ...object,
       [param.start_seconds]: (
-        <Marker
-          key={param.id}
-          onStopNewThread={onStopNewThread}
-          thread={param}
-          {...props}
-        />
+        <Marker {...props} key={param.id} thread={param} />
       ),
     }),
     {}
   );
 
+  const newThread = {
+    id: Date.now() + Math.random(),
+    replies: [],
+    start_seconds: newTime,
+    text: '',
+    user: user,
+  };
+
+  const newMarker = (
+    <NewMarker
+      key={newThread.id}
+      onCommentThreadCreate={onCommentThreadCreate}
+      onCommentThreadStop={onCommentThreadStop}
+      thread={newThread}
+    />
+  );
+
+  useEffect(() => {
+    if (isCreating) return null;
+    setNewTime(currentTime);
+  }, [currentTime]);
+
   // console.group('Comments.js');
-  // console.log({ props });
-  // console.log({ threads });
+  // console.log({ newTime });
   // console.log({ markers });
   // console.groupEnd();
 
@@ -77,7 +98,7 @@ export default function Comments(props) {
       title="Comments"
       actions={
         <Tooltip title="New comment">
-          <IconButton onClick={onStartNewThread}>
+          <IconButton onClick={onCommentThreadStart}>
             <AddIcon fontSize="small" />
           </IconButton>
         </Tooltip>
@@ -88,7 +109,7 @@ export default function Comments(props) {
             defaultValue={null}
             disabled
             included={false}
-            marks={markers}
+            marks={isCreating ? { ...markers, [newTime]: newMarker } : markers}
             max={duration}
             min={0}
             value={null}

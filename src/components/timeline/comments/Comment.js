@@ -97,10 +97,8 @@ export default function Comment(props) {
   };
 
   const onCommentDelete = () => {
-    console.log('—— onCommentDelete()');
     setProcessingState(true);
-    setEditingState(false);
-    props.onCommentDelete(threadId, commentId, popupState.close());
+    props.onCommentDelete(threadId, commentId);
   };
 
   const displayActions = () => {
@@ -176,21 +174,26 @@ export default function Comment(props) {
             </Typography>
           )}
         </ListItemText>
-        <ListItemSecondaryAction className={classes.secondaryAction}>
-          {displayActions()}
-        </ListItemSecondaryAction>
         {isProcessing && (
           <div className={classes.mask}>
             <CircularProgress size={22} />
           </div>
         )}
+        <ListItemSecondaryAction className={classes.secondaryAction}>
+          {displayActions()}
+        </ListItemSecondaryAction>
       </ListItem>
     </div>
   );
 }
 
 Comment.propTypes = {
+  isActionable: PropTypes.bool,
   onCommentCreate: PropTypes.func.isRequired,
   onCommentDelete: PropTypes.func.isRequired,
   onCommentEdit: PropTypes.func.isRequired,
+};
+
+Comment.defaultProps = {
+  isActionable: false,
 };

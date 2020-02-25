@@ -1,8 +1,10 @@
 import {
+  anchorRef,
   bindPopover,
   bindTrigger,
   usePopupState,
 } from 'material-ui-popup-state/hooks';
+import PropTypes from 'prop-types';
 import React, { useEffect, useRef } from 'react';
 
 import Avatar from '@material-ui/core/Avatar';
@@ -36,12 +38,17 @@ export default function NewThreadPopover(props) {
     popupId: 'newThreadPopupState',
   });
 
-  const onCommentThreadCreate = text => {
-    props.onCommentThreadCreate(text);
+  const onCommentThreadCreate = (text, formCallback) => {
+    const callback = () => {
+      formCallback();
+      thisPopupState.close();
+    };
+    props.onCommentThreadCreate(text, callback);
   };
 
   const onCommentThreadStop = () => {
     thisPopupState.close();
+    props.onCommentThreadStop();
   };
 
   const popoverProps = {
@@ -64,20 +71,19 @@ export default function NewThreadPopover(props) {
   return (
     <>
       <Avatar
+        {...bindTrigger(thisPopupState)}
         alt={`${user.first_name} ${user.last_name}`}
         className={classes.avatar}
-        ref={avatarRoot}
+        ref={anchorRef(thisPopupState)}
         src={user.profile_img_url}
-        {...bindTrigger(popupState)}
       />
       <Popover
+        {...bindPopover(thisPopupState)}
+        {...popoverProps}
         // onBackdropClick={props.stopNewThread}
         // onEscapeKeyDown={props.stopNewThread}
-        anchorEl={avatarRoot}
         disableRestoreFocus
-        onClick={e => e.stopPropagation()}
-        {...bindPopover(thisPopupState)}
-        {...popoverProps}>
+        onClick={e => e.stopPropagation()}>
         <Grid className={classes.grid}>
           <Form
             onCancel={onCommentThreadStop}
@@ -88,3 +94,7 @@ export default function NewThreadPopover(props) {
     </>
   );
 }
+
+NewThreadPopover.propTypes = {
+  onCommentThreadStop: PropTypes.func.isRequired,
+};

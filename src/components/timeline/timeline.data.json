@@ -1,4 +1,43 @@
 {
+  "commentThreads": [
+    {
+      "id": 24108,
+      "start_seconds": 0,
+      "text": "START",
+      "user": {
+        "first_name": "Laurian",
+        "id": 2591,
+        "last_name": "Gridinoc",
+        "profile_img_url": "https://lh5.googleusercontent.com/-Fri-UYSxRqc/AAAAAAAAAAI/AAAAAAAABBI/ecSU-3hNAk0/s100/photo.jpg"
+      },
+      "replies": []
+    },
+    {
+      "id": 24109,
+      "replies": [
+        {
+          "id": 24118,
+          "start_seconds": 681.622923961853,
+          "text": "We need transcript and translation here",
+          "thread_id": 24109,
+          "user": {
+            "first_name": "Laurian",
+            "id": 2591,
+            "last_name": "Gridinoc",
+            "profile_img_url": "https://lh5.googleusercontent.com/-Fri-UYSxRqc/AAAAAAAAAAI/AAAAAAAABBI/ecSU-3hNAk0/s100/photo.jpg"
+          }
+        }
+      ],
+      "start_seconds": 681.622923961853,
+      "text": "Speaks Spanish",
+      "user": {
+        "first_name": "Mark",
+        "id": 2376,
+        "last_name": "Boas",
+        "profile_img_url": "https://lh4.googleusercontent.com/-KAQP-uwuJ-U/AAAAAAAAAAI/AAAAAAAAAA8/m1-ILT1IqWs/s100/photo.jpg"
+      }
+    }
+  ],
   "user": {
     "first_name": "Laurian",
     "id": 2591,
@@ -39,45 +78,6 @@
       { "id": 3979, "name": "Voting Rights", "taginstance_count": 1 }
     ]
   },
-  "commentThreads": [
-    {
-      "id": 24108,
-      "start_seconds": 0,
-      "text": "START",
-      "user": {
-        "first_name": "Laurian",
-        "id": 2591,
-        "last_name": "Gridinoc",
-        "profile_img_url": "https://lh5.googleusercontent.com/-Fri-UYSxRqc/AAAAAAAAAAI/AAAAAAAABBI/ecSU-3hNAk0/s100/photo.jpg"
-      },
-      "replies": []
-    },
-    {
-      "id": 24109,
-      "replies": [
-        {
-          "id": 24118,
-          "start_seconds": 681.622923961853,
-          "text": "We need transcript and translation here",
-          "thread_id": 24109,
-          "user": {
-            "first_name": "Laurian",
-            "id": 2591,
-            "last_name": "Gridinoc",
-            "profile_img_url": "https://lh5.googleusercontent.com/-Fri-UYSxRqc/AAAAAAAAAAI/AAAAAAAABBI/ecSU-3hNAk0/s100/photo.jpg"
-          }
-        }
-      ],
-      "start_seconds": 681.622923961853,
-      "text": "Speaks Spanish",
-      "user": {
-        "first_name": "Mark",
-        "id": 2376,
-        "last_name": "Boas",
-        "profile_img_url": "https://lh4.googleusercontent.com/-KAQP-uwuJ-U/AAAAAAAAAAI/AAAAAAAAAA8/m1-ILT1IqWs/s100/photo.jpg"
-      }
-    }
-  ],
   "videoClips": [
     {
       "id": 129001,

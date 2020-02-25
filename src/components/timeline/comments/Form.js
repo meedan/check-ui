@@ -4,16 +4,12 @@ import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+// import makeStyles from '@material-ui/core/styles/makeStyles';
 
-const useStyles = makeStyles(theme => ({
-  grid: {
-    width: '200px',
-  },
-}));
+// const useStyles = () => makeStyles(theme => ({}));
 
-export default function CommentForm(props) {
-  const classes = useStyles();
+export default function Form(props) {
+  // const classes = useStyles()();
   const { value } = props;
 
   const [comment, setComment] = useState(value);
@@ -36,12 +32,7 @@ export default function CommentForm(props) {
   const isCreating = !value || value.length === 0;
 
   return (
-    <Grid
-      container
-      direction="column"
-      spacing={1}
-      wrap="nowrap"
-      className={classes.Grid}>
+    <Grid container direction="column" spacing={1} wrap="nowrap">
       <Grid item>
         <TextField
           autoFocus
@@ -77,7 +68,7 @@ export default function CommentForm(props) {
               disabled={!comment || comment.length === 0 || saving}
               onClick={onSubmit}
               size="small">
-              {isCreating ? 'Reply' : 'Save'}
+              {isCreating ? 'Save' : 'Reply'}
             </Button>
           </Grid>
           <Grid item>
@@ -91,7 +82,11 @@ export default function CommentForm(props) {
   );
 }
 
-CommentForm.propTypes = {
+Form.propTypes = {
   onCancel: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
+};
+
+Form.defaultProps = {
+  value: null,
 };

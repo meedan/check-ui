@@ -56,10 +56,6 @@ export default function Thread(props) {
     props.onCommentThreadDelete(threadId);
   };
 
-  console.group('Thread');
-  console.log({ isActionable });
-  console.groupEnd();
-
   return (
     <List
       dense

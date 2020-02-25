@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
 import React from 'react';
 import {
-  usePopupState,
-  bindHover,
-  bindTrigger,
-  bindPopover,
   anchorRef,
+  bindHover,
+  bindPopover,
+  bindTrigger,
+  usePopupState,
 } from 'material-ui-popup-state/hooks';
 
 import Avatar from '@material-ui/core/Avatar';
@@ -14,7 +14,6 @@ import Card from '@material-ui/core/Card';
 import Popover from '@material-ui/core/Popover';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
-import NewThread from './NewThread';
 import Thread from './Thread';
 
 const useStyles = () =>
@@ -33,7 +32,7 @@ export default function Marker(props) {
   const classes = useStyles()();
 
   const { thread } = props;
-  const { isBeingAdded, user } = thread;
+  const { user } = thread;
 
   const readPopupState = usePopupState({
     variant: 'popover',
@@ -61,7 +60,7 @@ export default function Marker(props) {
     editPopupState.open();
   };
 
-  const existingThread = (
+  return (
     <>
       <Avatar
         {...bindHover(readPopupState)}
@@ -106,16 +105,11 @@ export default function Marker(props) {
       </Popover>
     </>
   );
-
-  const newThread = <NewThread thread={thread} user={user} {...props} />;
-
-  return isBeingAdded ? newThread : existingThread;
 }
 
 Marker.propTypes = {
   onCommentCreate: PropTypes.func.isRequired,
   onCommentDelete: PropTypes.func.isRequired,
   onCommentEdit: PropTypes.func.isRequired,
-  onCommentThreadCreate: PropTypes.func.isRequired,
   onCommentThreadDelete: PropTypes.func.isRequired,
 };
