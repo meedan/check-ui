@@ -1,4 +1,10 @@
 {
+  "user": {
+    "first_name": "Laurian",
+    "id": 2591,
+    "last_name": "Gridinoc",
+    "profile_img_url": "https://lh5.googleusercontent.com/-Fri-UYSxRqc/AAAAAAAAAAI/AAAAAAAABBI/ecSU-3hNAk0/s100/photo.jpg"
+  },
   "project": {
     "projecttags": [
       { "id": 3958, "name": "Obama Reference", "taginstance_count": 0 },

@@ -27,7 +27,14 @@ export default function Timeline(props) {
   const classes = useStyles();
 
   const { currentTime, duration, playing, data } = props;
-  const { commentThreads, project, videoClips, videoPlaces, videoTags } = data;
+  const {
+    commentThreads,
+    project,
+    videoClips,
+    videoPlaces,
+    videoTags,
+    user,
+  } = data;
 
   // this stops Entities from re-rendering constantly when moving playhead
   const [skip, setSkip] = React.useState(false);
@@ -51,6 +58,7 @@ export default function Timeline(props) {
         onCommentThreadCreate={props.onCommentThreadCreate}
         onCommentThreadDelete={props.onCommentThreadDelete}
         threads={commentThreads}
+        user={user}
       />
       <Entities
         // transport={transport}
@@ -117,6 +125,12 @@ Timeline.propTypes = {
     videoClips: PropTypes.array,
     videoPlaces: PropTypes.array,
     videoTags: PropTypes.array,
+    user: PropTypes.shape({
+      first_name: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
+      last_name: PropTypes.string.isRequired,
+      profile_img_url: PropTypes.string.isRequired,
+    }).isRequired,
   }),
   currentTime: PropTypes.number.isRequired,
   duration: PropTypes.number.isRequired,

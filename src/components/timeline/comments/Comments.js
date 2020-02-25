@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
 export default function Comments(props) {
   const classes = useStyles();
 
-  const { duration } = props;
+  const { duration, currentTime, user } = props;
 
   const [threads, setThreads] = useState(props.threads);
 
@@ -108,6 +108,12 @@ Comments.propTypes = {
   onCommentThreadCreate: PropTypes.func.isRequired,
   onCommentThreadDelete: PropTypes.func.isRequired,
   threads: PropTypes.array,
+  user: PropTypes.shape({
+    first_name: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    last_name: PropTypes.string.isRequired,
+    profile_img_url: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 Comments.defaultProps = {
