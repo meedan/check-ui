@@ -52,12 +52,12 @@
     "stylelint-prettier": "1.1.2"
   },
   "scripts": {
-    "storybook": "start-storybook -p 8080",
-    "build-storybook": "build-storybook",
-    "start": "start-storybook -p 8080 --ci",
-    "clean-dist": "rm -rf ./dist",
     "build": "yarn run clean-dist && NODE_ENV=production `yarn bin`/babel ./src --out-dir ./dist",
-    "deploy": "storybook-to-ghpages"
+    "build-storybook": "build-storybook",
+    "clean-dist": "rm -rf ./dist",
+    "deploy-storybook": "storybook-to-ghpages",
+    "start": "start-storybook -p 8080 --ci",
+    "storybook": "start-storybook -p 8080"
   },
   "husky": {
     "hooks": {
