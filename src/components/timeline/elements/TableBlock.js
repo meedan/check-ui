@@ -45,14 +45,12 @@ export default function TableBlock(props) {
     <div className={classes.row}>
       <div
         className={classes.leftCol}
-        style={plain ? { border: 'none' } : {}}
-        padding={!props.section ? 'none' : 'default'}>
+        style={plain ? { border: 'none' } : null}>
         <div>{leftColContent}</div>
       </div>
       <div
         className={classes.rightCol}
-        style={plain ? { border: 'none' } : {}}
-        padding={!props.section ? 'none' : 'default'}>
+        style={plain ? { border: 'none' } : null}>
         <div>{rightColContent}</div>
       </div>
     </div>

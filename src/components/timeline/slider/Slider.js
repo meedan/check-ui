@@ -23,9 +23,18 @@ export default function Slider(props) {
   const [draggedInstance, setDraggedInstance] = useState();
   const [rootRect, setRootRect] = useState(null);
 
-  useEffect(() => {
+  const updateRootRect = () => {
     setRootRect(sliderRoot.current.getBoundingClientRect());
+  };
+
+  useEffect(() => {
+    updateRootRect();
   }, [sliderRoot]);
+
+  useEffect(() => {
+    window.addEventListener('resize', updateRootRect);
+    return () => window.removeEventListener('resize', updateRootRect);
+  });
 
   return (
     <div className={classes.sliderRoot} ref={sliderRoot}>
