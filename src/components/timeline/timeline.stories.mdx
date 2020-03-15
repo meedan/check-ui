@@ -4,6 +4,7 @@ import { action } from '@storybook/addon-actions';
 import { number, withKnobs } from '@storybook/addon-knobs';
 
 import Comments from './comments/Comments';
+import Entities from './newEntities/Entities';
 import Playhead from './playhead/Playhead';
 import Slider from './slider/Slider';
 import Timeline from './Timeline';
@@ -228,13 +229,68 @@ export const onCommentThreadCreate = (time, text, callback) => {
   </Story>
 </Preview>
 
+## Entities
+
+<Preview>
+  <Story name="Partials » Entities (Clips)">
+    <Entities
+      currentTime={0}
+      duration={1000}
+      entities={data.videoClips}
+      onAfterChange={action('onAfterChange')}
+      onBeforeChange={action('onBeforeChange')}
+      onChange={action('onChange')}
+      onInstanceDelete={action('onInstanceDelete')}
+      onInstanceUpdate={action('onInstanceUpdate')}
+      suggestions={[]}
+      type="clips"
+    />
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="Partials » Entities (Tags)">
+    <Entities
+      currentTime={0}
+      duration={1000}
+      entities={data.videoTags}
+      onAfterChange={action('onAfterChange')}
+      onBeforeChange={action('onBeforeChange')}
+      onChange={action('onChange')}
+      onInstanceClip={action('onInstanceClip')}
+      onInstanceDelete={action('onInstanceDelete')}
+      onInstanceUpdate={action('onInstanceUpdate')}
+      suggestions={[]}
+      type="tags"
+    />
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="Partials » Entities (Places)">
+    <Entities
+      currentTime={0}
+      duration={1000}
+      entities={data.videoPlaces}
+      onAfterChange={action('onAfterChange')}
+      onBeforeChange={action('onBeforeChange')}
+      onChange={action('onChange')}
+      onInstanceClip={action('onInstanceClip')}
+      onInstanceDelete={action('onInstanceDelete')}
+      onInstanceUpdate={action('onInstanceUpdate')}
+      suggestions={[]}
+      type="places"
+    />
+  </Story>
+</Preview>
+
 ## Slider
 
 <Preview>
   <Story name="Partials » Slider (Plain)">
     <Slider
       deleteInstance={action('deleteInstance')}
-      duration={100}
+      duration={1000}
       instances={[]}
       onDrag={action('onDrag')}
       onDragEnd={action('onDragEnd')}
@@ -249,19 +305,8 @@ export const onCommentThreadCreate = (time, text, callback) => {
   <Story name="Partials » Slider (Clips)">
     <Slider
       deleteInstance={action('deleteInstance')}
-      duration={100}
-      instances={[
-        {
-          end_seconds: 50,
-          id: 2,
-          start_seconds: 30,
-        },
-        {
-          end_seconds: 90,
-          id: 3,
-          start_seconds: 70,
-        },
-      ]}
+      duration={1000}
+      instances={data.videoClips[0].instances}
       onDrag={action('onDrag')}
       onDragEnd={action('onDragEnd')}
       onDragStart={action('onDragStart')}
@@ -275,19 +320,8 @@ export const onCommentThreadCreate = (time, text, callback) => {
     <Slider
       clipInstance={action('clipInstance')}
       deleteInstance={action('deleteInstance')}
-      duration={100}
-      instances={[
-        {
-          end_seconds: 50,
-          id: 2,
-          start_seconds: 30,
-        },
-        {
-          end_seconds: 90,
-          id: 3,
-          start_seconds: 70,
-        },
-      ]}
+      duration={1000}
+      instances={data.videoTags[0].instances}
       onDrag={action('onDrag')}
       onDragEnd={action('onDragEnd')}
       onDragStart={action('onDragStart')}
