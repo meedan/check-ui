@@ -1,15 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Typography,
-} from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 export default function DeleteModal(props) {
   const { entityName, entityType } = props;
@@ -23,11 +20,9 @@ export default function DeleteModal(props) {
       open>
       <DialogTitle>Delete {entityType}</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          <Typography variant="body1">
-            Do you wish to remove all instances of <strong>{entityName}</strong>
-            ? This can’t be undone.
-          </Typography>
+        <DialogContentText variant="body1">
+          Do you wish to remove all instances of <strong>{entityName}</strong>?
+          This can’t be undone.
         </DialogContentText>
       </DialogContent>
       <DialogActions>
@@ -42,7 +37,7 @@ export default function DeleteModal(props) {
   );
 }
 
-DeleteModal.PropTypes = {
+DeleteModal.propTypes = {
   entityName: PropTypes.string.isRequired,
   entityType: PropTypes.string.isRequired,
   onCancel: PropTypes.func.isRequired,
