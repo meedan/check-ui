@@ -36,9 +36,7 @@ export default function Slider(props) {
       Pass rootRect back up all the way to Entities where
       it’s needed to calculate new instance default width
     */
-    if (props.returnSliderRect) {
-      props.returnSliderRect(rootRect);
-    }
+    if (props.returnSliderRect) props.returnSliderRect(rootRect);
   }, [rootRect]);
 
   useEffect(() => {
@@ -50,7 +48,7 @@ export default function Slider(props) {
     <div className={classes.sliderRoot} ref={sliderRoot}>
       {rootRect
         ? instances.map(instance => {
-            const { id, start_seconds, end_seconds } = instance;
+            const { id, start_seconds, end_seconds, isProcessing } = instance;
             return (
               <Instance
                 clipInstance={props.clipInstance}
@@ -62,6 +60,7 @@ export default function Slider(props) {
                 instance={instance}
                 instances={instances}
                 isLocked={draggedInstance && draggedInstance !== id}
+                isProcessing={isProcessing}
                 key={id}
                 lockSiblings={() => setDraggedInstance(id)}
                 onHandleMove={props.onDrag}
