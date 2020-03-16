@@ -32,6 +32,7 @@ export default function Entities(props) {
     setNewInstance({
       ...payload,
       id: Date.now() + Math.random(),
+      isProcessing: true,
     });
 
     props.onInstanceCreate(entityId, payload, () => {
@@ -61,6 +62,7 @@ export default function Entities(props) {
                 duration={duration}
                 entityName={entityName}
                 entityType={entityType}
+                instances={instances}
                 onInstanceCreate={payload =>
                   onInstanceCreate(entityId, payload)
                 }

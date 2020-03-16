@@ -1,11 +1,12 @@
-import React, { useRef, useState } from 'react';
-import PropTypes from 'prop-types';
 import Menu from 'material-ui-popup-state/HoverMenu';
+import PropTypes from 'prop-types';
+import React, { useRef, useState } from 'react';
 import {
   usePopupState,
   bindHover,
   bindMenu,
 } from 'material-ui-popup-state/hooks';
+import _ from 'lodash';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
@@ -20,7 +21,6 @@ import DeleteModal from './DeleteModal';
 import MapPopover from './MapPopover';
 import NameField from './NameField';
 import config from '../utils/config';
-import { unstable_renderSubtreeIntoContainer } from 'react-dom';
 
 const useStyles = makeStyles(theme => ({
   controlsRoot: {
@@ -52,6 +52,7 @@ export default function Controls(props) {
     duration,
     entityName,
     entityType,
+    instances,
     sliderRect,
     suggestions,
   } = props;
@@ -111,8 +112,17 @@ export default function Controls(props) {
   };
 
   const startNewInstance = () => {
-    console.log('startNewInstance');
+    // check if slider has mounted and returned its rect
     if (!sliderRect) return null;
+
+    // check if current time is within range of an already existing instance
+    if (
+      _.find(
+        instances,
+        o => currentTime >= o.start_seconds && currentTime <= o.end_seconds
+      )
+    )
+      return null;
 
     // new instance duration assuming we’d like it to be 16px-wide
     const newDuration = (16 * duration) / sliderRect.width;
@@ -121,12 +131,10 @@ export default function Controls(props) {
     // max value for new instance start_seconds value
     const maxStart = duration - newDuration;
 
-    const newInstance = {
+    props.onInstanceCreate({
       start_seconds: currentTime <= maxStart ? currentTime : maxStart,
       end_seconds: newEnd <= duration ? newEnd : duration,
-    };
-
-    props.onInstanceCreate(newInstance);
+    });
   };
 
   const readModeControls = (
@@ -228,8 +236,9 @@ Controls.propTypes = {
   duration: PropTypes.number.isRequired,
   entityName: PropTypes.string,
   entityType: PropTypes.string.isRequired,
-  onInstanceCreate: PropTypes.func.isRequired,
+  instances: PropTypes.array.isRequired,
   onEntityDelete: PropTypes.func.isRequired,
+  onInstanceCreate: PropTypes.func.isRequired,
   suggestions: PropTypes.array,
   sliderRect: PropTypes.shape({
     width: PropTypes.number,
