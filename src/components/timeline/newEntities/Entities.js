@@ -34,6 +34,7 @@ export default function Entities(props) {
 
         const entityId = entity.id;
         const entityName = entity[`project_${types[type]}`].name;
+        const entityType = types[type];
 
         const isLastChild = i === entities.length - 1;
 
@@ -41,18 +42,19 @@ export default function Entities(props) {
           <TableBlock
             key={entityId}
             leftColContent={
-              <>{entityName}</>
+              <Controls
+                entityName={entityName}
+                entityType={entityType}
+                onEntityDelete={() => props.onEntityDelete(entityId)}
+                suggestions={suggestions}
+              />
               // <Controls
               //   deleteEntity={args => console.log('deleteEntity', args)}
-              //   entityid={id}
-              //   entityName={entity[`project_${type}`].name}
-              //   entityType={type}
               //   isCreating={entity.isCreating}
               //   startNewInstance={args =>
               //     console.log('startNewInstance', args)
               //   }
               //   stopNewEntity={args => console.log('stopNewEntity', args)}
-              //   suggestions={suggestions}
               //   updateEntity={(name, payload) =>
               //     console.log('updateEntity', id, name, payload)
               //   }
