@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import Menu from 'material-ui-popup-state/HoverMenu';
 import {
@@ -7,6 +7,7 @@ import {
   bindMenu,
 } from 'material-ui-popup-state/hooks';
 
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -19,6 +20,7 @@ import DeleteModal from './DeleteModal';
 import MapPopover from './MapPopover';
 import NameField from './NameField';
 import config from '../utils/config';
+import { unstable_renderSubtreeIntoContainer } from 'react-dom';
 
 const useStyles = makeStyles(theme => ({
   controlsRoot: {
@@ -26,8 +28,10 @@ const useStyles = makeStyles(theme => ({
     width: `${config.TIMELINE_OFFSET}px`,
     something: `${console.log(theme)}`,
   },
-  controlsAddornment: {
-    // visibility: 'hidden',
+  circularProgress: {
+    left: `${theme.spacing(1) * -1}px`,
+    top: `${theme.spacing(0.5)}px`,
+    position: 'relative',
   },
   readGrid: {
     marginLeft: theme.spacing(1.5),
@@ -41,8 +45,16 @@ const useStyles = makeStyles(theme => ({
 
 export default function Controls(props) {
   const classes = useStyles();
+  const controlsRootRef = useRef();
 
-  const { entityName, entityType, suggestions } = props;
+  const {
+    currentTime,
+    duration,
+    entityName,
+    entityType,
+    sliderRect,
+    suggestions,
+  } = props;
 
   const [controlsFlow, setControlsFlow] = useState('read');
 
@@ -50,6 +62,19 @@ export default function Controls(props) {
     variant: 'popover',
     popupId: 'moreMenu',
   });
+
+  const allowNewInstance = ['edit', 'processing'].indexOf(controlsFlow) < 0;
+  const showAddornment =
+    ['read', 'reposition', 'delete'].indexOf(controlsFlow) < 0;
+
+  const onMouseEnter = () => {
+    if (controlsFlow !== 'read') return null;
+    setControlsFlow('hovering');
+  };
+  const onMouseLeave = () => {
+    if (controlsFlow !== 'hovering') return null;
+    setControlsFlow('read');
+  };
 
   const onStartEntityRename = () => {
     morePopupState.close();
@@ -67,8 +92,8 @@ export default function Controls(props) {
     setControlsFlow('delete');
   };
   const onEntityDelete = () => {
-    props.onEntityDelete();
-    setControlsFlow('read');
+    setControlsFlow('processing');
+    props.onEntityDelete(() => setControlsFlow('read'));
   };
   const onStopEntityDelete = () => {
     setControlsFlow('read');
@@ -83,6 +108,25 @@ export default function Controls(props) {
   };
   const onEntityReposition = () => {
     console.log('onEntityReposition');
+  };
+
+  const startNewInstance = () => {
+    console.log('startNewInstance');
+    if (!sliderRect) return null;
+
+    // new instance duration assuming we’d like it to be 16px-wide
+    const newDuration = (16 * duration) / sliderRect.width;
+    // new end_seconds value based on currentTime
+    const newEnd = currentTime + newDuration;
+    // max value for new instance start_seconds value
+    const maxStart = duration - newDuration;
+
+    const newInstance = {
+      start_seconds: currentTime <= maxStart ? currentTime : maxStart,
+      end_seconds: newEnd <= duration ? newEnd : duration,
+    };
+
+    props.onInstanceCreate(newInstance);
   };
 
   const readModeControls = (
@@ -103,37 +147,48 @@ export default function Controls(props) {
       </Grid>
       <Grid item>
         <div
-          className={classes.controlsAddornment}
+          style={{ visibility: showAddornment ? 'visible' : 'hidden' }}
           onClick={e => e.stopPropagation()}>
-          <IconButton {...bindHover(morePopupState)} aria-label="More options…">
-            <MoreVertIcon />
-          </IconButton>
-          <Menu
-            {...bindMenu(morePopupState)}
-            autoFocus={false}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'center',
-            }}
-            disableRestoreFocus
-            getContentAnchorEl={null}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'center',
-            }}
-            varant="menu">
-            <MenuItem dense onClick={onStartEntityRename}>
-              Rename
-            </MenuItem>
-            {entityType === 'location' ? (
-              <MenuItem dense onClick={onStartEntityReposition}>
-                Reposition
-              </MenuItem>
-            ) : null}
-            <MenuItem dense onClick={onStartEntityDelete}>
-              Delete
-            </MenuItem>
-          </Menu>
+          {controlsFlow === 'processing' ? (
+            <CircularProgress size={18} className={classes.circularProgress} />
+          ) : (
+            <>
+              <IconButton
+                {...bindHover(morePopupState)}
+                aria-label="More options…">
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                {...bindMenu(morePopupState)}
+                autoFocus={false}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                disableRestoreFocus
+                getContentAnchorEl={null}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center',
+                }}
+                varant="menu">
+                <MenuItem dense divider onClick={startNewInstance}>
+                  Add highlight
+                </MenuItem>
+                {entityType === 'location' ? (
+                  <MenuItem dense onClick={onStartEntityReposition}>
+                    Edit location
+                  </MenuItem>
+                ) : null}
+                <MenuItem dense divider onClick={onStartEntityRename}>
+                  Edit name
+                </MenuItem>
+                <MenuItem dense onClick={onStartEntityDelete}>
+                  Delete
+                </MenuItem>
+              </Menu>
+            </>
+          )}
         </div>
       </Grid>
     </Grid>
@@ -148,7 +203,12 @@ export default function Controls(props) {
   );
 
   return (
-    <div className={classes.controlsRoot}>
+    <div
+      className={classes.controlsRoot}
+      onClick={allowNewInstance ? startNewInstance : null}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      ref={controlsRootRef}>
       {controlsFlow !== 'edit' ? readModeControls : editModeControls}
       {controlsFlow === 'reposition' ? <MapPopover /> : null}
       {controlsFlow === 'delete' ? (
@@ -164,13 +224,20 @@ export default function Controls(props) {
 }
 
 Controls.propTypes = {
+  currentTime: PropTypes.number.isRequired,
+  duration: PropTypes.number.isRequired,
   entityName: PropTypes.string,
   entityType: PropTypes.string.isRequired,
+  onInstanceCreate: PropTypes.func.isRequired,
   onEntityDelete: PropTypes.func.isRequired,
   suggestions: PropTypes.array,
+  sliderRect: PropTypes.shape({
+    width: PropTypes.number,
+  }),
 };
 
 Controls.defaultProps = {
-  suggestions: [],
   entityName: null,
+  sliderRect: null,
+  suggestions: [],
 };

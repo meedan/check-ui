@@ -234,12 +234,13 @@ export const onCommentThreadCreate = (time, text, callback) => {
 <Preview>
   <Story name="Partials » Entities (Clips)">
     <Entities
-      currentTime={0}
+      currentTime={500}
       duration={1000}
       entities={data.videoClips}
       onAfterChange={action('onAfterChange')}
       onBeforeChange={action('onBeforeChange')}
       onChange={action('onChange')}
+      onInstanceCreate={action('onInstanceCreate')}
       onInstanceDelete={action('onInstanceDelete')}
       onInstanceUpdate={action('onInstanceUpdate')}
       suggestions={[]}
@@ -251,13 +252,14 @@ export const onCommentThreadCreate = (time, text, callback) => {
 <Preview>
   <Story name="Partials » Entities (Tags)">
     <Entities
-      currentTime={0}
+      currentTime={500}
       duration={1000}
       entities={data.videoTags}
       onAfterChange={action('onAfterChange')}
       onBeforeChange={action('onBeforeChange')}
       onChange={action('onChange')}
       onInstanceClip={action('onInstanceClip')}
+      onInstanceCreate={action('onInstanceCreate')}
       onInstanceDelete={action('onInstanceDelete')}
       onInstanceUpdate={action('onInstanceUpdate')}
       suggestions={[]}
@@ -269,7 +271,7 @@ export const onCommentThreadCreate = (time, text, callback) => {
 <Preview>
   <Story name="Partials » Entities (Places)">
     <Entities
-      currentTime={0}
+      currentTime={500}
       duration={1000}
       entities={data.videoPlaces}
       onAfterChange={action('onAfterChange')}
@@ -277,6 +279,7 @@ export const onCommentThreadCreate = (time, text, callback) => {
       onChange={action('onChange')}
       onEntityDelete={action('onEntityDelete')}
       onInstanceClip={action('onInstanceClip')}
+      onInstanceCreate={action('onInstanceCreate')}
       onInstanceDelete={action('onInstanceDelete')}
       onInstanceUpdate={action('onInstanceUpdate')}
       suggestions={[]}

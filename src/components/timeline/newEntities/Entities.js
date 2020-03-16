@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Controls from './Controls';
@@ -7,7 +7,10 @@ import TableBlock from '../elements/TableBlock';
 import TableSection from '../elements/TableSection';
 
 export default function Entities(props) {
-  const { entities, duration, suggestions, type } = props;
+  const { currentTime, duration, entities, suggestions, type } = props;
+
+  const [sliderRect, setSliderRect] = useState(null);
+  const [newInstance, setNewInstance] = useState(null);
 
   console.group('Entities');
   console.log(props);
@@ -23,6 +26,17 @@ export default function Entities(props) {
     clips: 'clip',
     places: 'location',
     tags: 'tag',
+  };
+
+  const onInstanceCreate = (entityId, payload) => {
+    setNewInstance({
+      ...payload,
+      id: Date.now() + Math.random(),
+    });
+
+    props.onInstanceCreate(entityId, payload, () => {
+      setNewInstance(null);
+    });
   };
 
   return (
@@ -43,9 +57,17 @@ export default function Entities(props) {
             key={entityId}
             leftColContent={
               <Controls
+                currentTime={currentTime}
+                duration={duration}
                 entityName={entityName}
                 entityType={entityType}
-                onEntityDelete={() => props.onEntityDelete(entityId)}
+                onInstanceCreate={payload =>
+                  onInstanceCreate(entityId, payload)
+                }
+                onEntityDelete={callback =>
+                  props.onEntityDelete(entityId, callback)
+                }
+                sliderRect={sliderRect}
                 suggestions={suggestions}
               />
               // <Controls
@@ -70,10 +92,13 @@ export default function Entities(props) {
                   props.onInstanceDelete(entityId, instanceId)
                 }
                 duration={duration}
-                instances={instances}
+                instances={
+                  newInstance ? [...instances, newInstance] : instances
+                }
                 onDrag={props.onChange}
                 onDragEnd={props.onAfterChange}
                 onDragStart={props.onBeforeChange}
+                returnSliderRect={rect => setSliderRect(rect)}
                 updateInstance={(instanceId, payload) =>
                   props.onInstanceUpdate(entityId, instanceId, payload)
                 }
@@ -100,6 +125,7 @@ Entities.propTypes = {
   onInstanceClip: PropTypes.func,
   onInstanceDelete: PropTypes.func.isRequired,
   onInstanceUpdate: PropTypes.func.isRequired,
+  onInstanceCreate: PropTypes.func.isRequired,
   suggestions: PropTypes.array,
   type: PropTypes.string.isRequired,
 };

@@ -32,6 +32,16 @@ export default function Slider(props) {
   }, [sliderRoot]);
 
   useEffect(() => {
+    /*
+      Pass rootRect back up all the way to Entities where
+      it’s needed to calculate new instance default width
+    */
+    if (props.returnSliderRect) {
+      props.returnSliderRect(rootRect);
+    }
+  }, [rootRect]);
+
+  useEffect(() => {
     window.addEventListener('resize', updateRootRect);
     return () => window.removeEventListener('resize', updateRootRect);
   });
@@ -75,10 +85,12 @@ Slider.propTypes = {
   onDrag: PropTypes.func.isRequired,
   onDragEnd: PropTypes.func.isRequired,
   onDragStart: PropTypes.func.isRequired,
+  returnSliderRect: PropTypes.func,
   updateInstance: PropTypes.func.isRequired,
 };
 
 Slider.defaultProps = {
   clipInstance: null,
   instances: [],
+  returnSliderRect: null,
 };
