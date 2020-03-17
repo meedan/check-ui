@@ -97,7 +97,7 @@
   ],
   "videoPlaces": [
     {
-      "project_location": { "name": "Paris" },
+      "project_place": { "name": "Paris" },
       "id": 23472492834982372,
       "lat": 48.85661400000001,
       "lng": 2.3522219000000177,

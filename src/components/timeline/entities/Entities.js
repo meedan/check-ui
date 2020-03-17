@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import Tooltip from '@material-ui/core/Tooltip';
+
 import Controls from './Controls';
 import Slider from '../slider/Slider';
 import TableBlock from '../elements/TableBlock';
@@ -11,6 +16,9 @@ export default function Entities(props) {
 
   const [sliderRect, setSliderRect] = useState(null);
   const [newInstance, setNewInstance] = useState(null);
+  const [newEntity, setNewEntity] = useState(null);
+
+  const localEntities = newEntity ? [newEntity, ...entities] : entities;
 
   const titles = {
     clips: 'Clips',
@@ -20,9 +28,38 @@ export default function Entities(props) {
 
   const types = {
     clips: 'clip',
-    places: 'location',
+    places: 'place',
     tags: 'tag',
   };
+
+  const onEntityStart = () => {
+    setNewEntity({
+      id: Date.now(),
+      [`project_${types[type]}`]: {
+        name: '',
+      },
+      isLocal: true,
+    });
+  };
+  const onEntityCreate = (payload, callback) => {
+    props.onEntityCreate(
+      {
+        id: Date.now(),
+        [`project_${types[type]}`]: {
+          name: payload,
+        },
+      },
+      () => {
+        setNewEntity(null);
+        callback();
+      }
+    );
+  };
+  const onEntityStop = () => {
+    setNewEntity(null);
+  };
+
+  const onEntitiesPlay = () => {};
 
   const onInstanceCreate = (entityId, payload) => {
     setNewInstance({
@@ -30,22 +67,46 @@ export default function Entities(props) {
       id: Date.now() + Math.random(),
       isProcessing: true,
     });
-
     props.onInstanceCreate(entityId, payload, () => {
       setNewInstance(null);
     });
   };
 
+  const actions = (
+    <>
+      <Tooltip title="Play all">
+        <IconButton onClick={onEntitiesPlay}>
+          <PlayArrowIcon fontSize="small" />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="New…">
+        <IconButton onClick={onEntityStart}>
+          <AddIcon fontSize="small" />
+        </IconButton>
+      </Tooltip>
+    </>
+  );
+
+  // console.group('Entities');
+  // console.log({ newInstance });
+  // console.log({ newEntity });
+  // console.log({ sliderRect });
+  // console.log({ props });
+  // console.groupEnd();
+
   return (
-    <TableSection plain={entities.length > 0} title={titles[type]}>
-      {entities.map((entity, i) => {
-        const { instances } = entity;
+    <TableSection
+      plain={localEntities.length > 0}
+      title={titles[type]}
+      actions={actions}>
+      {localEntities.map((entity, i) => {
+        const { instances, isLocal } = entity;
 
         const entityId = entity.id;
         const entityName = entity[`project_${types[type]}`].name;
         const entityType = types[type];
 
-        const isLastChild = i === entities.length - 1;
+        const isLastChild = i === localEntities.length - 1;
 
         return (
           <TableBlock
@@ -57,15 +118,18 @@ export default function Entities(props) {
                 entityName={entityName}
                 entityType={entityType}
                 instances={instances}
+                isLocal={isLocal}
                 onInstanceCreate={payload =>
                   onInstanceCreate(entityId, payload)
                 }
                 onEntityDelete={callback =>
                   props.onEntityDelete(entityId, callback)
                 }
+                onEntityCreate={onEntityCreate}
                 onEntityUpdate={(payload, callback) =>
                   props.onEntityUpdate(entityId, payload, callback)
                 }
+                onEntityStop={onEntityStop}
                 sliderRect={sliderRect}
                 suggestions={suggestions}
               />

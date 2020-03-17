@@ -65,10 +65,10 @@ export default function Timeline(props) {
         currentTime={currentTime}
         duration={duration}
         entities={videoClips}
-        entitiesyKey="videoClips"
         onAfterChange={() => setSkip(false)}
         onBeforeChange={() => setSkip(true)}
         onChange={props.onTimeChange}
+        onEntityCreate={props.onEntityCreate}
         onEntityUpdate={props.onEntityUpdate}
         onEntityDelete={props.onEntityDelete}
         onInstanceCreate={props.onInstanceCreate}
@@ -77,7 +77,6 @@ export default function Timeline(props) {
         playing={playing}
         skip={skip}
         suggestions={project.projectclips}
-        title="Clips"
         type="clips"
       />
       <Entities
@@ -86,10 +85,10 @@ export default function Timeline(props) {
         currentTime={currentTime}
         duration={duration}
         entities={videoTags}
-        entitiesyKey="videoTags"
         onAfterChange={() => setSkip(false)}
         onBeforeChange={() => setSkip(true)}
         onChange={props.onTimeChange}
+        onEntityCreate={props.onEntityCreate}
         onEntityUpdate={props.onEntityUpdate}
         onEntityDelete={props.onEntityDelete}
         onInstanceCreate={props.onInstanceCreate}
@@ -98,7 +97,6 @@ export default function Timeline(props) {
         playing={playing}
         skip={skip}
         suggestions={project.projecttags}
-        title="Tags"
         type="tags"
       />
       <Entities
@@ -107,10 +105,10 @@ export default function Timeline(props) {
         currentTime={currentTime}
         duration={duration}
         entities={videoPlaces}
-        entitiesyKey="videoPlaces"
         onAfterChange={() => setSkip(false)}
         onBeforeChange={() => setSkip(true)}
         onChange={props.onTimeChange}
+        onEntityCreate={props.onEntityCreate}
         onEntityUpdate={props.onEntityUpdate}
         onEntityDelete={props.onEntityDelete}
         onInstanceCreate={props.onInstanceCreate}
@@ -119,7 +117,6 @@ export default function Timeline(props) {
         playing={playing}
         skip={skip}
         suggestions={project.projectplaces}
-        title="Places"
         type="places"
       />
     </div>

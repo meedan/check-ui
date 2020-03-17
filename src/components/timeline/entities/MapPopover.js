@@ -288,7 +288,7 @@ class PlaceMap extends Component {
                 console.log('trigger search?');
               }
             }}
-            placeholder="Find location…"
+            placeholder="Find place…"
             InputProps={{
               classes: {
                 root: classes.Input,

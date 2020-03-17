@@ -1,6 +1,6 @@
 import Menu from 'material-ui-popup-state/HoverMenu';
 import PropTypes from 'prop-types';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
   usePopupState,
   bindHover,
@@ -52,11 +52,12 @@ export default function Controls(props) {
     entityName,
     entityType,
     instances,
+    isLocal,
     sliderRect,
     suggestions,
   } = props;
 
-  const [controlsFlow, setControlsFlow] = useState('read');
+  const [mode, setMode] = useState('read');
   const [newName, setNewName] = useState(null);
 
   const morePopupState = usePopupState({
@@ -64,43 +65,51 @@ export default function Controls(props) {
     popupId: 'moreMenu',
   });
 
-  const allowNewInstance = ['edit', 'processing'].indexOf(controlsFlow) < 0;
-  const showAddornment =
-    ['read', 'reposition', 'delete'].indexOf(controlsFlow) < 0;
+  const allowNewInstance = ['edit', 'processing'].indexOf(mode) < 0;
+  const showAddornment = ['read', 'reposition', 'delete'].indexOf(mode) < 0;
 
   const onMouseEnter = () => {
-    if (controlsFlow !== 'read') return null;
-    setControlsFlow('hovering');
+    if (mode !== 'read') return null;
+    setMode('hovering');
   };
   const onMouseLeave = () => {
-    if (controlsFlow !== 'hovering') return null;
-    setControlsFlow('read');
+    if (mode !== 'hovering') return null;
+    setMode('read');
   };
 
-  const onRestoreDefaultState = () => {
-    setControlsFlow('read');
+  const onCancel = () => {
+    setMode('read');
+    if (isLocal) props.onEntityStop();
   };
 
-  const onStartEntityRename = () => {
+  const onStartEntityUpdate = () => {
     morePopupState.close();
-    setControlsFlow('edit');
+    setMode('edit');
   };
   const onEntityUpdate = str => {
     setNewName(str);
-    setControlsFlow('processing');
+    setMode('processing');
     props.onEntityUpdate(str, () => {
-      setControlsFlow('read');
+      setMode('read');
+      setNewName(null);
+    });
+  };
+  const onEntityCreate = str => {
+    setNewName(str);
+    setMode('processing');
+    props.onEntityCreate(str, () => {
+      setMode('read');
       setNewName(null);
     });
   };
 
   const onStartEntityDelete = () => {
     morePopupState.close();
-    setControlsFlow('delete');
+    setMode('delete');
   };
   const onEntityDelete = () => {
-    setControlsFlow('processing');
-    props.onEntityDelete(() => setControlsFlow('read'));
+    setMode('processing');
+    props.onEntityDelete(() => setMode('read'));
   };
 
   const onStartEntityReposition = () => {
@@ -138,7 +147,7 @@ export default function Controls(props) {
     });
   };
 
-  const displayName = controlsFlow === 'processing' ? newName : entityName;
+  const displayName = mode === 'processing' ? newName : entityName;
 
   const readControls = (
     <Grid
@@ -160,7 +169,7 @@ export default function Controls(props) {
         <div
           style={{ visibility: showAddornment ? 'visible' : 'hidden' }}
           onClick={e => e.stopPropagation()}>
-          {controlsFlow === 'processing' ? (
+          {mode === 'processing' ? (
             <CircularProgress size={18} className={classes.circularProgress} />
           ) : (
             <>
@@ -185,19 +194,19 @@ export default function Controls(props) {
                 varant="menu">
                 <MenuItem
                   dense
-                  divider={entityType === 'location'}
+                  divider={entityType === 'place'}
                   onClick={onInstanceCreate}>
                   Add highlight
                 </MenuItem>
-                {entityType === 'location' ? (
+                {entityType === 'place' ? (
                   <MenuItem dense onClick={onStartEntityReposition}>
-                    Edit location
+                    Edit place
                   </MenuItem>
                 ) : null}
                 <MenuItem
                   dense
-                  divider={entityType === 'location'}
-                  onClick={onStartEntityRename}>
+                  divider={entityType === 'place'}
+                  onClick={onStartEntityUpdate}>
                   Edit name
                 </MenuItem>
                 <MenuItem dense onClick={onStartEntityDelete}>
@@ -213,11 +222,21 @@ export default function Controls(props) {
   const editControls = (
     <NameField
       entityName={displayName}
-      onCancel={onRestoreDefaultState}
-      onSubmit={onEntityUpdate}
+      onCancel={onCancel}
+      onSubmit={isLocal ? onEntityCreate : onEntityUpdate}
       suggestions={suggestions}
     />
   );
+
+  // console.group('Controls');
+  // console.log({ props });
+  // console.log({ mode });
+  // console.log({ newName });
+  // console.groupEnd();
+
+  useEffect(() => {
+    props.isLocal ? setMode('edit') : setMode('read');
+  }, [props.isLocal]);
 
   return (
     <div
@@ -226,13 +245,13 @@ export default function Controls(props) {
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       ref={controlsRootRef}>
-      {controlsFlow !== 'edit' ? readControls : editControls}
-      {controlsFlow === 'reposition' ? <MapPopover /> : null}
-      {controlsFlow === 'delete' ? (
+      {mode !== 'edit' ? readControls : editControls}
+      {mode === 'reposition' ? <MapPopover /> : null}
+      {mode === 'delete' && !isLocal ? (
         <DeleteModal
           entityName={displayName}
           entityType={entityType}
-          onCancel={onRestoreDefaultState}
+          onCancel={onCancel}
           onConfirm={onEntityDelete}
         />
       ) : null}
@@ -245,7 +264,7 @@ Controls.propTypes = {
   duration: PropTypes.number.isRequired,
   entityName: PropTypes.string,
   entityType: PropTypes.string.isRequired,
-  instances: PropTypes.array.isRequired,
+  instances: PropTypes.array,
   onEntityDelete: PropTypes.func.isRequired,
   onEntityUpdate: PropTypes.func.isRequired,
   onInstanceCreate: PropTypes.func.isRequired,
@@ -257,6 +276,7 @@ Controls.propTypes = {
 
 Controls.defaultProps = {
   entityName: null,
+  instances: [],
   sliderRect: null,
   suggestions: [],
 };
