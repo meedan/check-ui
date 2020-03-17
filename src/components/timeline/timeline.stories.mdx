@@ -114,6 +114,9 @@ export const onCommentThreadCreate = (time, text, callback) => {
           onCommentThreadCreate={onCommentThreadCreate}
           onCommentThreadDelete={onCommentThreadDelete}
           onTimeChange={onPlainTimelineChange}
+          onInstanceDelete={action('onInstanceDelete')}
+          onInstanceUpdate={action('onInstanceUpdate')}
+          onInstanceCreate={action('onInstanceCreate')}
         />
       }
      </State>
@@ -137,6 +140,9 @@ export const onCommentThreadCreate = (time, text, callback) => {
           onCommentThreadCreate={onCommentThreadCreate}
           onCommentThreadDelete={onCommentThreadDelete}
           onTimeChange={onRichTimelineChange}
+          onInstanceDelete={action('onInstanceDelete')}
+          onInstanceUpdate={action('onInstanceUpdate')}
+          onInstanceCreate={action('onInstanceCreate')}
         />
       }
      </State>
@@ -160,6 +166,9 @@ export const onCommentThreadCreate = (time, text, callback) => {
           onCommentThreadCreate={onCommentThreadCreate}
           onCommentThreadDelete={onCommentThreadDelete}
           onTimeChange={action('onTimeChange')}
+          onInstanceDelete={action('onInstanceDelete')}
+          onInstanceUpdate={action('onInstanceUpdate')}
+          onInstanceCreate={action('onInstanceCreate')}
         />
       }
      </State>

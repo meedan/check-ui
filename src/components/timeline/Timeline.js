@@ -66,15 +66,17 @@ export default function Timeline(props) {
         duration={duration}
         entities={videoClips}
         entitiesyKey="videoClips"
-        entityType="clip"
-        key="clip"
         onAfterChange={() => setSkip(false)}
         onBeforeChange={() => setSkip(true)}
         onChange={props.onTimeChange}
+        onInstanceCreate={props.onInstanceCreate}
+        onInstanceDelete={props.onInstanceDelete}
+        onInstanceUpdate={props.onInstanceUpdate}
         playing={playing}
         skip={skip}
         suggestions={project.projectclips}
         title="Clips"
+        type="clips"
       />
       <Entities
         // transport={transport}
@@ -83,15 +85,17 @@ export default function Timeline(props) {
         duration={duration}
         entities={videoTags}
         entitiesyKey="videoTags"
-        entityType="tag"
-        key="tag"
         onAfterChange={() => setSkip(false)}
         onBeforeChange={() => setSkip(true)}
         onChange={props.onTimeChangeTime}
+        onInstanceCreate={props.onInstanceCreate}
+        onInstanceDelete={props.onInstanceDelete}
+        onInstanceUpdate={props.onInstanceUpdate}
         playing={playing}
         skip={skip}
         suggestions={project.projecttags}
         title="Tags"
+        type="tags"
       />
       <Entities
         // transport={transport}
@@ -100,15 +104,17 @@ export default function Timeline(props) {
         duration={duration}
         entities={videoPlaces}
         entitiesyKey="videoPlaces"
-        entityType="location"
-        key="location"
         onAfterChange={() => setSkip(false)}
         onBeforeChange={() => setSkip(true)}
         onChange={props.onTimeChange}
+        onInstanceCreate={props.onInstanceCreate}
+        onInstanceDelete={props.onInstanceDelete}
+        onInstanceUpdate={props.onInstanceUpdate}
         playing={playing}
         skip={skip}
         suggestions={project.projectplaces}
         title="Places"
+        type="places"
       />
     </div>
   );
