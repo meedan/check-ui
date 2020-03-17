@@ -7,10 +7,10 @@
   "dependencies": {
     "@material-ui/core": "4.9.5",
     "@material-ui/icons": "4.9.1",
+    "@material-ui/lab": "4.0.0-alpha.45",
     "@react-google-maps/api": "1.8.5",
     "@rehooks/component-size": "1.0.3",
     "@rehooks/window-size": "1.0.2",
-    "downshift": "5.0.5",
     "fast-deep-equal": "3.1.1",
     "lodash": "4.17.15",
     "material-ui-popup-state": "1.5.3",
