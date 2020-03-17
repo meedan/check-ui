@@ -91,12 +91,12 @@ export default function NameField(props) {
           }}
         />
       )}
-      size="small"
       renderOption={str => (
         <Typography component="span" display="block" noWrap variant="body2">
           {str}
         </Typography>
       )}
+      size="small"
     />
   );
 }

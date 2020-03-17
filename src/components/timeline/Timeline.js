@@ -146,11 +146,17 @@ Timeline.propTypes = {
   }),
   currentTime: PropTypes.number.isRequired,
   duration: PropTypes.number.isRequired,
+  onBeforeCommentThreadCreate: PropTypes.func, // TODO: check if this is actually required
   onCommentCreate: PropTypes.func.isRequired,
   onCommentDelete: PropTypes.func.isRequired,
   onCommentEdit: PropTypes.func.isRequired,
   onCommentThreadCreate: PropTypes.func.isRequired,
   onCommentThreadDelete: PropTypes.func.isRequired,
+  onEntityDelete: PropTypes.func.isRequired,
+  onEntityUpdate: PropTypes.func.isRequired,
+  onInstanceCreate: PropTypes.func.isRequired,
+  onInstanceDelete: PropTypes.func.isRequired,
+  onInstanceUpdate: PropTypes.func.isRequired,
   onTimeChange: PropTypes.func.isRequired,
   playing: PropTypes.bool,
 };
