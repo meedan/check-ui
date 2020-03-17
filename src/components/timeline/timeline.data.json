@@ -76,6 +76,11 @@
       { "id": 3977, "name": "Economy", "taginstance_count": 1 },
       { "id": 3978, "name": "Climate Change", "taginstance_count": 1 },
       { "id": 3979, "name": "Voting Rights", "taginstance_count": 1 }
+    ],
+    "projectlocations": [
+      { "id": 13958, "name": "Paris", "taginstance_count": 0 },
+      { "id": 33959, "name": "London", "taginstance_count": 3 },
+      { "id": 33960, "name": "Syria", "taginstance_count": 1 }
     ]
   },
   "videoClips": [
