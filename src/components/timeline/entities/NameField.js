@@ -6,8 +6,6 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import MenuItem from '@material-ui/core/MenuItem';
-import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
@@ -17,7 +15,6 @@ const useStyles = makeStyles(theme => ({
   nameFieldRoot: {
     flexGrow: 1,
     position: 'relative',
-    something: console.log(theme),
   },
   paper: {
     position: 'absolute',
@@ -27,7 +24,6 @@ const useStyles = makeStyles(theme => ({
   },
   inputRoot: {
     ...theme.typography.body2,
-    // borderBottom: `1px solid ${grey[200]}`,
     flexWrap: 'nowrap',
     fontSize: '13px',
     marginBottom: 0,
@@ -39,11 +35,9 @@ const useStyles = makeStyles(theme => ({
     width: 'auto',
     flexGrow: 1,
   },
-  MenuHeading: {
-    paddingBottom: 8,
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingTop: 8,
+  cancelIcon: {
+    position: 'relative',
+    top: `${theme.spacing(0.25) * -1}px`,
   },
 }));
 
@@ -51,32 +45,56 @@ export default function NameField(props) {
   const classes = useStyles();
 
   const { entityName, suggestions } = props;
-
-  const [newName, setNewName] = useState('');
+  const options = orderBy(suggestions, ['taginstance_count'], ['desc']).map(
+    o => o.name
+  );
 
   return (
     <Autocomplete
       autoComplete
       blurOnSelect
-      defaultValue={{ name: entityName }}
       disableOpenOnFocus
       freeSolo
       id="entity-names"
-      options={orderBy(suggestions, ['taginstance_count'], ['desc'])}
+      onChange={(e, str) => props.onSubmit(str)}
+      options={options}
       renderInput={params => (
         <TextField
-          inputProps={params.inputProps}
+          {...params}
+          autoFocus
+          inputProps={{
+            ...params.inputProps,
+            onKeyPress: e => {
+              if (['Enter', 'Escape'].includes(e.key)) {
+                e.preventDefault();
+                if (e.key === 'Enter') props.onSubmit(e.target.value);
+                if (e.key === 'Escape') props.onCancel();
+              }
+            },
+          }}
+          placeholder={entityName}
           InputProps={{
             className: classes.inputRoot,
             ref: params.InputProps.ref,
+            endAdornment: (
+              <InputAdornment position="end">
+                <Tooltip title="Cancel">
+                  <IconButton
+                    size="small"
+                    onClick={props.onCancel}
+                    className={classes.cancelIcon}>
+                    <CloseIcon fontSize="inherit" />
+                  </IconButton>
+                </Tooltip>
+              </InputAdornment>
+            ),
           }}
         />
       )}
       size="small"
-      getOptionLabel={o => o.name}
-      renderOption={o => (
+      renderOption={str => (
         <Typography component="span" display="block" noWrap variant="body2">
-          {o.name}
+          {str}
         </Typography>
       )}
     />

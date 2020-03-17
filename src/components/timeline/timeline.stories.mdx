@@ -113,10 +113,12 @@ export const onCommentThreadCreate = (time, text, callback) => {
           onCommentEdit={onCommentEdit}
           onCommentThreadCreate={onCommentThreadCreate}
           onCommentThreadDelete={onCommentThreadDelete}
-          onTimeChange={onPlainTimelineChange}
+          onEntityDelete={action('onEntityDelete')}
+          onEntityUpdate={action('onEntityUpdate')}
+          onInstanceCreate={action('onInstanceCreate')}
           onInstanceDelete={action('onInstanceDelete')}
           onInstanceUpdate={action('onInstanceUpdate')}
-          onInstanceCreate={action('onInstanceCreate')}
+          onTimeChange={onPlainTimelineChange}
         />
       }
      </State>
@@ -139,10 +141,12 @@ export const onCommentThreadCreate = (time, text, callback) => {
           onCommentEdit={onCommentEdit}
           onCommentThreadCreate={onCommentThreadCreate}
           onCommentThreadDelete={onCommentThreadDelete}
-          onTimeChange={onRichTimelineChange}
+          onEntityDelete={action('onEntityDelete')}
+          onEntityUpdate={action('onEntityUpdate')}
+          onInstanceCreate={action('onInstanceCreate')}
           onInstanceDelete={action('onInstanceDelete')}
           onInstanceUpdate={action('onInstanceUpdate')}
-          onInstanceCreate={action('onInstanceCreate')}
+          onTimeChange={onRichTimelineChange}
         />
       }
      </State>
@@ -165,10 +169,12 @@ export const onCommentThreadCreate = (time, text, callback) => {
           onCommentEdit={onCommentEdit}
           onCommentThreadCreate={onCommentThreadCreate}
           onCommentThreadDelete={onCommentThreadDelete}
-          onTimeChange={action('onTimeChange')}
+          onEntityDelete={action('onEntityDelete')}
+          onEntityUpdate={action('onEntityUpdate')}
+          onInstanceCreate={action('onInstanceCreate')}
           onInstanceDelete={action('onInstanceDelete')}
           onInstanceUpdate={action('onInstanceUpdate')}
-          onInstanceCreate={action('onInstanceCreate')}
+          onTimeChange={action('onTimeChange')}
         />
       }
      </State>

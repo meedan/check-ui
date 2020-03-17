@@ -27,18 +27,18 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     width: `${config.TIMELINE_OFFSET}px`,
   },
-  circularProgress: {
-    left: `${theme.spacing(1) * -1}px`,
-    top: `${theme.spacing(0.5)}px`,
-    position: 'relative',
-  },
   readGrid: {
     marginLeft: theme.spacing(1.5),
     marginRight: theme.spacing(1.5),
     width: `${config.TIMELINE_OFFSET - theme.spacing(3)}px`,
   },
-  nameTypography: {
+  entityName: {
     maxWidth: `${config.TIMELINE_OFFSET - theme.spacing(8)}px`,
+  },
+  circularProgress: {
+    left: `${theme.spacing(1) * -1}px`,
+    top: `${theme.spacing(0.5)}px`,
+    position: 'relative',
   },
 }));
 
@@ -57,6 +57,7 @@ export default function Controls(props) {
   } = props;
 
   const [controlsFlow, setControlsFlow] = useState('read');
+  const [newName, setNewName] = useState(null);
 
   const morePopupState = usePopupState({
     variant: 'popover',
@@ -84,9 +85,13 @@ export default function Controls(props) {
     morePopupState.close();
     setControlsFlow('edit');
   };
-  const onEntityRename = str => {
+  const onEntityUpdate = str => {
+    setNewName(str);
     setControlsFlow('processing');
-    props.onEntityUpdate(str, () => setControlsFlow('read'));
+    props.onEntityUpdate(str, () => {
+      setControlsFlow('read');
+      setNewName(null);
+    });
   };
 
   const onStartEntityDelete = () => {
@@ -133,6 +138,8 @@ export default function Controls(props) {
     });
   };
 
+  const displayName = controlsFlow === 'processing' ? newName : entityName;
+
   const readControls = (
     <Grid
       alignItems="center"
@@ -143,9 +150,9 @@ export default function Controls(props) {
       <Grid item>
         <Tooltip
           enterDelay={1000}
-          title={entityName ? entityName : 'Add a name'}>
-          <Typography noWrap variant="body2" className={classes.nameTypography}>
-            {entityName}
+          title={displayName ? displayName : 'Add a name'}>
+          <Typography noWrap variant="body2" className={classes.entityName}>
+            {displayName}
           </Typography>
         </Tooltip>
       </Grid>
@@ -205,9 +212,9 @@ export default function Controls(props) {
   );
   const editControls = (
     <NameField
-      entityName={entityName}
+      entityName={displayName}
       onCancel={onRestoreDefaultState}
-      onSubmit={onEntityRename}
+      onSubmit={onEntityUpdate}
       suggestions={suggestions}
     />
   );
@@ -223,7 +230,7 @@ export default function Controls(props) {
       {controlsFlow === 'reposition' ? <MapPopover /> : null}
       {controlsFlow === 'delete' ? (
         <DeleteModal
-          entityName={entityName}
+          entityName={displayName}
           entityType={entityType}
           onCancel={onRestoreDefaultState}
           onConfirm={onEntityDelete}

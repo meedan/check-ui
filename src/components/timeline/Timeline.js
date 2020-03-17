@@ -69,6 +69,8 @@ export default function Timeline(props) {
         onAfterChange={() => setSkip(false)}
         onBeforeChange={() => setSkip(true)}
         onChange={props.onTimeChange}
+        onEntityUpdate={props.onEntityUpdate}
+        onEntityDelete={props.onEntityDelete}
         onInstanceCreate={props.onInstanceCreate}
         onInstanceDelete={props.onInstanceDelete}
         onInstanceUpdate={props.onInstanceUpdate}
@@ -87,7 +89,9 @@ export default function Timeline(props) {
         entitiesyKey="videoTags"
         onAfterChange={() => setSkip(false)}
         onBeforeChange={() => setSkip(true)}
-        onChange={props.onTimeChangeTime}
+        onChange={props.onTimeChange}
+        onEntityUpdate={props.onEntityUpdate}
+        onEntityDelete={props.onEntityDelete}
         onInstanceCreate={props.onInstanceCreate}
         onInstanceDelete={props.onInstanceDelete}
         onInstanceUpdate={props.onInstanceUpdate}
@@ -107,6 +111,8 @@ export default function Timeline(props) {
         onAfterChange={() => setSkip(false)}
         onBeforeChange={() => setSkip(true)}
         onChange={props.onTimeChange}
+        onEntityUpdate={props.onEntityUpdate}
+        onEntityDelete={props.onEntityDelete}
         onInstanceCreate={props.onInstanceCreate}
         onInstanceDelete={props.onInstanceDelete}
         onInstanceUpdate={props.onInstanceUpdate}
