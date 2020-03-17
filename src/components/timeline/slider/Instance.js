@@ -45,7 +45,7 @@ const useStyles = () =>
 export default function Instance(props) {
   const classes = useStyles()();
 
-  const { isLocked, duration, instances } = props;
+  const { isLocked, isProcessing, duration, instances } = props;
   const { left, width } = props.sliderRect;
 
   const [end, setEnd] = useState(props.end);
@@ -206,10 +206,11 @@ export default function Instance(props) {
           left: `${x1}px`,
           width: `${instanceWidth}px`,
           zIndex: hoveringInstance ? `500` : `default`,
+          opacity: isProcessing ? '0.5' : '1',
         }}
-        onMouseEnter={!isLocked ? onInstanceEnter : null}
-        onMouseLeave={!isLocked ? onInstanceLeave : null}>
-        {!isLocked ? (
+        onMouseEnter={!isLocked && !isProcessing ? onInstanceEnter : null}
+        onMouseLeave={!isLocked && !isProcessing ? onInstanceLeave : null}>
+        {!isLocked && !isProcessing ? (
           <div
             {...bindHover(instancePopupState)}
             style={{ width: `100%`, height: `28px` }}
@@ -225,47 +226,50 @@ export default function Instance(props) {
         />
       ) : null}
 
-      {handles.map(handle => {
-        const { edge, value } = handle;
+      {!isProcessing
+        ? handles.map(handle => {
+            const { edge, value } = handle;
 
-        const isDragged = draggingHandle === edge;
-        const isHovered = hoveringHandle === edge;
-        const isActive = isDragged || isHovered;
+            const isDragged = draggingHandle === edge;
+            const isHovered = hoveringHandle === edge;
+            const isActive = isDragged || isHovered;
 
-        return (
-          <Fragment key={`${edge}Popover`}>
-            <div
-              className={classes.handle}
-              onMouseDown={e => onHandlePress(e, edge)}
-              onMouseEnter={() => onHandleEnter(edge)}
-              onMouseLeave={onHandleLeave}
-              style={{
-                left: edge === 'start' ? `${x1}px` : `${x2}px`,
-                opacity: isActive || handlePopupState[edge].isOpen ? '1' : '0',
-                transform: edge === 'end' ? 'translateX(-100%)' : 'none',
-                width: draggingHandle ? '1px' : '3px',
-              }}>
-              <Tooltip
-                open={isDragged}
-                placement="top"
-                title={formatSeconds(value)}>
+            return (
+              <Fragment key={`${edge}Popover`}>
                 <div
-                  className={classes.handleThumb}
-                  {...bindHover(handlePopupState[edge])}
-                />
-              </Tooltip>
-            </div>
-            {!draggingHandle ? (
-              <HandlePopover
-                id={`${edge}HandlePopover`}
-                moveBackward={() => onHandleAdjust(edge, 'bwd')}
-                moveForward={() => onHandleAdjust(edge, 'fwd')}
-                popupState={handlePopupState[edge]}
-              />
-            ) : null}
-          </Fragment>
-        );
-      })}
+                  className={classes.handle}
+                  onMouseDown={e => onHandlePress(e, edge)}
+                  onMouseEnter={() => onHandleEnter(edge)}
+                  onMouseLeave={onHandleLeave}
+                  style={{
+                    left: edge === 'start' ? `${x1}px` : `${x2}px`,
+                    opacity:
+                      isActive || handlePopupState[edge].isOpen ? '1' : '0',
+                    transform: edge === 'end' ? 'translateX(-100%)' : 'none',
+                    width: draggingHandle ? '1px' : '3px',
+                  }}>
+                  <Tooltip
+                    open={isDragged}
+                    placement="top"
+                    title={formatSeconds(value)}>
+                    <div
+                      className={classes.handleThumb}
+                      {...bindHover(handlePopupState[edge])}
+                    />
+                  </Tooltip>
+                </div>
+                {!draggingHandle ? (
+                  <HandlePopover
+                    id={`${edge}HandlePopover`}
+                    moveBackward={() => onHandleAdjust(edge, 'bwd')}
+                    moveForward={() => onHandleAdjust(edge, 'fwd')}
+                    popupState={handlePopupState[edge]}
+                  />
+                ) : null}
+              </Fragment>
+            );
+          })
+        : null}
     </>
   );
 }
@@ -278,6 +282,7 @@ Instance.propTypes = {
   instance: PropTypes.object.isRequired,
   instances: PropTypes.array.isRequired,
   isLocked: PropTypes.bool,
+  isProcessing: PropTypes.bool,
   lockSiblings: PropTypes.func.isRequired,
   onHandleMove: PropTypes.func.isRequired,
   onHandlePress: PropTypes.func.isRequired,
@@ -290,4 +295,5 @@ Instance.propTypes = {
 Instance.defaultProps = {
   clipInstance: null,
   isLocked: null,
+  isProcessing: null,
 };

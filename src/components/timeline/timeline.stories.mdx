@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions';
 import { number, withKnobs } from '@storybook/addon-knobs';
 
 import Comments from './comments/Comments';
-import Entities from './newEntities/Entities';
+import Entities from './entities/Entities';
 import Playhead from './playhead/Playhead';
 import Slider from './slider/Slider';
 import Timeline from './Timeline';
@@ -240,6 +240,8 @@ export const onCommentThreadCreate = (time, text, callback) => {
       onAfterChange={action('onAfterChange')}
       onBeforeChange={action('onBeforeChange')}
       onChange={action('onChange')}
+      onEntityDelete={action('onEntityDelete')}
+      onEntityUpdate={action('onEntityUpdate')}
       onInstanceCreate={action('onInstanceCreate')}
       onInstanceDelete={action('onInstanceDelete')}
       onInstanceUpdate={action('onInstanceUpdate')}
@@ -258,11 +260,13 @@ export const onCommentThreadCreate = (time, text, callback) => {
       onAfterChange={action('onAfterChange')}
       onBeforeChange={action('onBeforeChange')}
       onChange={action('onChange')}
+      onEntityDelete={action('onEntityDelete')}
+      onEntityUpdate={action('onEntityUpdate')}
       onInstanceClip={action('onInstanceClip')}
       onInstanceCreate={action('onInstanceCreate')}
       onInstanceDelete={action('onInstanceDelete')}
       onInstanceUpdate={action('onInstanceUpdate')}
-      suggestions={[]}
+      suggestions={data.project.projecttags}
       type="tags"
     />
   </Story>
@@ -278,11 +282,12 @@ export const onCommentThreadCreate = (time, text, callback) => {
       onBeforeChange={action('onBeforeChange')}
       onChange={action('onChange')}
       onEntityDelete={action('onEntityDelete')}
+      onEntityUpdate={action('onEntityUpdate')}
       onInstanceClip={action('onInstanceClip')}
       onInstanceCreate={action('onInstanceCreate')}
       onInstanceDelete={action('onInstanceDelete')}
       onInstanceUpdate={action('onInstanceUpdate')}
-      suggestions={[]}
+      suggestions={data.project.projectplaces}
       type="places"
     />
   </Story>

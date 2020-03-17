@@ -6,7 +6,7 @@ import {
   bindHover,
   bindMenu,
 } from 'material-ui-popup-state/hooks';
-import _ from 'lodash';
+import find from 'lodash/find';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
@@ -26,7 +26,6 @@ const useStyles = makeStyles(theme => ({
   controlsRoot: {
     cursor: 'pointer',
     width: `${config.TIMELINE_OFFSET}px`,
-    something: `${console.log(theme)}`,
   },
   circularProgress: {
     left: `${theme.spacing(1) * -1}px`,
@@ -77,15 +76,17 @@ export default function Controls(props) {
     setControlsFlow('read');
   };
 
+  const onRestoreDefaultState = () => {
+    setControlsFlow('read');
+  };
+
   const onStartEntityRename = () => {
     morePopupState.close();
-    console.log('onStartEntityRename');
+    setControlsFlow('edit');
   };
-  const onEntityRename = () => {
-    console.log('onEntityRename');
-  };
-  const onStopEntityRename = () => {
-    console.log('onStopEntityRename');
+  const onEntityRename = str => {
+    setControlsFlow('processing');
+    props.onEntityUpdate(str, () => setControlsFlow('read'));
   };
 
   const onStartEntityDelete = () => {
@@ -95,9 +96,6 @@ export default function Controls(props) {
   const onEntityDelete = () => {
     setControlsFlow('processing');
     props.onEntityDelete(() => setControlsFlow('read'));
-  };
-  const onStopEntityDelete = () => {
-    setControlsFlow('read');
   };
 
   const onStartEntityReposition = () => {
@@ -111,25 +109,23 @@ export default function Controls(props) {
     console.log('onEntityReposition');
   };
 
-  const startNewInstance = () => {
-    // check if slider has mounted and returned its rect
-    if (!sliderRect) return null;
-
-    // check if current time is within range of an already existing instance
+  const onInstanceCreate = () => {
+    /*
+      1. check if slider has mounted and returned its rect
+      2. check if currentTime is within range of an already existing instance
+    */
     if (
-      _.find(
+      !sliderRect ||
+      find(
         instances,
         o => currentTime >= o.start_seconds && currentTime <= o.end_seconds
       )
     )
       return null;
 
-    // new instance duration assuming we’d like it to be 16px-wide
-    const newDuration = (16 * duration) / sliderRect.width;
-    // new end_seconds value based on currentTime
-    const newEnd = currentTime + newDuration;
-    // max value for new instance start_seconds value
-    const maxStart = duration - newDuration;
+    const newDuration = (16 * duration) / sliderRect.width; // new instance duration if 16px-wide
+    const newEnd = currentTime + newDuration; // new end_seconds value based on currentTime
+    const maxStart = duration - newDuration; // max value for new instance start_seconds value
 
     props.onInstanceCreate({
       start_seconds: currentTime <= maxStart ? currentTime : maxStart,
@@ -137,7 +133,7 @@ export default function Controls(props) {
     });
   };
 
-  const readModeControls = (
+  const readControls = (
     <Grid
       alignItems="center"
       className={classes.readGrid}
@@ -180,7 +176,10 @@ export default function Controls(props) {
                   horizontal: 'center',
                 }}
                 varant="menu">
-                <MenuItem dense divider onClick={startNewInstance}>
+                <MenuItem
+                  dense
+                  divider={entityType === 'location'}
+                  onClick={onInstanceCreate}>
                   Add highlight
                 </MenuItem>
                 {entityType === 'location' ? (
@@ -188,7 +187,10 @@ export default function Controls(props) {
                     Edit location
                   </MenuItem>
                 ) : null}
-                <MenuItem dense divider onClick={onStartEntityRename}>
+                <MenuItem
+                  dense
+                  divider={entityType === 'location'}
+                  onClick={onStartEntityRename}>
                   Edit name
                 </MenuItem>
                 <MenuItem dense onClick={onStartEntityDelete}>
@@ -201,10 +203,10 @@ export default function Controls(props) {
       </Grid>
     </Grid>
   );
-  const editModeControls = (
+  const editControls = (
     <NameField
       entityName={entityName}
-      onCancel={onStopEntityRename}
+      onCancel={onRestoreDefaultState}
       onSubmit={onEntityRename}
       suggestions={suggestions}
     />
@@ -213,17 +215,17 @@ export default function Controls(props) {
   return (
     <div
       className={classes.controlsRoot}
-      onClick={allowNewInstance ? startNewInstance : null}
+      onClick={allowNewInstance ? onInstanceCreate : null}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       ref={controlsRootRef}>
-      {controlsFlow !== 'edit' ? readModeControls : editModeControls}
+      {controlsFlow !== 'edit' ? readControls : editControls}
       {controlsFlow === 'reposition' ? <MapPopover /> : null}
       {controlsFlow === 'delete' ? (
         <DeleteModal
           entityName={entityName}
           entityType={entityType}
-          onCancel={onStopEntityDelete}
+          onCancel={onRestoreDefaultState}
           onConfirm={onEntityDelete}
         />
       ) : null}
@@ -238,6 +240,7 @@ Controls.propTypes = {
   entityType: PropTypes.string.isRequired,
   instances: PropTypes.array.isRequired,
   onEntityDelete: PropTypes.func.isRequired,
+  onEntityUpdate: PropTypes.func.isRequired,
   onInstanceCreate: PropTypes.func.isRequired,
   suggestions: PropTypes.array,
   sliderRect: PropTypes.shape({
