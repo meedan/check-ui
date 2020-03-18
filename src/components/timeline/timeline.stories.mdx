@@ -94,8 +94,8 @@ export const onEntityDelete = (entityId, callback) => {
   action('onEntityDelete')(entityId, 'callback');
   if (callback) setTimeout(callback, 3000);
 }
-export const onEntityUpdate = (entityId, payload, callback) => { 
-  action('onEntityUpdate')(entityId, 'callback');
+export const onEntityUpdate = (type, entityId, payload, callback) => { 
+  action('onEntityUpdate')(type, entityId, payload, 'callback');
   if (callback) setTimeout(callback, 3000);
 }
 export const onEntityCreate = (payload, callback) => { 

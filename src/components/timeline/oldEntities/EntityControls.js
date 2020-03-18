@@ -36,8 +36,7 @@ class EntityControls extends Component {
     this.state = {
       flow: null,
     };
-    if (this.props.entityType === 'location')
-      this.anchorRef = React.createRef();
+    if (this.props.entityType === 'place') this.anchorRef = React.createRef();
   }
 
   componentDidMount() {
@@ -73,7 +72,7 @@ class EntityControls extends Component {
       console.log('updateEntity rename', name, this.state.marker);
       this.props.updateEntity(name);
       console.log('onRename()', { isCreating });
-      if (isCreating && entityType === 'location') {
+      if (isCreating && entityType === 'place') {
         this.startReposition();
       } else {
         setTimeout(() => this.setState({ flow: null }), 1000);

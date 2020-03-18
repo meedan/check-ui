@@ -68,6 +68,12 @@ export default function Entities({
 
   const onEntitiesPlay = () => {};
 
+  // entity methods
+
+  const onEntityUpdate = (entityId, payload, callback) => {
+    props.onEntityUpdate(types[type], entityId, payload, callback);
+  };
+
   // instance methods
 
   const onInstanceCreate = (entityId, payload) => {
@@ -142,7 +148,7 @@ export default function Entities({
                   }
                   onEntityCreate={onEntityCreate}
                   onEntityUpdate={(payload, callback) =>
-                    props.onEntityUpdate(entityId, payload, callback)
+                    onEntityUpdate(entityId, payload, callback)
                   }
                   onEntityStop={onEntityStop}
                   sliderRect={sliderRect}

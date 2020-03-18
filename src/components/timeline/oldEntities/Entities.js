@@ -148,8 +148,8 @@ class Entities extends Component {
     const entityName = (function() {
       if (entityType === 'tag') {
         return { project_tag: { name: '' } };
-      } else if (entityType === 'location') {
-        return { project_location: { name: '' } };
+      } else if (entityType === 'place') {
+        return { project_place: { name: '' } };
       } else if (entityType === 'clip') {
         return { project_clip: { name: '' } };
       }
