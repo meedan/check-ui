@@ -175,8 +175,7 @@ export default function Controls({
               ? 'visible'
               : 'hidden',
           }}
-          // onClick={e => e.stopPropagation()}
-        >
+          onClick={e => e.stopPropagation()}>
           {mode === 'processing' ? (
             <CircularProgress size={18} className={classes.circularProgress} />
           ) : (
@@ -239,8 +238,8 @@ export default function Controls({
 
   // toggle edit mode if isLocal changes and true
   useEffect(() => {
-    props.isLocal ? setMode('edit') : setMode('read');
-  }, [props.isLocal]);
+    return isLocal ? setMode('edit') : setMode('read');
+  }, [isLocal]);
 
   // console.group('Controls');
   // console.log({ props });
@@ -255,7 +254,7 @@ export default function Controls({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       ref={controlsRoot}>
-      {mode !== 'edit' ? readControls : editControls}
+      {mode === 'edit' ? editControls : readControls}
       {mode === 'reposition' ? <MapPopover /> : null}
       {mode === 'delete' && !isLocal ? (
         <DeleteModal

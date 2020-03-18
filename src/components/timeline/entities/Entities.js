@@ -23,14 +23,13 @@ export default function Entities({
   const [newInstance, setNewInstance] = useState(null);
   const [sliderRect, setSliderRect] = useState(null);
 
-  const localEntities = newEntity ? [newEntity, ...entities] : entities;
+  const displayEntities = newEntity ? [newEntity, ...entities] : entities;
 
   const titles = {
     clips: 'Clips',
     places: 'Places',
     tags: 'Tags',
   };
-
   const types = {
     clips: 'clip',
     places: 'place',
@@ -38,13 +37,16 @@ export default function Entities({
   };
 
   const onEntityStart = () => {
-    setNewEntity({
+    // construct a new dummy entity
+    const newEntity = {
       id: Date.now(),
       [`project_${types[type]}`]: {
         name: '',
       },
       isLocal: true,
-    });
+    };
+
+    setNewEntity(newEntity);
   };
   const onEntityCreate = (payload, callback) => {
     props.onEntityCreate(
@@ -94,72 +96,74 @@ export default function Entities({
 
   // console.group('Entities');
   // console.log({ props });
+  // console.log({ newEntity });
+  // console.log({ newInstance });
   // console.groupEnd();
 
   return (
     <TableSection
-      plain={localEntities.length > 0}
+      plain={displayEntities.length > 0}
       title={titles[type]}
       actions={actions}>
-      {localEntities.map((entity, i) => {
-        const { instances, isLocal } = entity;
+      {displayEntities.map(
+        ({ instances = [], isLocal = false, ...entity }, i) => {
+          const entityId = entity.id;
+          const entityName = entity[`project_${types[type]}`].name;
+          const entityType = types[type];
 
-        const entityId = entity.id;
-        const entityName = entity[`project_${types[type]}`].name;
-        const entityType = types[type];
+          const isLastChild = i === displayEntities.length - 1;
 
-        const isLastChild = i === localEntities.length - 1;
-
-        return (
-          <TableBlock
-            key={entityId}
-            leftColContent={
-              <Controls
-                currentTime={currentTime}
-                duration={duration}
-                entityName={entityName}
-                entityType={entityType}
-                instances={instances}
-                isLocal={isLocal}
-                onInstanceCreate={payload =>
-                  onInstanceCreate(entityId, payload)
-                }
-                onEntityDelete={callback =>
-                  props.onEntityDelete(entityId, callback)
-                }
-                onEntityCreate={onEntityCreate}
-                onEntityUpdate={(payload, callback) =>
-                  props.onEntityUpdate(entityId, payload, callback)
-                }
-                onEntityStop={onEntityStop}
-                sliderRect={sliderRect}
-                suggestions={suggestions}
-              />
-            }
-            plain={!isLastChild}
-            rightColContent={
-              <Slider
-                clipInstance={instanceId =>
-                  props.onInstanceClip(entityId, instanceId)
-                }
-                deleteInstance={instanceId =>
-                  props.onInstanceDelete(entityId, instanceId)
-                }
-                duration={duration}
-                instances={
-                  newInstance ? [...instances, newInstance] : instances
-                }
-                onDrag={props.onTimeChange}
-                onDragEnd={props.onAfterChange}
-                onDragStart={props.onBeforeChange}
-                returnSliderRect={rect => setSliderRect(rect)}
-                updateInstance={(instanceId, payload) =>
-                  props.onInstanceUpdate(entityId, instanceId, payload)
-                }
-              />
-            }></TableBlock>
-        );
-      })}
+          return (
+            <TableBlock
+              key={entityId}
+              leftColContent={
+                <Controls
+                  currentTime={currentTime}
+                  duration={duration}
+                  entityName={entityName}
+                  entityType={entityType}
+                  instances={instances}
+                  isLocal={isLocal}
+                  onInstanceCreate={payload =>
+                    onInstanceCreate(entityId, payload)
+                  }
+                  onEntityDelete={callback =>
+                    props.onEntityDelete(entityId, callback)
+                  }
+                  onEntityCreate={onEntityCreate}
+                  onEntityUpdate={(payload, callback) =>
+                    props.onEntityUpdate(entityId, payload, callback)
+                  }
+                  onEntityStop={onEntityStop}
+                  sliderRect={sliderRect}
+                  suggestions={suggestions}
+                />
+              }
+              plain={!isLastChild}
+              rightColContent={
+                <Slider
+                  clipInstance={instanceId =>
+                    props.onInstanceClip(entityId, instanceId)
+                  }
+                  deleteInstance={instanceId =>
+                    props.onInstanceDelete(entityId, instanceId)
+                  }
+                  duration={duration}
+                  instances={
+                    newInstance ? [...instances, newInstance] : instances
+                  }
+                  onDrag={props.onTimeChange}
+                  onDragEnd={props.onAfterChange}
+                  onDragStart={props.onBeforeChange}
+                  returnSliderRect={rect => setSliderRect(rect)}
+                  updateInstance={(instanceId, payload) =>
+                    props.onInstanceUpdate(entityId, instanceId, payload)
+                  }
+                />
+              }></TableBlock>
+          );
+        }
+      )}
     </TableSection>
   );
 }
@@ -175,11 +179,14 @@ Entities.propTypes = {
   ),
   onAfterChange: PropTypes.func.isRequired,
   onBeforeChange: PropTypes.func.isRequired,
-  onTimeChange: PropTypes.func.isRequired,
+  onEntityCreate: PropTypes.func.isRequired,
+  onEntityDelete: PropTypes.func.isRequired,
+  onEntityUpdate: PropTypes.func.isRequired,
   onInstanceClip: PropTypes.func,
+  onInstanceCreate: PropTypes.func.isRequired,
   onInstanceDelete: PropTypes.func.isRequired,
   onInstanceUpdate: PropTypes.func.isRequired,
-  onInstanceCreate: PropTypes.func.isRequired,
+  onTimeChange: PropTypes.func.isRequired,
   suggestions: PropTypes.array,
   type: PropTypes.string.isRequired,
 };

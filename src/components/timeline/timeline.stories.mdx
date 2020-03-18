@@ -98,6 +98,10 @@ export const onEntityUpdate = (entityId, payload, callback) => {
   action('onEntityUpdate')(entityId, 'callback');
   if (callback) setTimeout(callback, 3000);
 }
+export const onEntityCreate = (payload, callback) => { 
+  action('onEntityCreate')(payload, 'callback');
+  if (callback) setTimeout(callback, 3000);
+}
 
 <Meta title="Components/Timeline" component={Timeline} decorators={[withKnobs]} />
 
@@ -121,7 +125,7 @@ export const onEntityUpdate = (entityId, payload, callback) => {
           onCommentEdit={onCommentEdit}
           onCommentThreadCreate={onCommentThreadCreate}
           onCommentThreadDelete={onCommentThreadDelete}
-          onEntityCreate={action('onEntityCreate')}
+          onEntityCreate={onEntityCreate}
           onEntityDelete={onEntityDelete}
           onEntityUpdate={onEntityUpdate}
           onInstanceCreate={action('onInstanceCreate')}
@@ -150,7 +154,7 @@ export const onEntityUpdate = (entityId, payload, callback) => {
           onCommentEdit={onCommentEdit}
           onCommentThreadCreate={onCommentThreadCreate}
           onCommentThreadDelete={onCommentThreadDelete}
-          onEntityCreate={action('onEntityCreate')}
+          onEntityCreate={onEntityCreate}
           onEntityDelete={onEntityDelete}
           onEntityUpdate={onEntityUpdate}
           onInstanceCreate={action('onInstanceCreate')}
@@ -179,7 +183,7 @@ export const onEntityUpdate = (entityId, payload, callback) => {
           onCommentEdit={onCommentEdit}
           onCommentThreadCreate={onCommentThreadCreate}
           onCommentThreadDelete={onCommentThreadDelete}
-          onEntityCreate={action('onEntityCreate')}
+          onEntityCreate={onEntityCreate}
           onEntityDelete={onEntityDelete}
           onEntityUpdate={onEntityUpdate}
           onInstanceCreate={action('onInstanceCreate')}
@@ -266,7 +270,7 @@ export const onEntityUpdate = (entityId, payload, callback) => {
       onAfterChange={action('onAfterChange')}
       onBeforeChange={action('onBeforeChange')}
       onChange={action('onChange')}
-      onEntityCreate={action('onEntityCreate')}
+      onEntityCreate={onEntityCreate}
       onEntityDelete={onEntityDelete}
       onEntityUpdate={action('onEntityUpdate')}
       onInstanceCreate={action('onInstanceCreate')}
@@ -287,7 +291,7 @@ export const onEntityUpdate = (entityId, payload, callback) => {
       onAfterChange={action('onAfterChange')}
       onBeforeChange={action('onBeforeChange')}
       onChange={action('onChange')}
-      onEntityCreate={action('onEntityCreate')}
+      onEntityCreate={onEntityCreate}
       onEntityDelete={onEntityDelete}
       onEntityUpdate={onEntityUpdate}
       onInstanceClip={action('onInstanceClip')}
@@ -309,7 +313,7 @@ export const onEntityUpdate = (entityId, payload, callback) => {
       onAfterChange={action('onAfterChange')}
       onBeforeChange={action('onBeforeChange')}
       onChange={action('onChange')}
-      onEntityCreate={action('onEntityCreate')}
+      onEntityCreate={onEntityCreate}
       onEntityDelete={onEntityDelete}
       onEntityUpdate={onEntityUpdate}
       onInstanceClip={action('onInstanceClip')}
