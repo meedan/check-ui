@@ -160,11 +160,7 @@ export default function Controls({
       justify="space-between"
       wrap="nowrap">
       <Grid item>
-        <Tooltip
-          enterDelay={1000}
-          title={
-            displayEntityName ? `Annotate: ${displayEntityName}` : 'Add name'
-          }>
+        <Tooltip enterDelay={1000} title={`Annotate: ${displayEntityName}`}>
           <Typography noWrap variant="body2" className={classes.entityName}>
             {displayEntityName}
           </Typography>
