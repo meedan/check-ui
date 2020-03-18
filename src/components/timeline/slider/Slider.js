@@ -14,64 +14,65 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Slider(props) {
+export default function Slider({ duration, instances = [], ...props }) {
   const classes = useStyles();
   const sliderRoot = useRef();
-
-  const { duration, instances } = props;
 
   const [draggedInstance, setDraggedInstance] = useState();
   const [rootRect, setRootRect] = useState(null);
 
-  const updateRootRect = () => {
+  //
+  const getRootRect = () => {
     setRootRect(sliderRoot.current.getBoundingClientRect());
   };
 
+  // get rootRect on component mount
   useEffect(() => {
-    updateRootRect();
+    getRootRect();
   }, [sliderRoot]);
 
+  // recalc rootRect on window resize
   useEffect(() => {
-    /*
-      Pass rootRect back up all the way to Entities where
-      it’s needed to calculate new instance default width
-    */
+    window.addEventListener('resize', getRootRect);
+    return () => window.removeEventListener('resize', getRootRect);
+  });
+
+  // pass rootRect up to Entities where it’s needed to calc new instance default width
+  useEffect(() => {
     if (props.returnSliderRect) props.returnSliderRect(rootRect);
   }, [rootRect]);
 
-  useEffect(() => {
-    window.addEventListener('resize', updateRootRect);
-    return () => window.removeEventListener('resize', updateRootRect);
-  });
+  const renderInstances = () => {
+    if (!rootRect) return null;
+    return instances.map(
+      ({ end_seconds, id, isProcessing, start_seconds, ...instance }) => {
+        return (
+          <Instance
+            clipInstance={props.clipInstance}
+            deleteInstance={() => props.deleteInstance(id)}
+            duration={duration}
+            end={end_seconds}
+            instance={instance}
+            instances={instances}
+            isLocked={draggedInstance && draggedInstance !== id}
+            isProcessing={isProcessing}
+            key={id}
+            lockSiblings={() => setDraggedInstance(id)}
+            onHandleMove={props.onDrag}
+            onHandlePress={props.onDragStart}
+            onHandleRelease={props.onDragEnd}
+            sliderRect={rootRect}
+            start={start_seconds}
+            updateInstance={payload => props.updateInstance(id, payload)}
+          />
+        );
+      }
+    );
+  };
 
   return (
     <div className={classes.sliderRoot} ref={sliderRoot}>
-      {rootRect
-        ? instances.map(instance => {
-            const { id, start_seconds, end_seconds, isProcessing } = instance;
-            return (
-              <Instance
-                clipInstance={props.clipInstance}
-                deleteInstance={() => props.deleteInstance(id)}
-                updateInstance={payload => props.updateInstance(id, payload)}
-                //
-                duration={duration}
-                end={end_seconds}
-                instance={instance}
-                instances={instances}
-                isLocked={draggedInstance && draggedInstance !== id}
-                isProcessing={isProcessing}
-                key={id}
-                lockSiblings={() => setDraggedInstance(id)}
-                onHandleMove={props.onDrag}
-                onHandlePress={props.onDragStart}
-                onHandleRelease={props.onDragEnd}
-                sliderRect={rootRect}
-                start={start_seconds}
-              />
-            );
-          })
-        : null}
+      {renderInstances()}
     </div>
   );
 }
@@ -86,10 +87,4 @@ Slider.propTypes = {
   onDragStart: PropTypes.func.isRequired,
   returnSliderRect: PropTypes.func,
   updateInstance: PropTypes.func.isRequired,
-};
-
-Slider.defaultProps = {
-  clipInstance: null,
-  instances: [],
-  returnSliderRect: null,
 };
