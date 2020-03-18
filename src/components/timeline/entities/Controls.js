@@ -1,6 +1,6 @@
 import Menu from 'material-ui-popup-state/HoverMenu';
 import PropTypes from 'prop-types';
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import find from 'lodash/find';
 import {
   usePopupState,
@@ -56,7 +56,7 @@ export default function Controls({
   const classes = useStyles();
   const controlsRoot = useRef();
 
-  const [mode, setMode] = useState('read');
+  const [mode, setMode] = useState(isLocal ? 'edit' : 'read');
   const [newEntityName, setNewEntityName] = useState(null);
 
   const morePopupState = usePopupState({
@@ -86,7 +86,8 @@ export default function Controls({
   const onEntityCreate = str => {
     setNewEntityName(str);
     setMode('processing');
-    props.onEntityCreate(str, onModeReset);
+    props.onEntityCreate(str);
+    // props.onEntityCreate(str, onModeReset);
   };
   const onEntityUpdateStart = () => {
     setMode('edit');
@@ -233,11 +234,6 @@ export default function Controls({
       suggestions={suggestions}
     />
   );
-
-  // toggle edit mode if isLocal changes and true
-  useEffect(() => {
-    return isLocal ? setMode('edit') : setMode('read');
-  }, [isLocal]);
 
   // console.group('Controls');
   // console.log({ props });

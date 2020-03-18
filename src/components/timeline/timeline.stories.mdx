@@ -98,8 +98,8 @@ export const onEntityUpdate = (type, entityId, payload, callback) => {
   action('onEntityUpdate')(type, entityId, payload, 'callback');
   if (callback) setTimeout(callback, 3000);
 }
-export const onEntityCreate = (payload, callback) => { 
-  action('onEntityCreate')(payload, 'callback');
+export const onEntityCreate = (type, payload, callback) => { 
+  action('onEntityCreate')(type, payload, 'callback');
   if (callback) setTimeout(callback, 3000);
 }
 export const onInstanceCreate = (type, entityId, payload, callback) => { 

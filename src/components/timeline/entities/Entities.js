@@ -48,19 +48,16 @@ export default function Entities({
 
     setNewEntity(newEntity);
   };
-  const onEntityCreate = (payload, callback) => {
-    props.onEntityCreate(
-      {
-        id: Date.now(),
-        [`project_${types[type]}`]: {
-          name: payload,
-        },
+  const onEntityCreate = payload => {
+    const newEntity = {
+      id: Date.now(),
+      [`project_${types[type]}`]: {
+        name: payload,
       },
-      () => {
-        setNewEntity(null);
-        callback();
-      }
-    );
+    };
+    props.onEntityCreate(types[type], newEntity, () => {
+      setNewEntity(null);
+    });
   };
   const onEntityStop = () => {
     setNewEntity(null);
