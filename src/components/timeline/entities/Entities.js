@@ -142,10 +142,12 @@ export default function Entities({
               plain={!isLastChild}
               rightColContent={
                 <Slider
-                  clipInstance={instanceId =>
-                    props.onInstanceClip(entityId, instanceId)
+                  onInstanceClip={
+                    props.onInstanceClip
+                      ? instanceId => props.onInstanceClip(entityId, instanceId)
+                      : null
                   }
-                  deleteInstance={instanceId =>
+                  onInstanceDelete={instanceId =>
                     props.onInstanceDelete(entityId, instanceId)
                   }
                   duration={duration}
@@ -156,7 +158,7 @@ export default function Entities({
                   onDragEnd={props.onAfterChange}
                   onDragStart={props.onBeforeChange}
                   returnSliderRect={rect => setSliderRect(rect)}
-                  updateInstance={(instanceId, payload) =>
+                  onInstanceUpdate={(instanceId, payload) =>
                     props.onInstanceUpdate(entityId, instanceId, payload)
                   }
                 />

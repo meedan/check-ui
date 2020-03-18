@@ -42,10 +42,15 @@ const useStyles = () =>
     },
   }));
 
-export default function Instance(props) {
+export default function Instance({
+  isLocked,
+  isProcessing,
+  duration,
+  instances,
+  ...props
+}) {
   const classes = useStyles()();
 
-  const { isLocked, isProcessing, duration, instances } = props;
   const { left, width } = props.sliderRect;
 
   const [end, setEnd] = useState(props.end);
@@ -122,10 +127,10 @@ export default function Instance(props) {
       );
     }
     // props.onHandleMove(draggingHandle === 'start' ? start : end);
-    props.updateInstance({ start_seconds: start, end_seconds: end });
+    props.onInstanceUpdate({ start_seconds: start, end_seconds: end });
   };
   const onHandleRelease = e => {
-    // props.updateInstance({
+    // props.onInstanceUpdate({
     //   end_seconds: end,
     //   start_seconds: start,
     // });
@@ -160,7 +165,7 @@ export default function Instance(props) {
         : setStart(prevState => val(prevState));
     }
 
-    props.updateInstance({ start_seconds: start, end_seconds: end });
+    props.onInstanceUpdate({ start_seconds: start, end_seconds: end });
   };
 
   const x1 = (start * width) / duration;
@@ -219,9 +224,9 @@ export default function Instance(props) {
       </div>
       {!draggingHandle ? (
         <InstancePopover
-          clipInstance={props.clipInstance}
-          deleteInstance={props.deleteInstance}
           instance={props.instance}
+          onInstanceClip={props.onInstanceClip}
+          onInstanceDelete={props.onInstanceDelete}
           popupState={instancePopupState}
         />
       ) : null}
@@ -275,8 +280,6 @@ export default function Instance(props) {
 }
 
 Instance.propTypes = {
-  clipInstance: PropTypes.func,
-  deleteInstance: PropTypes.func.isRequired,
   duration: PropTypes.number.isRequired,
   end: PropTypes.number.isRequired,
   instance: PropTypes.object.isRequired,
@@ -287,13 +290,9 @@ Instance.propTypes = {
   onHandleMove: PropTypes.func.isRequired,
   onHandlePress: PropTypes.func.isRequired,
   onHandleRelease: PropTypes.func.isRequired,
+  onInstanceClip: PropTypes.func,
+  onInstanceDelete: PropTypes.func.isRequired,
+  onInstanceUpdate: PropTypes.func.isRequired,
   sliderRect: PropTypes.object.isRequired,
   start: PropTypes.number.isRequired,
-  updateInstance: PropTypes.func.isRequired,
-};
-
-Instance.defaultProps = {
-  clipInstance: null,
-  isLocked: null,
-  isProcessing: null,
 };

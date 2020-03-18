@@ -48,8 +48,6 @@ export default function Slider({ duration, instances = [], ...props }) {
       ({ end_seconds, id, isProcessing, start_seconds, ...instance }) => {
         return (
           <Instance
-            clipInstance={props.clipInstance}
-            deleteInstance={() => props.deleteInstance(id)}
             duration={duration}
             end={end_seconds}
             instance={instance}
@@ -61,9 +59,13 @@ export default function Slider({ duration, instances = [], ...props }) {
             onHandleMove={props.onDrag}
             onHandlePress={props.onDragStart}
             onHandleRelease={props.onDragEnd}
+            onInstanceClip={
+              props.onInstanceClip ? () => props.onInstanceClip(id) : null
+            }
+            onInstanceDelete={() => props.onInstanceDelete(id)}
+            onInstanceUpdate={payload => props.onInstanceUpdate(id, payload)}
             sliderRect={rootRect}
             start={start_seconds}
-            updateInstance={payload => props.updateInstance(id, payload)}
           />
         );
       }
@@ -78,13 +80,13 @@ export default function Slider({ duration, instances = [], ...props }) {
 }
 
 Slider.propTypes = {
-  clipInstance: PropTypes.func,
-  deleteInstance: PropTypes.func.isRequired,
   duration: PropTypes.number.isRequired,
   instances: PropTypes.array,
   onDrag: PropTypes.func.isRequired,
   onDragEnd: PropTypes.func.isRequired,
   onDragStart: PropTypes.func.isRequired,
+  onInstanceClip: PropTypes.func,
+  onInstanceDelete: PropTypes.func.isRequired,
+  onInstanceUpdate: PropTypes.func.isRequired,
   returnSliderRect: PropTypes.func,
-  updateInstance: PropTypes.func.isRequired,
 };

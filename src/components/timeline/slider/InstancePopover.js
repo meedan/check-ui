@@ -9,8 +9,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 import CutIcon from '../../icons/Cut';
 
-export default function InstancePopover(props) {
-  const { clipInstance, deleteInstance, instance, popupState } = props;
+export default function InstancePopover({ instance, popupState, ...props }) {
   const fireAction = (fn, e) => {
     e.stopPropagation();
     popupState.close();
@@ -28,15 +27,15 @@ export default function InstancePopover(props) {
         vertical: 'top',
         horizontal: 'center',
       }}>
-      {clipInstance ? (
+      {props.onInstanceClip ? (
         <Tooltip title="Copy to Clips">
-          <IconButton onClick={e => fireAction(clipInstance, e)}>
+          <IconButton onClick={e => fireAction(props.onInstanceClip, e)}>
             <CutIcon fontSize="small" />
           </IconButton>
         </Tooltip>
       ) : null}
       <Tooltip title="Delete">
-        <IconButton onClick={e => fireAction(deleteInstance, e)}>
+        <IconButton onClick={e => fireAction(props.onInstanceDelete, e)}>
           <DeleteIcon fontSize="small" />
         </IconButton>
       </Tooltip>
@@ -45,12 +44,8 @@ export default function InstancePopover(props) {
 }
 
 InstancePopover.propTypes = {
-  clipInstance: PropTypes.func,
-  deleteInstance: PropTypes.func.isRequired,
+  onInstanceClip: PropTypes.func,
+  onInstanceDelete: PropTypes.func.isRequired,
   instance: PropTypes.object.isRequired,
   popupState: PropTypes.object.isRequired,
-};
-
-InstancePopover.defaultProps = {
-  clipInstance: null,
 };
