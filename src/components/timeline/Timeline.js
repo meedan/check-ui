@@ -23,10 +23,15 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Timeline(props) {
+export default function Timeline({
+  currentTime = 0,
+  duration,
+  playing = false,
+  data,
+  ...props
+}) {
   const classes = useStyles();
 
-  const { currentTime, duration, playing, data } = props;
   const {
     commentThreads,
     project,
@@ -61,59 +66,56 @@ export default function Timeline(props) {
         user={user}
       />
       <Entities
-        // transport={transport}
         currentTime={currentTime}
         duration={duration}
         entities={videoClips}
         onAfterChange={() => setSkip(false)}
         onBeforeChange={() => setSkip(true)}
-        onChange={props.onTimeChange}
         onEntityCreate={props.onEntityCreate}
-        onEntityUpdate={props.onEntityUpdate}
         onEntityDelete={props.onEntityDelete}
+        onEntityUpdate={props.onEntityUpdate}
         onInstanceCreate={props.onInstanceCreate}
         onInstanceDelete={props.onInstanceDelete}
         onInstanceUpdate={props.onInstanceUpdate}
+        onTimeChange={props.onTimeChange}
         playing={playing}
         skip={skip}
         suggestions={project.projectclips}
         type="clips"
       />
       <Entities
-        // transport={transport}
         clips={videoClips}
         currentTime={currentTime}
         duration={duration}
         entities={videoTags}
         onAfterChange={() => setSkip(false)}
         onBeforeChange={() => setSkip(true)}
-        onChange={props.onTimeChange}
         onEntityCreate={props.onEntityCreate}
-        onEntityUpdate={props.onEntityUpdate}
         onEntityDelete={props.onEntityDelete}
+        onEntityUpdate={props.onEntityUpdate}
         onInstanceCreate={props.onInstanceCreate}
         onInstanceDelete={props.onInstanceDelete}
         onInstanceUpdate={props.onInstanceUpdate}
+        onTimeChange={props.onTimeChange}
         playing={playing}
         skip={skip}
         suggestions={project.projecttags}
         type="tags"
       />
       <Entities
-        // transport={transport}
         clips={videoClips}
         currentTime={currentTime}
         duration={duration}
         entities={videoPlaces}
         onAfterChange={() => setSkip(false)}
         onBeforeChange={() => setSkip(true)}
-        onChange={props.onTimeChange}
         onEntityCreate={props.onEntityCreate}
-        onEntityUpdate={props.onEntityUpdate}
         onEntityDelete={props.onEntityDelete}
+        onEntityUpdate={props.onEntityUpdate}
         onInstanceCreate={props.onInstanceCreate}
         onInstanceDelete={props.onInstanceDelete}
         onInstanceUpdate={props.onInstanceUpdate}
+        onTimeChange={props.onTimeChange}
         playing={playing}
         skip={skip}
         suggestions={project.projectplaces}
@@ -143,7 +145,7 @@ Timeline.propTypes = {
   }),
   currentTime: PropTypes.number.isRequired,
   duration: PropTypes.number.isRequired,
-  onBeforeCommentThreadCreate: PropTypes.func, // TODO: check if this is actually required
+  onBeforeCommentThreadCreate: PropTypes.func, // TODO: what is it? do we need this?
   onCommentCreate: PropTypes.func.isRequired,
   onCommentDelete: PropTypes.func.isRequired,
   onCommentEdit: PropTypes.func.isRequired,
@@ -159,7 +161,6 @@ Timeline.propTypes = {
 };
 
 Timeline.defaultProps = {
-  currentTime: 0,
   data: {
     commentThreads: [],
     project: {
@@ -173,5 +174,4 @@ Timeline.defaultProps = {
   },
   onAfterChange: null,
   onBeforeChange: null,
-  playing: false,
 };

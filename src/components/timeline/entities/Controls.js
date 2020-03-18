@@ -1,12 +1,12 @@
 import Menu from 'material-ui-popup-state/HoverMenu';
 import PropTypes from 'prop-types';
 import React, { useRef, useState, useEffect } from 'react';
+import find from 'lodash/find';
 import {
   usePopupState,
   bindHover,
   bindMenu,
 } from 'material-ui-popup-state/hooks';
-import find from 'lodash/find';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
@@ -42,76 +42,105 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Controls(props) {
+export default function Controls({
+  currentTime = 0,
+  duration,
+  entityName,
+  entityType,
+  instances = [],
+  isLocal = false,
+  sliderRect,
+  suggestions = [],
+  ...props
+}) {
   const classes = useStyles();
-  const controlsRootRef = useRef();
-
-  const {
-    currentTime,
-    duration,
-    entityName,
-    entityType,
-    instances,
-    isLocal,
-    sliderRect,
-    suggestions,
-  } = props;
+  const controlsRoot = useRef();
 
   const [mode, setMode] = useState('read');
-  const [newName, setNewName] = useState(null);
+  const [newEntityName, setNewEntityName] = useState(null);
 
   const morePopupState = usePopupState({
     variant: 'popover',
     popupId: 'moreMenu',
   });
 
-  const allowNewInstance = ['edit', 'processing'].indexOf(mode) < 0;
-  const showAddornment = ['read', 'reposition', 'delete'].indexOf(mode) < 0;
+  const displayEntityName = mode === 'processing' ? newEntityName : entityName;
+
+  // mode methods
 
   const onMouseEnter = () => {
-    if (mode !== 'read') return null;
-    setMode('hovering');
+    if (mode === 'read') setMode('hovering');
   };
   const onMouseLeave = () => {
-    if (mode !== 'hovering') return null;
-    setMode('read');
+    if (mode === 'hovering') setMode('read');
   };
-
-  const onCancel = () => {
+  const onModeReset = () => {
+    morePopupState.close();
     setMode('read');
+    setNewEntityName(null);
     if (isLocal) props.onEntityStop();
   };
 
-  const onStartEntityUpdate = () => {
-    morePopupState.close();
+  // entity methods
+
+  const onEntityCreate = str => {
+    setNewEntityName(str);
+    setMode('processing');
+    props.onEntityCreate(str, onModeReset);
+  };
+  const onEntityUpdateStart = () => {
     setMode('edit');
   };
   const onEntityUpdate = str => {
-    setNewName(str);
+    setNewEntityName(str);
     setMode('processing');
-    props.onEntityUpdate(str, () => {
-      setMode('read');
-      setNewName(null);
-    });
+    props.onEntityUpdate(str, onModeReset);
   };
-  const onEntityCreate = str => {
-    setNewName(str);
-    setMode('processing');
-    props.onEntityCreate(str, () => {
-      setMode('read');
-      setNewName(null);
-    });
-  };
-
-  const onStartEntityDelete = () => {
-    morePopupState.close();
+  const onEntityDeleteStart = () => {
     setMode('delete');
   };
   const onEntityDelete = () => {
+    setNewEntityName(entityName);
     setMode('processing');
-    props.onEntityDelete(() => setMode('read'));
+    props.onEntityDelete(onModeReset);
   };
 
+  // instance methods
+
+  const onInstanceCreate = () => {
+    // prevent instance creation when editing or processing
+    if (['edit', 'processing'].includes(mode)) return null;
+
+    // prevent instance creation if no sliderRect found
+    if (!sliderRect) return null;
+
+    // prevent instance creation if currentTime is within range of an already existing instance
+    const fn = o =>
+      currentTime >= o.start_seconds && currentTime <= o.end_seconds;
+    if (find(instances, o => fn(o))) return null;
+
+    // get new instance time duration assuming it’s 16px-wide
+    const newDuration = (16 * duration) / sliderRect.width;
+
+    // get new end_seconds value based on currentTime
+    const newEnd = currentTime + newDuration;
+
+    // get max possible start_seconds value given the above
+    const maxStart = duration - newDuration;
+
+    // construct a new instance
+    const newInstance = {
+      start_seconds: currentTime <= maxStart ? currentTime : maxStart,
+      end_seconds: newEnd <= duration ? newEnd : duration,
+    };
+
+    // TODO: add support for processing state w/ parent callback
+    props.onInstanceCreate(newInstance);
+  };
+
+  // map/place methods
+
+  // TODO: bring in map bits
   const onStartEntityReposition = () => {
     morePopupState.close();
     console.log('onStartEntityReposition');
@@ -123,32 +152,6 @@ export default function Controls(props) {
     console.log('onEntityReposition');
   };
 
-  const onInstanceCreate = () => {
-    /*
-      1. check if slider has mounted and returned its rect
-      2. check if currentTime is within range of an already existing instance
-    */
-    if (
-      !sliderRect ||
-      find(
-        instances,
-        o => currentTime >= o.start_seconds && currentTime <= o.end_seconds
-      )
-    )
-      return null;
-
-    const newDuration = (16 * duration) / sliderRect.width; // new instance duration if 16px-wide
-    const newEnd = currentTime + newDuration; // new end_seconds value based on currentTime
-    const maxStart = duration - newDuration; // max value for new instance start_seconds value
-
-    props.onInstanceCreate({
-      start_seconds: currentTime <= maxStart ? currentTime : maxStart,
-      end_seconds: newEnd <= duration ? newEnd : duration,
-    });
-  };
-
-  const displayName = mode === 'processing' ? newName : entityName;
-
   const readControls = (
     <Grid
       alignItems="center"
@@ -159,16 +162,21 @@ export default function Controls(props) {
       <Grid item>
         <Tooltip
           enterDelay={1000}
-          title={displayName ? displayName : 'Add a name'}>
+          title={displayEntityName ? displayEntityName : 'Add a name'}>
           <Typography noWrap variant="body2" className={classes.entityName}>
-            {displayName}
+            {displayEntityName}
           </Typography>
         </Tooltip>
       </Grid>
       <Grid item>
         <div
-          style={{ visibility: showAddornment ? 'visible' : 'hidden' }}
-          onClick={e => e.stopPropagation()}>
+          style={{
+            visibility: ['hovering', 'processing'].includes(mode)
+              ? 'visible'
+              : 'hidden',
+          }}
+          // onClick={e => e.stopPropagation()}
+        >
           {mode === 'processing' ? (
             <CircularProgress size={18} className={classes.circularProgress} />
           ) : (
@@ -206,10 +214,10 @@ export default function Controls(props) {
                 <MenuItem
                   dense
                   divider={entityType === 'place'}
-                  onClick={onStartEntityUpdate}>
+                  onClick={onEntityUpdateStart}>
                   Edit name
                 </MenuItem>
-                <MenuItem dense onClick={onStartEntityDelete}>
+                <MenuItem dense onClick={onEntityDeleteStart}>
                   Delete
                 </MenuItem>
               </Menu>
@@ -221,37 +229,39 @@ export default function Controls(props) {
   );
   const editControls = (
     <NameField
-      entityName={displayName}
-      onCancel={onCancel}
+      entityName={displayEntityName}
+      entityType={entityType}
+      onCancel={onModeReset}
       onSubmit={isLocal ? onEntityCreate : onEntityUpdate}
       suggestions={suggestions}
     />
   );
 
-  // console.group('Controls');
-  // console.log({ props });
-  // console.log({ mode });
-  // console.log({ newName });
-  // console.groupEnd();
-
+  // toggle edit mode if isLocal changes and true
   useEffect(() => {
     props.isLocal ? setMode('edit') : setMode('read');
   }, [props.isLocal]);
 
+  // console.group('Controls');
+  // console.log({ props });
+  // console.log({ mode });
+  // console.log({ newEntityName });
+  // console.groupEnd();
+
   return (
     <div
       className={classes.controlsRoot}
-      onClick={allowNewInstance ? onInstanceCreate : null}
+      onClick={onInstanceCreate}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      ref={controlsRootRef}>
+      ref={controlsRoot}>
       {mode !== 'edit' ? readControls : editControls}
       {mode === 'reposition' ? <MapPopover /> : null}
       {mode === 'delete' && !isLocal ? (
         <DeleteModal
-          entityName={displayName}
+          entityName={displayEntityName}
           entityType={entityType}
-          onCancel={onCancel}
+          onCancel={onModeReset}
           onConfirm={onEntityDelete}
         />
       ) : null}
@@ -265,18 +275,13 @@ Controls.propTypes = {
   entityName: PropTypes.string,
   entityType: PropTypes.string.isRequired,
   instances: PropTypes.array,
+  isLocal: PropTypes.bool,
   onEntityDelete: PropTypes.func.isRequired,
   onEntityUpdate: PropTypes.func.isRequired,
+  onEntityStop: PropTypes.func.isRequired,
   onInstanceCreate: PropTypes.func.isRequired,
   suggestions: PropTypes.array,
   sliderRect: PropTypes.shape({
     width: PropTypes.number,
   }),
-};
-
-Controls.defaultProps = {
-  entityName: null,
-  instances: [],
-  sliderRect: null,
-  suggestions: [],
 };

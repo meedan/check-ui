@@ -74,20 +74,28 @@ export const onPlayheadChange = (newTime) => {
 export const onCommentDelete = (threadId, commentId) => {
   action('onCommentDelete')(threadId, commentId);
 }
-export const onCommentEdit = (threadId, commentId, text, callback) => {
-  action('onCommentDelete')(threadId, commentId, text, 'callback');
+export const onCommentEdit = (threadId, commentId, payload, callback) => {
+  action('onCommentDelete')(threadId, commentId, payload, 'callback');
   if (callback) setTimeout(callback, 3000);
 }
-export const onCommentCreate = (threadId, text, callback) => {
-  action('onCommentCreate')(threadId, text, 'callback');
+export const onCommentCreate = (threadId, payload, callback) => {
+  action('onCommentCreate')(threadId, payload, 'callback');
   if (callback) setTimeout(callback, 3000);
 }
 export const onCommentThreadDelete = (threadId, callback) => {
   action('onCommentThreadDelete')(threadId, 'callback');
   if (callback) setTimeout(callback, 3000);
 }
-export const onCommentThreadCreate = (time, text, callback) => {
-  action('onCommentThreadCreate')(time, text, 'callback');
+export const onCommentThreadCreate = (time, payload, callback) => {
+  action('onCommentThreadCreate')(time, payload, 'callback');
+  if (callback) setTimeout(callback, 3000);
+}
+export const onEntityDelete = (entityId, callback) => { 
+  action('onEntityDelete')(entityId, 'callback');
+  if (callback) setTimeout(callback, 3000);
+}
+export const onEntityUpdate = (entityId, payload, callback) => { 
+  action('onEntityUpdate')(entityId, 'callback');
   if (callback) setTimeout(callback, 3000);
 }
 
@@ -114,8 +122,8 @@ export const onCommentThreadCreate = (time, text, callback) => {
           onCommentThreadCreate={onCommentThreadCreate}
           onCommentThreadDelete={onCommentThreadDelete}
           onEntityCreate={action('onEntityCreate')}
-          onEntityDelete={action('onEntityDelete')}
-          onEntityUpdate={action('onEntityUpdate')}
+          onEntityDelete={onEntityDelete}
+          onEntityUpdate={onEntityUpdate}
           onInstanceCreate={action('onInstanceCreate')}
           onInstanceDelete={action('onInstanceDelete')}
           onInstanceUpdate={action('onInstanceUpdate')}
@@ -143,8 +151,8 @@ export const onCommentThreadCreate = (time, text, callback) => {
           onCommentThreadCreate={onCommentThreadCreate}
           onCommentThreadDelete={onCommentThreadDelete}
           onEntityCreate={action('onEntityCreate')}
-          onEntityDelete={action('onEntityDelete')}
-          onEntityUpdate={action('onEntityUpdate')}
+          onEntityDelete={onEntityDelete}
+          onEntityUpdate={onEntityUpdate}
           onInstanceCreate={action('onInstanceCreate')}
           onInstanceDelete={action('onInstanceDelete')}
           onInstanceUpdate={action('onInstanceUpdate')}
@@ -172,8 +180,8 @@ export const onCommentThreadCreate = (time, text, callback) => {
           onCommentThreadCreate={onCommentThreadCreate}
           onCommentThreadDelete={onCommentThreadDelete}
           onEntityCreate={action('onEntityCreate')}
-          onEntityDelete={action('onEntityDelete')}
-          onEntityUpdate={action('onEntityUpdate')}
+          onEntityDelete={onEntityDelete}
+          onEntityUpdate={onEntityUpdate}
           onInstanceCreate={action('onInstanceCreate')}
           onInstanceDelete={action('onInstanceDelete')}
           onInstanceUpdate={action('onInstanceUpdate')}
@@ -259,7 +267,7 @@ export const onCommentThreadCreate = (time, text, callback) => {
       onBeforeChange={action('onBeforeChange')}
       onChange={action('onChange')}
       onEntityCreate={action('onEntityCreate')}
-      onEntityDelete={action('onEntityDelete')}
+      onEntityDelete={onEntityDelete}
       onEntityUpdate={action('onEntityUpdate')}
       onInstanceCreate={action('onInstanceCreate')}
       onInstanceDelete={action('onInstanceDelete')}
@@ -280,8 +288,8 @@ export const onCommentThreadCreate = (time, text, callback) => {
       onBeforeChange={action('onBeforeChange')}
       onChange={action('onChange')}
       onEntityCreate={action('onEntityCreate')}
-      onEntityDelete={action('onEntityDelete')}
-      onEntityUpdate={action('onEntityUpdate')}
+      onEntityDelete={onEntityDelete}
+      onEntityUpdate={onEntityUpdate}
       onInstanceClip={action('onInstanceClip')}
       onInstanceCreate={action('onInstanceCreate')}
       onInstanceDelete={action('onInstanceDelete')}
@@ -302,8 +310,8 @@ export const onCommentThreadCreate = (time, text, callback) => {
       onBeforeChange={action('onBeforeChange')}
       onChange={action('onChange')}
       onEntityCreate={action('onEntityCreate')}
-      onEntityDelete={action('onEntityDelete')}
-      onEntityUpdate={action('onEntityUpdate')}
+      onEntityDelete={onEntityDelete}
+      onEntityUpdate={onEntityUpdate}
       onInstanceClip={action('onInstanceClip')}
       onInstanceCreate={action('onInstanceCreate')}
       onInstanceDelete={action('onInstanceDelete')}

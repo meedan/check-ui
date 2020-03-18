@@ -11,12 +11,17 @@ import Slider from '../slider/Slider';
 import TableBlock from '../elements/TableBlock';
 import TableSection from '../elements/TableSection';
 
-export default function Entities(props) {
-  const { currentTime, duration, entities, suggestions, type } = props;
-
-  const [sliderRect, setSliderRect] = useState(null);
-  const [newInstance, setNewInstance] = useState(null);
+export default function Entities({
+  currentTime = 0,
+  duration,
+  entities = [],
+  suggestions = [],
+  type,
+  ...props
+}) {
   const [newEntity, setNewEntity] = useState(null);
+  const [newInstance, setNewInstance] = useState(null);
+  const [sliderRect, setSliderRect] = useState(null);
 
   const localEntities = newEntity ? [newEntity, ...entities] : entities;
 
@@ -88,9 +93,6 @@ export default function Entities(props) {
   );
 
   // console.group('Entities');
-  // console.log({ newInstance });
-  // console.log({ newEntity });
-  // console.log({ sliderRect });
   // console.log({ props });
   // console.groupEnd();
 
@@ -147,7 +149,7 @@ export default function Entities(props) {
                 instances={
                   newInstance ? [...instances, newInstance] : instances
                 }
-                onDrag={props.onChange}
+                onDrag={props.onTimeChange}
                 onDragEnd={props.onAfterChange}
                 onDragStart={props.onBeforeChange}
                 returnSliderRect={rect => setSliderRect(rect)}
@@ -173,18 +175,11 @@ Entities.propTypes = {
   ),
   onAfterChange: PropTypes.func.isRequired,
   onBeforeChange: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
+  onTimeChange: PropTypes.func.isRequired,
   onInstanceClip: PropTypes.func,
   onInstanceDelete: PropTypes.func.isRequired,
   onInstanceUpdate: PropTypes.func.isRequired,
   onInstanceCreate: PropTypes.func.isRequired,
   suggestions: PropTypes.array,
   type: PropTypes.string.isRequired,
-};
-
-Entities.defaultProps = {
-  currentTime: 0,
-  entities: [],
-  onInstanceClip: null,
-  suggestions: [],
 };

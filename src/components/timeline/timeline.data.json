@@ -78,14 +78,14 @@
       { "id": 3979, "name": "Voting Rights", "taginstance_count": 1 }
     ],
     "projectplaces": [
-      { "id": 13958, "name": "Paris", "taginstance_count": 0 },
-      { "id": 33959, "name": "London", "taginstance_count": 3 },
-      { "id": 33960, "name": "Syria", "taginstance_count": 1 }
+      { "id": 13958, "name": "Paris", "placeinstance_count": 0 },
+      { "id": 33959, "name": "London", "placeinstance_count": 3 },
+      { "id": 33960, "name": "Syria", "placeinstance_count": 1 }
     ],
     "projectclips": [
-      { "id": 13958, "name": "A clip", "taginstance_count": 0 },
-      { "id": 33959, "name": "Another clip", "taginstance_count": 3 },
-      { "id": 33960, "name": "Yet another clip", "taginstance_count": 1 }
+      { "id": 13958, "name": "A clip", "clipinstance_count": 0 },
+      { "id": 33959, "name": "Another clip", "clipinstance_count": 3 },
+      { "id": 33960, "name": "Yet another clip", "clipinstance_count": 1 }
     ]
   },
   "videoClips": [

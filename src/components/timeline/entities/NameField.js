@@ -19,17 +19,25 @@ const useStyles = makeStyles(theme => ({
   },
   adornmentIcon: {
     position: 'relative',
-    top: `${theme.spacing(0.25) * -1}px`,
+    top: `${theme.spacing(0.3) * -1}px`,
+    left: `${theme.spacing(0.6) * -1}px`,
   },
 }));
 
-export default function NameField({ name, suggestions = [], type, ...props }) {
+export default function NameField({
+  entityName,
+  entityType,
+  suggestions = [],
+  ...props
+}) {
   const classes = useStyles();
 
   // order and flatten suggestions’ array
-  const options = orderBy(suggestions, [`${type}instance_count`], ['desc']).map(
-    o => o.name
-  );
+  const options = orderBy(
+    suggestions,
+    [`${entityType}instance_count`],
+    ['desc']
+  ).map(o => o.name);
 
   return (
     <Autocomplete
@@ -37,7 +45,7 @@ export default function NameField({ name, suggestions = [], type, ...props }) {
       blurOnSelect
       disableOpenOnFocus
       freeSolo
-      id={`${type}-suggestions`}
+      id={`${entityType}-suggestions`}
       onChange={(e, str) => props.onSubmit(str)}
       options={options}
       renderInput={params => (
@@ -53,7 +61,7 @@ export default function NameField({ name, suggestions = [], type, ...props }) {
               }
             },
           }}
-          placeholder={name}
+          placeholder={entityName}
           InputProps={{
             className: classes.inputRoot,
             ref: params.InputProps.ref,
@@ -83,9 +91,9 @@ export default function NameField({ name, suggestions = [], type, ...props }) {
 }
 
 NameField.propTypes = {
-  name: PropTypes.string.isRequired,
+  entityName: PropTypes.string.isRequired,
+  entityType: PropTypes.string.isRequired,
   onCancel: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   suggestions: PropTypes.array,
-  type: PropTypes.string.isRequired,
 };

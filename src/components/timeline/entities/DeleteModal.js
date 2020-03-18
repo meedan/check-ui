@@ -8,8 +8,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-export default function DeleteModal(props) {
-  const { entityName, entityType } = props;
+export default function DeleteModal({ entityName, entityType, ...props }) {
   return (
     <Dialog
       aria-describedby={`Confirm removal of all instances of ${entityName}`}
