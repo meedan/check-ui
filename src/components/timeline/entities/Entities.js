@@ -73,6 +73,9 @@ export default function Entities({
   const onEntityUpdate = (entityId, payload, callback) => {
     props.onEntityUpdate(types[type], entityId, payload, callback);
   };
+  const onEntityDelete = (entityId, callback) => {
+    props.onEntityDelete(types[type], entityId, callback);
+  };
 
   // instance methods
 
@@ -144,7 +147,7 @@ export default function Entities({
                     onInstanceCreate(entityId, payload)
                   }
                   onEntityDelete={callback =>
-                    props.onEntityDelete(entityId, callback)
+                    onEntityDelete(entityId, callback)
                   }
                   onEntityCreate={onEntityCreate}
                   onEntityUpdate={(payload, callback) =>

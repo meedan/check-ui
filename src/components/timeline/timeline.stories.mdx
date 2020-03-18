@@ -90,8 +90,8 @@ export const onCommentThreadCreate = (time, payload, callback) => {
   action('onCommentThreadCreate')(time, payload, 'callback');
   if (callback) setTimeout(callback, 3000);
 }
-export const onEntityDelete = (entityId, callback) => { 
-  action('onEntityDelete')(entityId, 'callback');
+export const onEntityDelete = (type, entityId, callback) => { 
+  action('onEntityDelete')(type, entityId, 'callback');
   if (callback) setTimeout(callback, 3000);
 }
 export const onEntityUpdate = (type, entityId, payload, callback) => { 
