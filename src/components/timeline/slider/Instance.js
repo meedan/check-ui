@@ -43,10 +43,10 @@ const useStyles = () =>
   }));
 
 export default function Instance({
-  isLocked,
-  isProcessing,
   duration,
   instances,
+  isLocal,
+  isLocked,
   ...props
 }) {
   const classes = useStyles()();
@@ -146,7 +146,7 @@ export default function Instance({
     // setHoveringInstance(prevState => (prevState ? prevState : null));
   };
   const onHandleAdjust = (edge, dir) => {
-    // TODO: clean the rest of this up
+    // TODO: it all works perfectly fine, but clean this up one day
     const val = prevState => {
       if (dir === 'fwd') {
         return prevState + UNIT < RANGE_MAX ? prevState + UNIT : RANGE_MAX;
@@ -154,7 +154,6 @@ export default function Instance({
         return prevState - UNIT > RANGE_MIN ? prevState - UNIT : RANGE_MIN;
       }
     };
-
     if (dir === 'fwd') {
       edge === 'end'
         ? setEnd(prevState => val(prevState))
@@ -211,11 +210,11 @@ export default function Instance({
           left: `${x1}px`,
           width: `${instanceWidth}px`,
           zIndex: hoveringInstance ? `500` : `default`,
-          opacity: isProcessing ? '0.5' : '1',
+          opacity: isLocal ? '0.5' : '1',
         }}
-        onMouseEnter={!isLocked && !isProcessing ? onInstanceEnter : null}
-        onMouseLeave={!isLocked && !isProcessing ? onInstanceLeave : null}>
-        {!isLocked && !isProcessing ? (
+        onMouseEnter={!isLocked && !isLocal ? onInstanceEnter : null}
+        onMouseLeave={!isLocked && !isLocal ? onInstanceLeave : null}>
+        {!isLocked && !isLocal ? (
           <div
             {...bindHover(instancePopupState)}
             style={{ width: `100%`, height: `28px` }}
@@ -231,7 +230,7 @@ export default function Instance({
         />
       ) : null}
 
-      {!isProcessing
+      {!isLocal
         ? handles.map(handle => {
             const { edge, value } = handle;
 
@@ -284,8 +283,8 @@ Instance.propTypes = {
   end: PropTypes.number.isRequired,
   instance: PropTypes.object.isRequired,
   instances: PropTypes.array.isRequired,
+  isLocal: PropTypes.bool,
   isLocked: PropTypes.bool,
-  isProcessing: PropTypes.bool,
   lockSiblings: PropTypes.func.isRequired,
   onHandleMove: PropTypes.func.isRequired,
   onHandlePress: PropTypes.func.isRequired,

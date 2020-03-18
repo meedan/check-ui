@@ -45,15 +45,15 @@ export default function Slider({ duration, instances = [], ...props }) {
   const renderInstances = () => {
     if (!rootRect) return null;
     return instances.map(
-      ({ end_seconds, id, isProcessing, start_seconds, ...instance }) => {
+      ({ end_seconds, id, isLocal, start_seconds, ...instance }) => {
         return (
           <Instance
             duration={duration}
             end={end_seconds}
             instance={instance}
             instances={instances}
+            isLocal={isLocal}
             isLocked={draggedInstance && draggedInstance !== id}
-            isProcessing={isProcessing}
             key={id}
             lockSiblings={() => setDraggedInstance(id)}
             onHandleMove={props.onDrag}

@@ -162,7 +162,9 @@ export default function Controls({
       <Grid item>
         <Tooltip
           enterDelay={1000}
-          title={displayEntityName ? displayEntityName : 'Add a name'}>
+          title={
+            displayEntityName ? `Annotate: ${displayEntityName}` : 'Add name'
+          }>
           <Typography noWrap variant="body2" className={classes.entityName}>
             {displayEntityName}
           </Typography>

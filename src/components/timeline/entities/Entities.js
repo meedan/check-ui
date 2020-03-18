@@ -68,31 +68,28 @@ export default function Entities({
 
   const onEntitiesPlay = () => {};
 
+  // instance methods
+
   const onInstanceCreate = (entityId, payload) => {
     setNewInstance({
       ...payload,
       id: Date.now() + Math.random(),
-      isProcessing: true,
+      isLocal: true,
     });
-    props.onInstanceCreate(entityId, payload, () => {
-      setNewInstance(null);
-    });
+    props.onInstanceCreate(types[type], entityId, payload, () =>
+      setNewInstance(null)
+    );
   };
-
-  const actions = (
-    <>
-      <Tooltip title="Play all">
-        <IconButton onClick={onEntitiesPlay}>
-          <PlayArrowIcon fontSize="small" />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title="New…">
-        <IconButton onClick={onEntityStart}>
-          <AddIcon fontSize="small" />
-        </IconButton>
-      </Tooltip>
-    </>
-  );
+  const onInstanceClip = (entityId, instanceId) => {
+    if (!props.onInstanceClip) return null;
+    props.onInstanceClip(types[type], entityId, instanceId);
+  };
+  const onInstanceDelete = (entityId, instanceId) => {
+    props.onInstanceDelete(types[type], entityId, instanceId);
+  };
+  const onInstanceUpdate = (entityId, instanceId, payload) => {
+    props.onInstanceUpdate(types[type], entityId, instanceId, payload);
+  };
 
   // console.group('Entities');
   // console.log({ props });
@@ -104,7 +101,20 @@ export default function Entities({
     <TableSection
       plain={displayEntities.length > 0}
       title={titles[type]}
-      actions={actions}>
+      actions={
+        <>
+          <Tooltip title="Play all">
+            <IconButton onClick={onEntitiesPlay}>
+              <PlayArrowIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="New…">
+            <IconButton onClick={onEntityStart}>
+              <AddIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        </>
+      }>
       {displayEntities.map(
         ({ instances = [], isLocal = false, ...entity }, i) => {
           const entityId = entity.id;
@@ -142,14 +152,6 @@ export default function Entities({
               plain={!isLastChild}
               rightColContent={
                 <Slider
-                  onInstanceClip={
-                    props.onInstanceClip
-                      ? instanceId => props.onInstanceClip(entityId, instanceId)
-                      : null
-                  }
-                  onInstanceDelete={instanceId =>
-                    props.onInstanceDelete(entityId, instanceId)
-                  }
                   duration={duration}
                   instances={
                     newInstance ? [...instances, newInstance] : instances
@@ -157,10 +159,16 @@ export default function Entities({
                   onDrag={props.onTimeChange}
                   onDragEnd={props.onAfterChange}
                   onDragStart={props.onBeforeChange}
-                  returnSliderRect={rect => setSliderRect(rect)}
-                  onInstanceUpdate={(instanceId, payload) =>
-                    props.onInstanceUpdate(entityId, instanceId, payload)
+                  onInstanceClip={instanceId =>
+                    onInstanceClip(entityId, instanceId)
                   }
+                  onInstanceDelete={instanceId =>
+                    onInstanceDelete(entityId, instanceId)
+                  }
+                  onInstanceUpdate={(instanceId, payload) =>
+                    onInstanceUpdate(entityId, instanceId, payload)
+                  }
+                  returnSliderRect={rect => setSliderRect(rect)}
                 />
               }></TableBlock>
           );

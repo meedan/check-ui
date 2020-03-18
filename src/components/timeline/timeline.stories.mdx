@@ -33,12 +33,12 @@ export const plainTimelineStore = new Store({
   duration: 1000,
 });
 export const richTimelineStore = new Store({
-  currentTime: 50,
+  currentTime: 469,
   data: data,
   duration: 1000,
 });
 export const controlledTimelineStore = new Store({
-  currentTime: 50,
+  currentTime: 469,
   data: data,
   duration: 1000,
 });
@@ -102,6 +102,19 @@ export const onEntityCreate = (payload, callback) => {
   action('onEntityCreate')(payload, 'callback');
   if (callback) setTimeout(callback, 3000);
 }
+export const onInstanceCreate = (type, entityId, payload, callback) => { 
+  action('onInstanceCreate')(type, entityId, payload, 'callback');
+  if (callback) setTimeout(callback, 3000);
+}
+export const onInstanceClip = (type, entityId, instanceId) => { 
+  action('onInstanceClip')(type, entityId, instanceId);
+}
+export const onInstanceDelete = (type, entityId, instanceId) => { 
+  action('onInstanceDelete')(type, entityId, instanceId);
+}
+export const onInstanceUpdate = (type, entityId, instanceId, payload) => { 
+  action('onInstanceUpdate')(type, entityId, instanceId, payload);
+}
 
 <Meta title="Components/Timeline" component={Timeline} decorators={[withKnobs]} />
 
@@ -128,10 +141,10 @@ export const onEntityCreate = (payload, callback) => {
           onEntityCreate={onEntityCreate}
           onEntityDelete={onEntityDelete}
           onEntityUpdate={onEntityUpdate}
-          onInstanceClip={action('onInstanceClip')}
-          onInstanceCreate={action('onInstanceCreate')}
-          onInstanceDelete={action('onInstanceDelete')}
-          onInstanceUpdate={action('onInstanceUpdate')}
+          onInstanceClip={onInstanceClip}
+          onInstanceCreate={onInstanceCreate}
+          onInstanceDelete={onInstanceDelete}
+          onInstanceUpdate={onInstanceUpdate}
           onTimeChange={onPlainTimelineChange}
         />
       }
@@ -158,10 +171,10 @@ export const onEntityCreate = (payload, callback) => {
           onEntityCreate={onEntityCreate}
           onEntityDelete={onEntityDelete}
           onEntityUpdate={onEntityUpdate}
-          onInstanceClip={action('onInstanceClip')}
-          onInstanceCreate={action('onInstanceCreate')}
-          onInstanceDelete={action('onInstanceDelete')}
-          onInstanceUpdate={action('onInstanceUpdate')}
+          onInstanceClip={onInstanceClip}
+          onInstanceCreate={onInstanceCreate}
+          onInstanceDelete={onInstanceDelete}
+          onInstanceUpdate={onInstanceUpdate}
           onTimeChange={onRichTimelineChange}
         />
       }
@@ -188,10 +201,10 @@ export const onEntityCreate = (payload, callback) => {
           onEntityCreate={onEntityCreate}
           onEntityDelete={onEntityDelete}
           onEntityUpdate={onEntityUpdate}
-          onInstanceClip={action('onInstanceClip')}
-          onInstanceCreate={action('onInstanceCreate')}
-          onInstanceDelete={action('onInstanceDelete')}
-          onInstanceUpdate={action('onInstanceUpdate')}
+          onInstanceClip={onInstanceClip}
+          onInstanceCreate={onInstanceCreate}
+          onInstanceDelete={onInstanceDelete}
+          onInstanceUpdate={onInstanceUpdate}
           onTimeChange={action('onTimeChange')}
         />
       }
@@ -202,175 +215,3 @@ export const onEntityCreate = (payload, callback) => {
 ## Props
 
 <Props of={Timeline} />
-
-# Partials
-
-## Playhead
-
-<Preview>
-  <Story name="Partials » Playhead">
-    <State store={playheadStore}>
-      {state =>
-        <Playhead
-          currentTime={state.currentTime}
-          duration={state.duration}
-          onChange={onPlayheadChange}
-        />
-      }
-     </State>
-  </Story>
-</Preview>
-
-## Comments
-
-<Preview>
-  <Story name="Partials » Commments (Plain)">
-    <Comments 
-      duration={1000}
-      user={{
-        first_name: "Mark",
-        id: 2376,
-        last_name: "Boas",
-        profile_img_url: "https://lh4.googleusercontent.com/-KAQP-uwuJ-U/AAAAAAAAAAI/AAAAAAAAAA8/m1-ILT1IqWs/s100/photo.jpg",
-      }}
-      onCommentCreate={action('onCommentCreate')}
-      onCommentDelete={onCommentDelete}
-      onCommentEdit={action('onCommentEdit')}
-      onCommentThreadCreate={action('onCommentThreadCreate')}
-      onCommentThreadDelete={action('onCommentThreadDelete')}
-    />
-  </Story>
-</Preview>
-
-<Preview>
-  <Story name="Partials » Commments (Rich)">
-    <Comments 
-      duration={1000}
-      user={{
-        first_name: "Mark",
-        id: 2376,
-        last_name: "Boas",
-        profile_img_url: "https://lh4.googleusercontent.com/-KAQP-uwuJ-U/AAAAAAAAAAI/AAAAAAAAAA8/m1-ILT1IqWs/s100/photo.jpg",
-      }}
-      onCommentCreate={action('onCommentCreate')}
-      onCommentDelete={onCommentDelete}
-      onCommentEdit={action('onCommentEdit')}
-      onCommentThreadCreate={action('onCommentThreadCreate')}
-      onCommentThreadDelete={action('onCommentThreadDelete')}
-      threads={data.commentThreads}
-    />
-  </Story>
-</Preview>
-
-## Entities
-
-<Preview>
-  <Story name="Partials » Entities (Clips)">
-    <Entities
-      currentTime={500}
-      duration={1000}
-      entities={data.videoClips}
-      onAfterChange={action('onAfterChange')}
-      onBeforeChange={action('onBeforeChange')}
-      onChange={action('onChange')}
-      onEntityCreate={onEntityCreate}
-      onEntityDelete={onEntityDelete}
-      onEntityUpdate={action('onEntityUpdate')}
-      onInstanceCreate={action('onInstanceCreate')}
-      onInstanceDelete={action('onInstanceDelete')}
-      onInstanceUpdate={action('onInstanceUpdate')}
-      suggestions={[]}
-      type="clips"
-    />
-  </Story>
-</Preview>
-
-<Preview>
-  <Story name="Partials » Entities (Tags)">
-    <Entities
-      currentTime={500}
-      duration={1000}
-      entities={data.videoTags}
-      onAfterChange={action('onAfterChange')}
-      onBeforeChange={action('onBeforeChange')}
-      onChange={action('onChange')}
-      onEntityCreate={onEntityCreate}
-      onEntityDelete={onEntityDelete}
-      onEntityUpdate={onEntityUpdate}
-      onInstanceClip={action('onInstanceClip')}
-      onInstanceCreate={action('onInstanceCreate')}
-      onInstanceDelete={action('onInstanceDelete')}
-      onInstanceUpdate={action('onInstanceUpdate')}
-      suggestions={data.project.projecttags}
-      type="tags"
-    />
-  </Story>
-</Preview>
-
-<Preview>
-  <Story name="Partials » Entities (Places)">
-    <Entities
-      currentTime={500}
-      duration={1000}
-      entities={data.videoPlaces}
-      onAfterChange={action('onAfterChange')}
-      onBeforeChange={action('onBeforeChange')}
-      onChange={action('onChange')}
-      onEntityCreate={onEntityCreate}
-      onEntityDelete={onEntityDelete}
-      onEntityUpdate={onEntityUpdate}
-      onInstanceClip={action('onInstanceClip')}
-      onInstanceCreate={action('onInstanceCreate')}
-      onInstanceDelete={action('onInstanceDelete')}
-      onInstanceUpdate={action('onInstanceUpdate')}
-      suggestions={data.project.projectplaces}
-      type="places"
-    />
-  </Story>
-</Preview>
-
-## Slider
-
-<Preview>
-  <Story name="Partials » Slider (Plain)">
-    <Slider
-      deleteInstance={action('deleteInstance')}
-      duration={1000}
-      instances={[]}
-      onDrag={action('onDrag')}
-      onDragEnd={action('onDragEnd')}
-      onDragStart={action('onDragStart')}
-      updateInstance={action('updateInstance')}
-      threads={data.commentThreads}
-    />
-  </Story>
-</Preview>
-
-<Preview>
-  <Story name="Partials » Slider (Clips)">
-    <Slider
-      deleteInstance={action('deleteInstance')}
-      duration={1000}
-      instances={data.videoClips[0].instances}
-      onDrag={action('onDrag')}
-      onDragEnd={action('onDragEnd')}
-      onDragStart={action('onDragStart')}
-      updateInstance={action('updateInstance')}
-    />
-  </Story>
-</Preview>
-
-<Preview>
-  <Story name="Partials » Slider (Tags)">
-    <Slider
-      clipInstance={action('clipInstance')}
-      deleteInstance={action('deleteInstance')}
-      duration={1000}
-      instances={data.videoTags[0].instances}
-      onDrag={action('onDrag')}
-      onDragEnd={action('onDragEnd')}
-      onDragStart={action('onDragStart')}
-      updateInstance={action('updateInstance')}
-    />
-  </Story>
-</Preview>
