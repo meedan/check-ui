@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React from 'react';
 import orderBy from 'lodash/orderBy';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -12,40 +12,22 @@ import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
 const useStyles = makeStyles(theme => ({
-  nameFieldRoot: {
-    flexGrow: 1,
-    position: 'relative',
-  },
-  paper: {
-    position: 'absolute',
-    zIndex: 1,
-    left: 0,
-    right: 0,
-  },
   inputRoot: {
     ...theme.typography.body2,
-    flexWrap: 'nowrap',
-    fontSize: '13px',
-    marginBottom: 0,
-    marginTop: 0,
-    paddingLeft: '12px',
-    paddingRight: '12px',
+    paddingLeft: theme.spacing(1.5),
+    paddingRight: theme.spacing(1.5),
   },
-  inputInput: {
-    width: 'auto',
-    flexGrow: 1,
-  },
-  cancelIcon: {
+  adornmentIcon: {
     position: 'relative',
     top: `${theme.spacing(0.25) * -1}px`,
   },
 }));
 
-export default function NameField(props) {
+export default function NameField({ name, suggestions = [], type, ...props }) {
   const classes = useStyles();
 
-  const { entityName, suggestions } = props;
-  const options = orderBy(suggestions, ['taginstance_count'], ['desc']).map(
+  // order and flatten suggestions’ array
+  const options = orderBy(suggestions, [`${type}instance_count`], ['desc']).map(
     o => o.name
   );
 
@@ -55,7 +37,7 @@ export default function NameField(props) {
       blurOnSelect
       disableOpenOnFocus
       freeSolo
-      id="entity-names"
+      id={`${type}-suggestions`}
       onChange={(e, str) => props.onSubmit(str)}
       options={options}
       renderInput={params => (
@@ -65,14 +47,13 @@ export default function NameField(props) {
           inputProps={{
             ...params.inputProps,
             onKeyPress: e => {
-              if (['Enter', 'Escape'].includes(e.key)) {
+              if (e.key === 'Enter') {
                 e.preventDefault();
-                if (e.key === 'Enter') props.onSubmit(e.target.value);
-                if (e.key === 'Escape') props.onCancel();
+                props.onSubmit(e.target.value);
               }
             },
           }}
-          placeholder={entityName}
+          placeholder={name}
           InputProps={{
             className: classes.inputRoot,
             ref: params.InputProps.ref,
@@ -82,7 +63,7 @@ export default function NameField(props) {
                   <IconButton
                     size="small"
                     onClick={props.onCancel}
-                    className={classes.cancelIcon}>
+                    className={classes.adornmentIcon}>
                     <CloseIcon fontSize="inherit" />
                   </IconButton>
                 </Tooltip>
@@ -102,12 +83,9 @@ export default function NameField(props) {
 }
 
 NameField.propTypes = {
-  entityName: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   onCancel: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   suggestions: PropTypes.array,
-};
-
-NameField.defaultProps = {
-  suggestions: [],
+  type: PropTypes.string.isRequired,
 };
