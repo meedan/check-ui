@@ -2,11 +2,7 @@ import Menu from 'material-ui-popup-state/HoverMenu';
 import PropTypes from 'prop-types';
 import React, { useRef, useState } from 'react';
 import find from 'lodash/find';
-import {
-  usePopupState,
-  bindHover,
-  bindMenu,
-} from 'material-ui-popup-state/hooks';
+import { usePopupState, bindHover, bindMenu, bindTrigger, bindPopover } from 'material-ui-popup-state/hooks';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
@@ -16,9 +12,10 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import Popover from '@material-ui/core/Popover';
 
 import DeleteModal from './DeleteModal';
-import MapPopover from './MapPopover';
+import MapControls from './MapControls';
 import NameField from './NameField';
 import config from '../utils/config';
 
@@ -58,10 +55,15 @@ export default function Controls({
 
   const [mode, setMode] = useState(isLocal ? 'edit' : 'read');
   const [newEntityName, setNewEntityName] = useState(null);
+  const [marker, setMarker] = useState(null);
 
   const morePopupState = usePopupState({
     variant: 'popover',
     popupId: 'moreMenu',
+  });
+  const mapPopupState = usePopupState({
+    variant: 'popover',
+    popupId: 'MapControls',
   });
 
   const displayEntityName = mode === 'processing' ? newEntityName : entityName;
@@ -116,8 +118,7 @@ export default function Controls({
     if (!sliderRect) return null;
 
     // prevent instance creation if currentTime is within range of an already existing instance
-    const fn = o =>
-      currentTime >= o.start_seconds && currentTime <= o.end_seconds;
+    const fn = o => currentTime >= o.start_seconds && currentTime <= o.end_seconds;
     if (find(instances, o => fn(o))) return null;
 
     // get new instance time duration assuming it’s 16px-wide
@@ -143,23 +144,20 @@ export default function Controls({
 
   // TODO: bring in map bits
   const onStartEntityReposition = () => {
-    morePopupState.close();
     console.log('onStartEntityReposition');
+    morePopupState.close();
+    mapPopupState.open();
+    // setMode('reposition');
   };
-  const onStopEntityReposition = () => {
-    console.log('onStopEntityReposition');
-  };
-  const onEntityReposition = () => {
-    console.log('onEntityReposition');
-  };
+  // const onStopEntityReposition = () => {
+  //   console.log('onStopEntityReposition');
+  // };
+  // const onEntityReposition = () => {
+  //   console.log('onEntityReposition');
+  // };
 
   const readControls = (
-    <Grid
-      alignItems="center"
-      className={classes.readGrid}
-      container
-      justify="space-between"
-      wrap="nowrap">
+    <Grid alignItems="center" className={classes.readGrid} container justify="space-between" wrap="nowrap">
       <Grid item>
         <Tooltip enterDelay={1000} title={`Annotate: ${displayEntityName}`}>
           <Typography noWrap variant="body2" className={classes.entityName}>
@@ -170,18 +168,14 @@ export default function Controls({
       <Grid item>
         <div
           style={{
-            visibility: ['hovering', 'processing'].includes(mode)
-              ? 'visible'
-              : 'hidden',
+            visibility: ['hovering', 'processing'].includes(mode) ? 'visible' : 'hidden',
           }}
           onClick={e => e.stopPropagation()}>
           {mode === 'processing' ? (
             <CircularProgress size={18} className={classes.circularProgress} />
           ) : (
             <>
-              <IconButton
-                {...bindHover(morePopupState)}
-                aria-label="More options…">
+              <IconButton {...bindHover(morePopupState)} aria-label="More options…">
                 <MoreVertIcon />
               </IconButton>
               <Menu
@@ -198,10 +192,7 @@ export default function Controls({
                   horizontal: 'center',
                 }}
                 varant="menu">
-                <MenuItem
-                  dense
-                  divider={entityType === 'place'}
-                  onClick={onInstanceCreate}>
+                <MenuItem dense divider={entityType === 'place'} onClick={onInstanceCreate}>
                   Add highlight
                 </MenuItem>
                 {entityType === 'place' ? (
@@ -209,10 +200,7 @@ export default function Controls({
                     Edit place
                   </MenuItem>
                 ) : null}
-                <MenuItem
-                  dense
-                  divider={entityType === 'place'}
-                  onClick={onEntityUpdateStart}>
+                <MenuItem dense divider={entityType === 'place'} onClick={onEntityUpdateStart}>
                   Edit name
                 </MenuItem>
                 <MenuItem dense onClick={onEntityDeleteStart}>
@@ -249,7 +237,19 @@ export default function Controls({
       onMouseLeave={onMouseLeave}
       ref={controlsRoot}>
       {mode === 'edit' ? editControls : readControls}
-      {mode === 'reposition' ? <MapPopover /> : null}
+      <Popover
+        {...bindPopover(mapPopupState)}
+        anchorEl={controlsRoot.current}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}>
+        <MapControls marker={marker} onClose={() => setMode('read')} />
+      </Popover>
       {mode === 'delete' && !isLocal ? (
         <DeleteModal
           entityName={displayEntityName}
