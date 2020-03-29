@@ -11,14 +11,7 @@ import Slider from '../slider/Slider';
 import TableBlock from '../elements/TableBlock';
 import TableSection from '../elements/TableSection';
 
-export default function Entities({
-  currentTime = 0,
-  duration,
-  entities = [],
-  suggestions = [],
-  type,
-  ...props
-}) {
+export default function Entities({ currentTime = 0, duration, entities = [], suggestions = [], type, ...props }) {
   const [newEntity, setNewEntity] = useState(null);
   const [newInstance, setNewInstance] = useState(null);
   const [sliderRect, setSliderRect] = useState(null);
@@ -63,8 +56,6 @@ export default function Entities({
     setNewEntity(null);
   };
 
-  const onEntitiesPlay = () => {};
-
   // entity methods
 
   const onEntityUpdate = (entityId, payload, callback) => {
@@ -82,9 +73,7 @@ export default function Entities({
       id: Date.now() + Math.random(),
       isLocal: true,
     });
-    props.onInstanceCreate(types[type], entityId, payload, () =>
-      setNewInstance(null)
-    );
+    props.onInstanceCreate(types[type], entityId, payload, () => setNewInstance(null));
   };
   const onInstanceClip = (entityId, instanceId) => {
     if (!props.onInstanceClip) return null;
@@ -110,7 +99,7 @@ export default function Entities({
       actions={
         <>
           <Tooltip title="Play all">
-            <IconButton onClick={onEntitiesPlay}>
+            <IconButton onClick={props.onPlaylistLaunch}>
               <PlayArrowIcon fontSize="small" />
             </IconButton>
           </Tooltip>
@@ -121,65 +110,49 @@ export default function Entities({
           </Tooltip>
         </>
       }>
-      {displayEntities.map(
-        ({ instances = [], isLocal = false, ...entity }, i) => {
-          const entityId = entity.id;
-          const entityName = entity[`project_${types[type]}`].name;
-          const entityType = types[type];
+      {displayEntities.map(({ instances = [], isLocal = false, ...entity }, i) => {
+        const entityId = entity.id;
+        const entityName = entity[`project_${types[type]}`].name;
+        const entityType = types[type];
 
-          const isLastChild = i === displayEntities.length - 1;
+        const isLastChild = i === displayEntities.length - 1;
 
-          return (
-            <TableBlock
-              key={entityId}
-              leftColContent={
-                <Controls
-                  currentTime={currentTime}
-                  duration={duration}
-                  entityName={entityName}
-                  entityType={entityType}
-                  instances={instances}
-                  isLocal={isLocal}
-                  onInstanceCreate={payload =>
-                    onInstanceCreate(entityId, payload)
-                  }
-                  onEntityDelete={callback =>
-                    onEntityDelete(entityId, callback)
-                  }
-                  onEntityCreate={onEntityCreate}
-                  onEntityUpdate={(payload, callback) =>
-                    onEntityUpdate(entityId, payload, callback)
-                  }
-                  onEntityStop={onEntityStop}
-                  sliderRect={sliderRect}
-                  suggestions={suggestions}
-                />
-              }
-              plain={!isLastChild}
-              rightColContent={
-                <Slider
-                  duration={duration}
-                  instances={
-                    newInstance ? [...instances, newInstance] : instances
-                  }
-                  onDrag={props.onTimeChange}
-                  onDragEnd={props.onAfterChange}
-                  onDragStart={props.onBeforeChange}
-                  onInstanceClip={instanceId =>
-                    onInstanceClip(entityId, instanceId)
-                  }
-                  onInstanceDelete={instanceId =>
-                    onInstanceDelete(entityId, instanceId)
-                  }
-                  onInstanceUpdate={(instanceId, payload) =>
-                    onInstanceUpdate(entityId, instanceId, payload)
-                  }
-                  returnSliderRect={rect => setSliderRect(rect)}
-                />
-              }></TableBlock>
-          );
-        }
-      )}
+        return (
+          <TableBlock
+            key={entityId}
+            leftColContent={
+              <Controls
+                currentTime={currentTime}
+                duration={duration}
+                entityName={entityName}
+                entityType={entityType}
+                instances={instances}
+                isLocal={isLocal}
+                onInstanceCreate={payload => onInstanceCreate(entityId, payload)}
+                onEntityDelete={callback => onEntityDelete(entityId, callback)}
+                onEntityCreate={onEntityCreate}
+                onEntityUpdate={(payload, callback) => onEntityUpdate(entityId, payload, callback)}
+                onEntityStop={onEntityStop}
+                sliderRect={sliderRect}
+                suggestions={suggestions}
+              />
+            }
+            plain={!isLastChild}
+            rightColContent={
+              <Slider
+                duration={duration}
+                instances={newInstance ? [...instances, newInstance] : instances}
+                onDrag={props.onTimeChange}
+                onDragEnd={props.onAfterChange}
+                onDragStart={props.onBeforeChange}
+                onInstanceClip={instanceId => onInstanceClip(entityId, instanceId)}
+                onInstanceDelete={instanceId => onInstanceDelete(entityId, instanceId)}
+                onInstanceUpdate={(instanceId, payload) => onInstanceUpdate(entityId, instanceId, payload)}
+                returnSliderRect={rect => setSliderRect(rect)}
+              />
+            }></TableBlock>
+        );
+      })}
     </TableSection>
   );
 }
@@ -202,6 +175,7 @@ Entities.propTypes = {
   onInstanceCreate: PropTypes.func.isRequired,
   onInstanceDelete: PropTypes.func.isRequired,
   onInstanceUpdate: PropTypes.func.isRequired,
+  onPlaylistLaunch: PropTypes.func.isRequired,
   onTimeChange: PropTypes.func.isRequired,
   suggestions: PropTypes.array,
   type: PropTypes.string.isRequired,

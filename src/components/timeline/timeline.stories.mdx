@@ -115,6 +115,9 @@ export const onInstanceDelete = (type, entityId, instanceId) => {
 export const onInstanceUpdate = (type, entityId, instanceId, payload) => { 
   action('onInstanceUpdate')(type, entityId, instanceId, payload);
 }
+export const onPlaylistLaunch = (type) => { 
+  action('onPlaylistLaunch')(type);
+}
 
 <Meta title="Components/Timeline" component={Timeline} decorators={[withKnobs]} />
 
@@ -145,6 +148,7 @@ export const onInstanceUpdate = (type, entityId, instanceId, payload) => {
           onInstanceCreate={onInstanceCreate}
           onInstanceDelete={onInstanceDelete}
           onInstanceUpdate={onInstanceUpdate}
+          onPlaylistLaunch={onPlaylistLaunch}
           onTimeChange={onPlainTimelineChange}
         />
       }
@@ -175,6 +179,7 @@ export const onInstanceUpdate = (type, entityId, instanceId, payload) => {
           onInstanceCreate={onInstanceCreate}
           onInstanceDelete={onInstanceDelete}
           onInstanceUpdate={onInstanceUpdate}
+          onPlaylistLaunch={onPlaylistLaunch}
           onTimeChange={onRichTimelineChange}
         />
       }
@@ -205,6 +210,7 @@ export const onInstanceUpdate = (type, entityId, instanceId, payload) => {
           onInstanceCreate={onInstanceCreate}
           onInstanceDelete={onInstanceDelete}
           onInstanceUpdate={onInstanceUpdate}
+          onPlaylistLaunch={onPlaylistLaunch}
           onTimeChange={action('onTimeChange')}
         />
       }

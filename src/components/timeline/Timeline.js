@@ -23,23 +23,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Timeline({
-  currentTime = 0,
-  duration,
-  playing = false,
-  data,
-  ...props
-}) {
+export default function Timeline({ currentTime = 0, duration, playing = false, data, ...props }) {
   const classes = useStyles();
 
-  const {
-    commentThreads,
-    project,
-    videoClips,
-    videoPlaces,
-    videoTags,
-    user,
-  } = data;
+  const { commentThreads, project, videoClips, videoPlaces, videoTags, user } = data;
 
   // this stops Entities from re-rendering constantly when moving playhead
   const [skip, setSkip] = React.useState(false);
@@ -77,6 +64,7 @@ export default function Timeline({
         onInstanceCreate={props.onInstanceCreate}
         onInstanceDelete={props.onInstanceDelete}
         onInstanceUpdate={props.onInstanceUpdate}
+        onPlaylistLaunch={() => props.onPlaylistLaunch('clips')}
         onTimeChange={props.onTimeChange}
         playing={playing}
         skip={skip}
@@ -97,6 +85,7 @@ export default function Timeline({
         onInstanceCreate={props.onInstanceCreate}
         onInstanceDelete={props.onInstanceDelete}
         onInstanceUpdate={props.onInstanceUpdate}
+        onPlaylistLaunch={() => props.onPlaylistLaunch('tags')}
         onTimeChange={props.onTimeChange}
         playing={playing}
         skip={skip}
@@ -117,6 +106,7 @@ export default function Timeline({
         onInstanceCreate={props.onInstanceCreate}
         onInstanceDelete={props.onInstanceDelete}
         onInstanceUpdate={props.onInstanceUpdate}
+        onPlaylistLaunch={() => props.onPlaylistLaunch('places')}
         onTimeChange={props.onTimeChange}
         playing={playing}
         skip={skip}
@@ -158,6 +148,7 @@ Timeline.propTypes = {
   onInstanceCreate: PropTypes.func.isRequired,
   onInstanceDelete: PropTypes.func.isRequired,
   onInstanceUpdate: PropTypes.func.isRequired,
+  onPlaylistLaunch: PropTypes.func.isRequired,
   onTimeChange: PropTypes.func.isRequired,
   playing: PropTypes.bool,
 };
