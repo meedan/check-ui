@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function MapControls({ anchorRef, entityShape, ...props }) {
+export default function MapControls({ anchorRef, entityName, entityShape, ...props }) {
   const mapRef = useRef();
   const inputRef = useRef();
   const classes = useStyles();
@@ -51,27 +51,18 @@ export default function MapControls({ anchorRef, entityShape, ...props }) {
   };
 
   const onMapClick = e => {
+    const { lat, lng } = e.latLng;
     if (mode === 'marker') {
-      // const { lat, lng } = e.latLng;
-      // this.setState({
-      //   saved: false,
-      //   marker: {
-      //     lat: lat(),
-      //     lng: lng(),
-      //     type: 'marker',
-      //   },
-      // });
-      console.log('onMapClick', 'marker', e);
+      setShape({
+        lat: lat(),
+        lng: lng(),
+        type: 'marker',
+      });
     } else if (mode === 'polygon') {
-      // const { lat, lng } = e.latLng;
-      // this.setState({
-      //   saved: false,
-      //   marker: {
-      //     polygon: [...(this.state.marker.polygon || []), { lat: lat(), lng: lng() }],
-      //     type: 'polygon',
-      //   },
-      // });
-      console.log('onMapClick', 'polygon', e);
+      setShape({
+        polygon: [...(shape && shape.polygon ? shape.polygon : []), { lat: lat(), lng: lng() }],
+        type: 'polygon',
+      });
     }
   };
 
@@ -80,22 +71,35 @@ export default function MapControls({ anchorRef, entityShape, ...props }) {
     props.onBeforeRename();
   };
   const onBeforePinDrop = () => {
+    setShape(null);
     setMode('marker');
   };
   const onBeforePolygonDraw = () => {
+    setShape(null);
     setMode('polygon');
   };
-  const onCancel = () => {
+  const onDiscard = () => {
     // onClick={this.props.isCreating ? this.props.stopNewPlace : this.props.onDiscard}
     props.onDiscard();
   };
   const onConfirm = () => {
+    props.onUpdate({ ...shape, viewport: viewport, zoom: zoom });
     setMode(null);
-    props.onDiscard();
+    setShape(null);
   };
 
   const onMarkerPositionChanged = args => {
     console.log('onMarkerPositionChanged', args);
+  };
+
+  const getCenter = () => {
+    if (shape) {
+      return shape.type === 'marker'
+        ? { lat: shape.lat, lng: shape.lng }
+        : { lat: shape.polygon[0].lat, lng: shape.polygon[0].lng };
+    } else {
+      return center;
+    }
   };
 
   useEffect(() => {
@@ -109,7 +113,7 @@ export default function MapControls({ anchorRef, entityShape, ...props }) {
 
   useEffect(() => {
     setShape(entityShape);
-  });
+  }, [entityShape]);
 
   useEffect(() => {
     setMode(props.mode);
@@ -134,10 +138,12 @@ export default function MapControls({ anchorRef, entityShape, ...props }) {
     }
   }, [map]);
 
-  // console.group('MapControls.js');
+  console.group('MapControls.js');
   // console.log('entityShape', entityShape);
-  // console.log('mode', mode);
-  // console.groupEnd();
+  console.log('shape:', shape);
+  console.groupEnd();
+
+  const displayShape = shape ? shape : entityShape;
 
   return (
     <>
@@ -145,6 +151,7 @@ export default function MapControls({ anchorRef, entityShape, ...props }) {
         autoFocus
         fullWidth
         inputRef={inputRef}
+        defaultValue={entityName}
         InputProps={{
           classes: {
             root: classes.input,
@@ -161,23 +168,23 @@ export default function MapControls({ anchorRef, entityShape, ...props }) {
           endAdornment: (
             <InputAdornment position="end">
               <Divider orientation="vertical" className={classes.divider} />
-              <Tooltip title="Drop a marker">
+              <Tooltip title="Mark precise location">
                 <span>
                   <IconButton
                     className={classes.iconButton}
                     color={mode === 'marker' ? 'primary' : 'default'}
-                    disabled={mode ? true : false}
+                    disabled={!mode || mode === 'polygon' ? false : true}
                     onClick={onBeforePinDrop}>
                     <AddLocationIcon fontSize="small" />
                   </IconButton>
                 </span>
               </Tooltip>
-              <Tooltip title="Mark an area">
+              <Tooltip title="Mark area">
                 <span>
                   <IconButton
                     className={classes.iconButton}
                     color={mode === 'polygon' ? 'primary' : 'default'}
-                    disabled={mode ? true : false}
+                    disabled={!mode || mode === 'marker' ? false : true}
                     onClick={onBeforePolygonDraw}>
                     <FormatShapesIcon fontSize="small" />
                   </IconButton>
@@ -187,12 +194,12 @@ export default function MapControls({ anchorRef, entityShape, ...props }) {
               {mode ? (
                 <Tooltip title="Save">
                   <IconButton className={classes.iconButton} color="primary" onClick={onConfirm} variant="contained">
-                    <CheckIcon fontSize="small" />
+                    <CheckIcon />
                   </IconButton>
                 </Tooltip>
               ) : (
-                <Tooltip title="Close">
-                  <IconButton onClick={onCancel} className={classes.iconButton}>
+                <Tooltip title="Discard">
+                  <IconButton onClick={onDiscard} className={classes.iconButton}>
                     <CloseIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
@@ -210,7 +217,7 @@ export default function MapControls({ anchorRef, entityShape, ...props }) {
           width: '400px',
         }}
         zoom={zoom}
-        center={center}
+        center={getCenter()}
         onClick={onMapClick}
         onLoad={onMapLoad}
         ref={mapRef}
@@ -225,7 +232,7 @@ export default function MapControls({ anchorRef, entityShape, ...props }) {
         }}>
         {shape && shape.type === 'polygon' && shape.polygon.length > 0 ? (
           <Polygon
-            // editable={this.state.drawPolygon}
+            editable={mode === 'polygon'}
             // onLoad={polygon => (this.polygon = polygon)}
             options={{
               clickable: true,
@@ -260,6 +267,7 @@ export default function MapControls({ anchorRef, entityShape, ...props }) {
 }
 
 MapControls.propTypes = {
+  entityName: PropTypes.string,
   onBeforeRename: PropTypes.func.isRequired,
   onDiscard: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired,

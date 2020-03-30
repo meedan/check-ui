@@ -249,6 +249,7 @@ export default function Controls({
         onClick={e => e.stopPropagation()}>
         <MapControls
           entityShape={entityShape}
+          entityName={entityName}
           mode={entityShape ? entityShape.type : null}
           onBeforeRename={payload => {
             setMode('edit');
