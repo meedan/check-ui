@@ -41,7 +41,7 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
 
     setNewEntity(newEntity);
   };
-  const onEntityCreate = payload => {
+  const onEntityCreate = (payload, callback) => {
     const newEntity = {
       id: Date.now(),
       [`project_${types[type]}`]: {
@@ -50,6 +50,7 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
     };
     props.onEntityCreate(types[type], newEntity, () => {
       setNewEntity(null);
+      callback();
     });
   };
   const onEntityStop = () => {
@@ -89,7 +90,7 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
   // console.group('Entities');
   // console.log({ props });
   // console.log({ newEntity });
-  // console.log({ newInstance });
+  // console.log({ displayEntities });
   // console.groupEnd();
 
   return (
@@ -117,6 +118,14 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
 
         const isLastChild = i === displayEntities.length - 1;
 
+        const entityMarker = {
+          lat: entity.lat,
+          lng: entity.lng,
+          type: entity.type,
+          viewport: entity.viewport,
+          zoom: entity.zoom,
+        };
+
         return (
           <TableBlock
             key={entityId}
@@ -124,15 +133,16 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
               <Controls
                 currentTime={currentTime}
                 duration={duration}
+                entityMarker={entityType === 'place' ? entityMarker : null}
                 entityName={entityName}
                 entityType={entityType}
                 instances={instances}
                 isLocal={isLocal}
-                onInstanceCreate={payload => onInstanceCreate(entityId, payload)}
-                onEntityDelete={callback => onEntityDelete(entityId, callback)}
                 onEntityCreate={onEntityCreate}
-                onEntityUpdate={(payload, callback) => onEntityUpdate(entityId, payload, callback)}
+                onEntityDelete={callback => onEntityDelete(entityId, callback)}
                 onEntityStop={onEntityStop}
+                onEntityUpdate={(payload, callback) => onEntityUpdate(entityId, payload, callback)}
+                onInstanceCreate={payload => onInstanceCreate(entityId, payload)}
                 sliderRect={sliderRect}
                 suggestions={suggestions}
               />

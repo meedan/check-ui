@@ -2,7 +2,7 @@ import Menu from 'material-ui-popup-state/HoverMenu';
 import PropTypes from 'prop-types';
 import React, { useRef, useState } from 'react';
 import find from 'lodash/find';
-import { usePopupState, bindHover, bindMenu, bindTrigger, bindPopover } from 'material-ui-popup-state/hooks';
+import { usePopupState, bindHover, bindMenu, bindPopover } from 'material-ui-popup-state/hooks';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
@@ -42,6 +42,7 @@ const useStyles = makeStyles(theme => ({
 export default function Controls({
   currentTime = 0,
   duration,
+  entityMarker,
   entityName,
   entityType,
   instances = [],
@@ -53,9 +54,9 @@ export default function Controls({
   const classes = useStyles();
   const controlsRoot = useRef();
 
+  const [marker, setMarker] = useState(null);
   const [mode, setMode] = useState(isLocal ? 'edit' : 'read');
   const [newEntityName, setNewEntityName] = useState(null);
-  const [marker, setMarker] = useState(null);
 
   const morePopupState = usePopupState({
     variant: 'popover',
@@ -88,8 +89,7 @@ export default function Controls({
   const onEntityCreate = str => {
     setNewEntityName(str);
     setMode('processing');
-    props.onEntityCreate(str);
-    // props.onEntityCreate(str, onModeReset);
+    props.onEntityCreate(str, onModeReset);
   };
   const onEntityUpdateStart = () => {
     setMode('edit');
@@ -225,16 +225,14 @@ export default function Controls({
 
   // console.group('Controls');
   // console.log({ props });
-  // console.log({ mode });
-  // console.log({ newEntityName });
   // console.groupEnd();
 
   return (
     <div
       className={classes.controlsRoot}
       onClick={onInstanceCreate}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
+      onMouseEnter={mode === 'read' ? onMouseEnter : null}
+      onMouseLeave={mode === 'read' ? onMouseLeave : null}
       ref={controlsRoot}>
       {mode === 'edit' ? editControls : readControls}
       <Popover
@@ -247,8 +245,25 @@ export default function Controls({
         transformOrigin={{
           vertical: 'top',
           horizontal: 'left',
-        }}>
-        <MapControls marker={marker} onClose={() => setMode('read')} />
+        }}
+        onClick={e => e.stopPropagation()}>
+        <MapControls
+          entityMarker={entityMarker}
+          onBeforeRename={payload => {
+            setMode('edit');
+            mapPopupState.close();
+            console.log('Controls.js onBeforeRename', payload);
+          }}
+          onDiscard={() => {
+            setMode('read');
+            mapPopupState.close();
+          }}
+          onUpdate={payload => {
+            setMode('read');
+            mapPopupState.close();
+            console.log('Controls.js onUpdate', payload);
+          }}
+        />
       </Popover>
       {mode === 'delete' && !isLocal ? (
         <DeleteModal
