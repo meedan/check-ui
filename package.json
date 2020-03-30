@@ -9,8 +9,6 @@
     "@material-ui/icons": "4.9.1",
     "@material-ui/lab": "4.0.0-alpha.47",
     "@react-google-maps/api": "1.8.6",
-    "@rehooks/component-size": "1.0.3",
-    "@rehooks/window-size": "1.0.2",
     "fast-deep-equal": "3.1.1",
     "lodash": "4.17.15",
     "material-ui-popup-state": "1.5.3",
@@ -37,8 +35,6 @@
     "@storybook/storybook-deployer": "2.8.3",
     "babel-eslint": "10.1.0",
     "babel-loader": "8.1.0",
-    "css-loader": "3.4.2",
-    "dotenv": "8.2.0",
     "eslint": "6.8.0",
     "eslint-config-prettier": "6.10.1",
     "eslint-plugin-prettier": "3.1.2",
@@ -48,9 +44,7 @@
     "prettier": "2.0.2",
     "prettier-eslint": "9.0.1",
     "prettier-stylelint": "0.4.2",
-    "pretty-quick": "2.0.1",
     "storybook-dark-mode": "0.4.0",
-    "styled-components": "5.0.1",
     "stylelint-prettier": "1.1.2"
   },
   "scripts": {
