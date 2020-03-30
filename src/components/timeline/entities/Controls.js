@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
 export default function Controls({
   currentTime = 0,
   duration,
-  entityMarker,
+  entityShape,
   entityName,
   entityType,
   instances = [],
@@ -232,7 +232,7 @@ export default function Controls({
       className={classes.controlsRoot}
       onClick={onInstanceCreate}
       onMouseEnter={mode === 'read' ? onMouseEnter : null}
-      onMouseLeave={mode === 'read' ? onMouseLeave : null}
+      onMouseLeave={onMouseLeave}
       ref={controlsRoot}>
       {mode === 'edit' ? editControls : readControls}
       <Popover
@@ -248,7 +248,8 @@ export default function Controls({
         }}
         onClick={e => e.stopPropagation()}>
         <MapControls
-          entityMarker={entityMarker}
+          entityShape={entityShape}
+          mode={entityShape ? entityShape.type : null}
           onBeforeRename={payload => {
             setMode('edit');
             mapPopupState.close();
@@ -281,12 +282,13 @@ Controls.propTypes = {
   currentTime: PropTypes.number.isRequired,
   duration: PropTypes.number.isRequired,
   entityName: PropTypes.string,
+  entityShape: PropTypes.object,
   entityType: PropTypes.string.isRequired,
   instances: PropTypes.array,
   isLocal: PropTypes.bool,
   onEntityDelete: PropTypes.func.isRequired,
-  onEntityUpdate: PropTypes.func.isRequired,
   onEntityStop: PropTypes.func.isRequired,
+  onEntityUpdate: PropTypes.func.isRequired,
   onInstanceCreate: PropTypes.func.isRequired,
   suggestions: PropTypes.array,
   sliderRect: PropTypes.shape({

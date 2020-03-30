@@ -29,50 +29,29 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function MapControls({ anchorRef, entityMarker, ...props }) {
+export default function MapControls({ anchorRef, entityShape, ...props }) {
   const mapRef = useRef();
-  // const searchRef = useRef();
+  const inputRef = useRef();
   const classes = useStyles();
 
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
+  const [map, setMap] = useState(null);
+  const [shape, setShape] = useState(null);
   const [mode, setMode] = useState(null);
   const [zoom, setZoom] = useState(2.5);
-  const [marker, setMarker] = useState();
 
   const onMapLoad = map => {
-    // console.log('onMapLoad');
+    setMap(map);
+
     // this.map = map;
-    // this.autocomplete = new window.google.maps.places.Autocomplete(this.searchRef.current, {});
+    // this.autocomplete = new window.google.maps.places.Autocomplete(this.inputRef.current, {});
     // this.autocomplete.addListener('place_changed', this.handlePlaceSelect);
     // this.map.addListener('idle', this.handleBoundsChanged);
-    // // window.google.maps.event.trigger(this.searchRef.current, 'focus');
-    // const { marker } = this.props;
-    // if (!this.props.marker) {
-    //   setTimeout(
-    //     () =>
-    //       this.searchRef.current.dispatchEvent(
-    //         new KeyboardEvent('keydown', {
-    //           keyCode: 40,
-    //           which: 40,
-    //           code: 'ArrowDown',
-    //           key: 'ArrowDown',
-    //         })
-    //       ),
-    //     500
-    //   );
-    // } else {
-    //   const { type } = marker;
-    //   const { lat, lng, viewport, zoom } = type === 'marker' ? marker : marker.polygon[0];
-    //   setTimeout(() => {
-    //     this.map.setCenter({ lat, lng });
-    //     if (zoom) this.map.setZoom(zoom);
-    //     this.map.panToBounds(viewport);
-    //   }, 100);
-    // }
+    // // window.google.maps.event.trigger(this.inputRef.current, 'focus');
   };
 
   const onMapClick = e => {
-    if (mode === 'pin') {
+    if (mode === 'marker') {
       // const { lat, lng } = e.latLng;
       // this.setState({
       //   saved: false,
@@ -82,7 +61,7 @@ export default function MapControls({ anchorRef, entityMarker, ...props }) {
       //     type: 'marker',
       //   },
       // });
-      console.log('onMapClick', 'pin', e);
+      console.log('onMapClick', 'marker', e);
     } else if (mode === 'polygon') {
       // const { lat, lng } = e.latLng;
       // this.setState({
@@ -101,7 +80,7 @@ export default function MapControls({ anchorRef, entityMarker, ...props }) {
     props.onBeforeRename();
   };
   const onBeforePinDrop = () => {
-    setMode('pin');
+    setMode('marker');
   };
   const onBeforePolygonDraw = () => {
     setMode('polygon');
@@ -115,65 +94,57 @@ export default function MapControls({ anchorRef, entityMarker, ...props }) {
     props.onDiscard();
   };
 
+  const onMarkerPositionChanged = args => {
+    console.log('onMarkerPositionChanged', args);
+  };
+
   useEffect(() => {
     console.log({ mapRef });
     // this.map = map;
-    // this.autocomplete = new window.google.maps.places.Autocomplete(this.searchRef.current, {});
+    // this.autocomplete = new window.google.maps.places.Autocomplete(this.inputRef.current, {});
     // this.autocomplete.addListener('place_changed', this.handlePlaceSelect);
     // this.map.addListener('idle', this.handleBoundsChanged);
-    // // window.google.maps.event.trigger(this.searchRef.current, 'focus');
-    // const { marker } = this.props;
-    // if (!this.props.marker) {
-    //   setTimeout(
-    //     () =>
-    //       this.searchRef.current.dispatchEvent(
-    //         new KeyboardEvent('keydown', {
-    //           keyCode: 40,
-    //           which: 40,
-    //           code: 'ArrowDown',
-    //           key: 'ArrowDown',
-    //         })
-    //       ),
-    //     500
-    //   );
-    // } else {
-    //   const { type } = marker;
-    //   const { lat, lng, viewport, zoom } = type === 'marker' ? marker : marker.polygon[0];
-    //   setTimeout(() => {
-    //     this.map.setCenter({ lat, lng });
-    //     if (zoom) this.map.setZoom(zoom);
-    //     this.map.panToBounds(viewport);
-    //   }, 100);
-    // }
+    // // window.google.maps.event.trigger(this.inputRef.current, 'focus');
   }, [mapRef]);
 
-  // const polygonOptions = {
-  //   clickable: true,
-  //   draggable: false,
-  //   editable: true,
-  //   fillColor: '000',
-  //   fillOpacity: 0.1,
-  //   geodesic: false,
-  //   strokeColor: 'orange',
-  //   strokeOpacity: 1,
-  //   strokeWeight: 2,
-  //   zIndex: 1,
-  // };
-
   useEffect(() => {
-    setMarker(entityMarker);
+    setShape(entityShape);
   });
 
-  console.group('MapControls.js');
-  console.log('entityMarker', entityMarker);
-  console.log('marker', marker);
-  console.groupEnd();
+  useEffect(() => {
+    setMode(props.mode);
+  }, [props.mode]);
+
+  useEffect(() => {
+    if (!shape) {
+      inputRef.current.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          keyCode: 40,
+          which: 40,
+          code: 'ArrowDown',
+          key: 'ArrowDown',
+        })
+      );
+    } else {
+      const { type } = shape;
+      const { lat, lng, viewport, zoom } = type === 'marker' ? shape : shape.polygon[0];
+      setCenter({ lat, lng });
+      setZoom(zoom);
+      // this.map.panToBounds(viewport);
+    }
+  }, [map]);
+
+  // console.group('MapControls.js');
+  // console.log('entityShape', entityShape);
+  // console.log('mode', mode);
+  // console.groupEnd();
 
   return (
     <>
       <TextField
         autoFocus
         fullWidth
+        inputRef={inputRef}
         InputProps={{
           classes: {
             root: classes.input,
@@ -190,11 +161,11 @@ export default function MapControls({ anchorRef, entityMarker, ...props }) {
           endAdornment: (
             <InputAdornment position="end">
               <Divider orientation="vertical" className={classes.divider} />
-              <Tooltip title="Drop a pin">
+              <Tooltip title="Drop a marker">
                 <span>
                   <IconButton
                     className={classes.iconButton}
-                    color={mode === 'pin' ? 'primary' : 'default'}
+                    color={mode === 'marker' ? 'primary' : 'default'}
                     disabled={mode ? true : false}
                     onClick={onBeforePinDrop}>
                     <AddLocationIcon fontSize="small" />
@@ -252,18 +223,35 @@ export default function MapControls({ anchorRef, entityMarker, ...props }) {
             position: window.google && window.google.maps.ControlPosition.LEFT_BOTTOM,
           },
         }}>
-        {marker && marker.type === 'polygon' ? null : null}
-        {marker && marker.type === 'marker' ? (
-          <Marker
-            key="marker"
-            draggable={mode === 'pin'}
-            animation={window.google && window.google.maps.Animation.DROP}
-            position={{
-              lat: marker.lat,
-              lng: marker.lng,
+        {shape && shape.type === 'polygon' && shape.polygon.length > 0 ? (
+          <Polygon
+            // editable={this.state.drawPolygon}
+            // onLoad={polygon => (this.polygon = polygon)}
+            options={{
+              clickable: true,
+              draggable: false,
+              editable: true,
+              fillColor: '000',
+              fillOpacity: 0.1,
+              geodesic: false,
+              strokeColor: 'orange',
+              strokeOpacity: 1,
+              strokeWeight: 2,
+              zIndex: 1,
             }}
+            path={shape.polygon}
+          />
+        ) : null}
+        {shape && shape.type === 'marker' ? (
+          <Marker
+            animation={window.google && window.google.maps.Animation.DROP}
+            draggable={mode === 'marker'}
             // onLoad={marker => (this.marker = marker)}
-            // onPositionChanged={this.handleMarkerUpdate}
+            // onPositionChanged={onMarkerPositionChanged}
+            position={{
+              lat: shape.lat,
+              lng: shape.lng,
+            }}
           />
         ) : null}
       </GoogleMap>

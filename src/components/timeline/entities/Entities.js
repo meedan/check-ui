@@ -118,7 +118,7 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
 
         const isLastChild = i === displayEntities.length - 1;
 
-        const entityMarker = {
+        const entityShape = {
           lat: entity.lat,
           lng: entity.lng,
           type: entity.type,
@@ -133,8 +133,8 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
               <Controls
                 currentTime={currentTime}
                 duration={duration}
-                entityMarker={entityType === 'place' ? entityMarker : null}
                 entityName={entityName}
+                entityShape={entityType === 'place' ? entityShape : null}
                 entityType={entityType}
                 instances={instances}
                 isLocal={isLocal}
