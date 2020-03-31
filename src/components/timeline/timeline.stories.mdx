@@ -1,4 +1,3 @@
-import { LoadScript } from '@react-google-maps/api'
 import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
 import { State, Store } from "@sambego/storybook-state";
 import { action } from '@storybook/addon-actions';
@@ -132,31 +131,26 @@ export const onPlaylistLaunch = (type) => {
   <Story name="Plain">
     <State store={plainTimelineStore}>
       {state =>
-        <LoadScript
-          id="script-loader"
-          googleMapsApiKey={process.env.STORYBOOK_GOOGLEMAPS_API_KEY}
-        >
-          <Timeline
-            currentTime={state.currentTime}
-            data={state.data}
-            duration={state.duration}
-            onBeforeCommentThreadCreate={action('onBeforeCommentThreadCreate')}
-            onCommentCreate={onCommentCreate}
-            onCommentDelete={onCommentDelete}
-            onCommentEdit={onCommentEdit}
-            onCommentThreadCreate={onCommentThreadCreate}
-            onCommentThreadDelete={onCommentThreadDelete}
-            onEntityCreate={onEntityCreate}
-            onEntityDelete={onEntityDelete}
-            onEntityUpdate={onEntityUpdate}
-            onInstanceClip={onInstanceClip}
-            onInstanceCreate={onInstanceCreate}
-            onInstanceDelete={onInstanceDelete}
-            onInstanceUpdate={onInstanceUpdate}
-            onPlaylistLaunch={onPlaylistLaunch}
-            onTimeChange={onPlainTimelineChange}
-          />
-        </LoadScript>
+        <Timeline
+          currentTime={state.currentTime}
+          data={state.data}
+          duration={state.duration}
+          onBeforeCommentThreadCreate={action('onBeforeCommentThreadCreate')}
+          onCommentCreate={onCommentCreate}
+          onCommentDelete={onCommentDelete}
+          onCommentEdit={onCommentEdit}
+          onCommentThreadCreate={onCommentThreadCreate}
+          onCommentThreadDelete={onCommentThreadDelete}
+          onEntityCreate={onEntityCreate}
+          onEntityDelete={onEntityDelete}
+          onEntityUpdate={onEntityUpdate}
+          onInstanceClip={onInstanceClip}
+          onInstanceCreate={onInstanceCreate}
+          onInstanceDelete={onInstanceDelete}
+          onInstanceUpdate={onInstanceUpdate}
+          onPlaylistLaunch={onPlaylistLaunch}
+          onTimeChange={onPlainTimelineChange}
+        />
       }
      </State>
   </Story>
@@ -168,31 +162,26 @@ export const onPlaylistLaunch = (type) => {
   <Story name="Rich">
     <State store={richTimelineStore}>
       {state =>
-        <LoadScript
-          id="script-loader"
-          googleMapsApiKey={process.env.STORYBOOK_GOOGLEMAPS_API_KEY}
-        >
-          <Timeline
-            currentTime={state.currentTime}
-            data={state.data}
-            duration={state.duration}
-            onBeforeCommentThreadCreate={action('onBeforeCommentThreadCreate')}
-            onCommentCreate={onCommentCreate}
-            onCommentDelete={onCommentDelete}
-            onCommentEdit={onCommentEdit}
-            onCommentThreadCreate={onCommentThreadCreate}
-            onCommentThreadDelete={onCommentThreadDelete}
-            onEntityCreate={onEntityCreate}
-            onEntityDelete={onEntityDelete}
-            onEntityUpdate={onEntityUpdate}
-            onInstanceClip={onInstanceClip}
-            onInstanceCreate={onInstanceCreate}
-            onInstanceDelete={onInstanceDelete}
-            onInstanceUpdate={onInstanceUpdate}
-            onPlaylistLaunch={onPlaylistLaunch}
-            onTimeChange={onRichTimelineChange}
-          />
-        </LoadScript>
+        <Timeline
+          currentTime={state.currentTime}
+          data={state.data}
+          duration={state.duration}
+          onBeforeCommentThreadCreate={action('onBeforeCommentThreadCreate')}
+          onCommentCreate={onCommentCreate}
+          onCommentDelete={onCommentDelete}
+          onCommentEdit={onCommentEdit}
+          onCommentThreadCreate={onCommentThreadCreate}
+          onCommentThreadDelete={onCommentThreadDelete}
+          onEntityCreate={onEntityCreate}
+          onEntityDelete={onEntityDelete}
+          onEntityUpdate={onEntityUpdate}
+          onInstanceClip={onInstanceClip}
+          onInstanceCreate={onInstanceCreate}
+          onInstanceDelete={onInstanceDelete}
+          onInstanceUpdate={onInstanceUpdate}
+          onPlaylistLaunch={onPlaylistLaunch}
+          onTimeChange={onRichTimelineChange}
+        />
       }
      </State>
   </Story>
@@ -204,31 +193,26 @@ export const onPlaylistLaunch = (type) => {
   <Story name="Controlled">
     <State store={controlledTimelineStore}>
       {state =>
-        <LoadScript
-          id="script-loader"
-          googleMapsApiKey={process.env.STORYBOOK_GOOGLEMAPS_API_KEY}
-        >
-          <Timeline
-            currentTime={number('Time', 100, {min: 0, max: 1000, step: 1, range: true})}
-            data={state.data}
-            duration={state.duration}
-            onBeforeCommentThreadCreate={action('onBeforeCommentThreadCreate')}
-            onCommentCreate={onCommentCreate}
-            onCommentDelete={onCommentDelete}
-            onCommentEdit={onCommentEdit}
-            onCommentThreadCreate={onCommentThreadCreate}
-            onCommentThreadDelete={onCommentThreadDelete}
-            onEntityCreate={onEntityCreate}
-            onEntityDelete={onEntityDelete}
-            onEntityUpdate={onEntityUpdate}
-            onInstanceClip={onInstanceClip}
-            onInstanceCreate={onInstanceCreate}
-            onInstanceDelete={onInstanceDelete}
-            onInstanceUpdate={onInstanceUpdate}
-            onPlaylistLaunch={onPlaylistLaunch}
-            onTimeChange={action('onTimeChange')}
-          />
-        </LoadScript>
+        <Timeline
+          currentTime={number('Time', 100, {min: 0, max: 1000, step: 1, range: true})}
+          data={state.data}
+          duration={state.duration}
+          onBeforeCommentThreadCreate={action('onBeforeCommentThreadCreate')}
+          onCommentCreate={onCommentCreate}
+          onCommentDelete={onCommentDelete}
+          onCommentEdit={onCommentEdit}
+          onCommentThreadCreate={onCommentThreadCreate}
+          onCommentThreadDelete={onCommentThreadDelete}
+          onEntityCreate={onEntityCreate}
+          onEntityDelete={onEntityDelete}
+          onEntityUpdate={onEntityUpdate}
+          onInstanceClip={onInstanceClip}
+          onInstanceCreate={onInstanceCreate}
+          onInstanceDelete={onInstanceDelete}
+          onInstanceUpdate={onInstanceUpdate}
+          onPlaylistLaunch={onPlaylistLaunch}
+          onTimeChange={action('onTimeChange')}
+        />
       }
      </State>
   </Story>
