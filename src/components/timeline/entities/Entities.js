@@ -121,6 +121,7 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
         const entityShape = {
           lat: entity.lat,
           lng: entity.lng,
+          polygon: entity.polygon,
           type: entity.type,
           viewport: entity.viewport,
           zoom: entity.zoom,

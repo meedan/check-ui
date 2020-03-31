@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import React, { useEffect, useRef, useState } from 'react';
+import mean from 'lodash/mean';
 import { GoogleMap, Marker, Polygon } from '@react-google-maps/api';
 
 import AddLocationIcon from '@material-ui/icons/AddLocation';
@@ -29,47 +30,38 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const getCenter = shape => {
+  if (shape && shape.type === 'marker') {
+    return { lat: shape.lat, lng: shape.lng };
+  } else if (shape && shape.type === 'polygon') {
+    const meanLat = mean(shape.polygon.map(o => o.lat));
+    const meanLng = mean(shape.polygon.map(o => o.lng));
+    return { lat: meanLat, lng: meanLng };
+  }
+  return { lat: 0, lng: 0 };
+};
+
 export default function MapControls({ anchorRef, entityName, entityShape, ...props }) {
-  const mapRef = useRef();
   const inputRef = useRef();
+  const mapRef = useRef();
+
+  let autocomplete;
+
   const classes = useStyles();
 
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
-  const [map, setMap] = useState(null);
-  const [shape, setShape] = useState(null);
+  const [loadedShape, setLoadedShape] = useState(null);
   const [mode, setMode] = useState(null);
-  const [zoom, setZoom] = useState(2.5);
+  const [shape, setShape] = useState(null);
+  const [zoom, setZoom] = useState(3);
 
   const onMapLoad = map => {
-    setMap(map);
+    if (!window.google.maps.places) return null;
 
-    // this.map = map;
-    // this.autocomplete = new window.google.maps.places.Autocomplete(this.inputRef.current, {});
-    // this.autocomplete.addListener('place_changed', this.handlePlaceSelect);
-    // this.map.addListener('idle', this.handleBoundsChanged);
-    // // window.google.maps.event.trigger(this.inputRef.current, 'focus');
+    autocomplete = new window.google.maps.places.Autocomplete(inputRef.current, {});
+    autocomplete.addListener('place_changed', onPlaceSelect);
   };
 
-  const onMapClick = e => {
-    const { lat, lng } = e.latLng;
-    if (mode === 'marker') {
-      setShape({
-        lat: lat(),
-        lng: lng(),
-        type: 'marker',
-      });
-    } else if (mode === 'polygon') {
-      setShape({
-        polygon: [...(shape && shape.polygon ? shape.polygon : []), { lat: lat(), lng: lng() }],
-        type: 'polygon',
-      });
-    }
-  };
-
-  const onBeforeRename = () => {
-    console.log('onBeforeRename');
-    props.onBeforeRename();
-  };
   const onBeforePinDrop = () => {
     setShape(null);
     setMode('marker');
@@ -78,72 +70,137 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
     setShape(null);
     setMode('polygon');
   };
+
+  const onMapClick = e => {
+    const { lat, lng } = e.latLng;
+    if (mode === 'marker') {
+      setShape({
+        ...shape,
+        lat: lat(),
+        lng: lng(),
+        type: 'marker',
+      });
+    } else if (mode === 'polygon') {
+      setShape({
+        ...shape,
+        polygon: [...(shape && shape.polygon ? shape.polygon : []), { lat: lat(), lng: lng() }],
+        type: 'polygon',
+      });
+    }
+  };
+
+  const onPlaceSelect = e => {
+    console.log(autocomplete.getPlace());
+    // const place = this.autocomplete.getPlace();
+    // if (place && place.geometry) {
+    //   this.map.fitBounds(place.geometry.viewport.toJSON());
+    //   const { lat, lng } = place.geometry.location;
+    //   this.setState({
+    //     dropPin: false,
+    //     marker: {
+    //       lat: lat(),
+    //       lng: lng(),
+    //       viewport: place.geometry.viewport.toJSON(),
+    //       type: 'marker',
+    //     },
+    //     saved: false,
+    //   });
+    // }
+  };
+
+  const onMarkerPositionChange = () => {
+    if (!loadedShape) return null;
+    const { lat, lng } = loadedShape.getPosition();
+    if (shape.lat !== lat() && shape.lng !== lng())
+      setShape({
+        lat: lat(),
+        lng: lng(),
+        type: 'marker',
+      });
+  };
+  const onPolygonPositionChange = () => {
+    if (!loadedShape) return null;
+    const polygon = loadedShape
+      .getPath()
+      .getArray()
+      .map(latLng => ({ lat: latLng.lat(), lng: latLng.lng() }));
+    setShape({
+      polygon: polygon,
+      type: 'polygon',
+    });
+  };
+
   const onDiscard = () => {
     // onClick={this.props.isCreating ? this.props.stopNewPlace : this.props.onDiscard}
     props.onDiscard();
   };
   const onConfirm = () => {
-    props.onUpdate({ ...shape, viewport: viewport, zoom: zoom });
+    props.onUpdate(shape);
     setMode(null);
-    setShape(null);
-  };
-
-  const onMarkerPositionChanged = args => {
-    console.log('onMarkerPositionChanged', args);
-  };
-
-  const getCenter = () => {
-    if (shape) {
-      return shape.type === 'marker'
-        ? { lat: shape.lat, lng: shape.lng }
-        : { lat: shape.polygon[0].lat, lng: shape.polygon[0].lng };
-    } else {
-      return center;
-    }
+    // setShape(null);
   };
 
   useEffect(() => {
-    console.log({ mapRef });
-    // this.map = map;
-    // this.autocomplete = new window.google.maps.places.Autocomplete(this.inputRef.current, {});
-    // this.autocomplete.addListener('place_changed', this.handlePlaceSelect);
-    // this.map.addListener('idle', this.handleBoundsChanged);
-    // // window.google.maps.event.trigger(this.inputRef.current, 'focus');
-  }, [mapRef]);
-
-  useEffect(() => {
+    if (!entityShape) return null;
+    setCenter(getCenter(entityShape));
     setShape(entityShape);
+    setZoom(entityShape.zoom);
   }, [entityShape]);
 
   useEffect(() => {
     setMode(props.mode);
   }, [props.mode]);
 
-  useEffect(() => {
-    if (!shape) {
-      inputRef.current.dispatchEvent(
-        new KeyboardEvent('keydown', {
-          keyCode: 40,
-          which: 40,
-          code: 'ArrowDown',
-          key: 'ArrowDown',
-        })
-      );
-    } else {
-      const { type } = shape;
-      const { lat, lng, viewport, zoom } = type === 'marker' ? shape : shape.polygon[0];
-      setCenter({ lat, lng });
-      setZoom(zoom);
-      // this.map.panToBounds(viewport);
-    }
-  }, [map]);
+  // const onMapLoad = map => {
+  // setLoadedMap(map);
+  // this.map = map;
+  // this.autocomplete = new window.google.maps.places.Autocomplete(this.inputRef.current, {});
+  // this.autocomplete.addListener('place_changed', this.handlePlaceSelect);
+  // this.map.addListener('idle', this.handleBoundsChanged);
+  // // window.google.maps.event.trigger(this.inputRef.current, 'focus');
+  // };
 
-  console.group('MapControls.js');
-  // console.log('entityShape', entityShape);
-  console.log('shape:', shape);
-  console.groupEnd();
+  // useEffect(() => {
+  // console.log({ mapRef });
+  // this.map = map;
+  // this.autocomplete = new window.google.maps.places.Autocomplete(this.inputRef.current, {});
+  // this.autocomplete.addListener('place_changed', this.handlePlaceSelect);
+  // this.map.addListener('idle', this.handleBoundsChanged);
+  // // window.google.maps.event.trigger(this.inputRef.current, 'focus');
+  // }, [mapRef]);
 
-  const displayShape = shape ? shape : entityShape;
+  // useEffect(() => {
+  //   if (!shape) {
+  //     inputRef.current.dispatchEvent(
+  //       new KeyboardEvent('keydown', {
+  //         keyCode: 40,
+  //         which: 40,
+  //         code: 'ArrowDown',
+  //         key: 'ArrowDown',
+  //       })
+  //     );
+  //   } else {
+  //     const {
+  //       lat,
+  //       lng,
+  //       viewport,
+  //       // zoom
+  //     } = shape.type === 'marker' ? shape : shape.polygon[0];
+  //     setCenter({ lat, lng });
+  //     // setZoom(zoom);
+  //     // this.map.panToBounds(viewport);
+  //   }
+  // }, [loadedMap]);
+
+  // console.group('MapControls.js');
+  // console.log('center', center);
+  // console.log('entityShape:', entityShape);
+  // console.log('loadedMap:', loadedMap);
+  // console.log('loadedShape:', loadedShape);
+  // console.log('mode:', mode);
+  // console.log('shape:', shape);
+  // console.log('zoom:', zoom);
+  // console.groupEnd();
 
   return (
     <>
@@ -159,7 +216,7 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
           startAdornment: (
             <InputAdornment position="start">
               <Tooltip title="Rename location…">
-                <IconButton onClick={onBeforeRename} className={classes.iconButton}>
+                <IconButton onClick={props.onBeforeRename} className={classes.iconButton}>
                   <KeyboardBackspaceIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
@@ -217,9 +274,9 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
           width: '400px',
         }}
         zoom={zoom}
-        center={getCenter()}
+        center={center}
         onClick={onMapClick}
-        onLoad={onMapLoad}
+        onLoad={map => onMapLoad(map)}
         ref={mapRef}
         options={{
           draggableCursor: mode ? 'crosshair' : 'grab',
@@ -233,7 +290,7 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
         {shape && shape.type === 'polygon' && shape.polygon.length > 0 ? (
           <Polygon
             editable={mode === 'polygon'}
-            // onLoad={polygon => (this.polygon = polygon)}
+            onLoad={polygon => setLoadedShape(polygon)}
             options={{
               clickable: true,
               draggable: false,
@@ -247,14 +304,15 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
               zIndex: 1,
             }}
             path={shape.polygon}
+            onMouseUp={onPolygonPositionChange}
           />
         ) : null}
         {shape && shape.type === 'marker' ? (
           <Marker
             animation={window.google && window.google.maps.Animation.DROP}
             draggable={mode === 'marker'}
-            // onLoad={marker => (this.marker = marker)}
-            // onPositionChanged={onMarkerPositionChanged}
+            onLoad={marker => setLoadedShape(marker)}
+            onPositionChanged={onMarkerPositionChange}
             position={{
               lat: shape.lat,
               lng: shape.lng,
