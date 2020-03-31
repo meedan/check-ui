@@ -55,7 +55,10 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
   const [viewport, setViewport] = useState(3);
   const [zoom, setZoom] = useState(3);
 
+  // a couple of things necessary for the map init
+
   const onPlaceSelect = e => {
+    // when place gets selected via autocomplete (input field aka inputRef)
     const place = autocompleteInstance.getPlace();
     if (place && place.geometry) {
       console.log({ place });
@@ -75,56 +78,68 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
   };
 
   const onBoundsChanged = () => {
+    // when map view changes (zoom/viewport)
     const viewport = mapInstance.getBounds().toJSON();
     setViewport(viewport);
-
     const zoom = mapInstance.getZoom();
     setZoom(zoom);
   };
 
+  // init map
+
   const onMapLoad = map => {
     autocompleteInstance = new window.google.maps.places.Autocomplete(inputRef.current, {});
     autocompleteInstance.addListener('place_changed', onPlaceSelect);
-
     mapInstance = map;
     mapInstance.addListener('idle', onBoundsChanged);
+    // window.google.maps.event.trigger(this.searchRef.current, 'focus');
   };
 
-  const onBeforePinDrop = () => {
+  // switch between map drawing modes
+
+  const onToggleMarkerMode = () => {
     setShape(null);
     setMode('marker');
   };
-  const onBeforePolygonDraw = () => {
+
+  const onTogglePolygonMode = () => {
     setShape(null);
     setMode('polygon');
   };
+
+  // Map interaction (polygon AND marker)
 
   const onMapClick = e => {
     const { lat, lng } = e.latLng;
     if (mode === 'marker') {
       setShape({
-        ...shape,
+        // ...shape,
         lat: lat(),
         lng: lng(),
         type: 'marker',
       });
     } else if (mode === 'polygon') {
       setShape({
-        ...shape,
+        // ...shape,
         polygon: [...(shape && shape.polygon ? shape.polygon : []), { lat: lat(), lng: lng() }],
         type: 'polygon',
       });
     }
   };
 
+  // On shape change
+
   const onMarkerPositionChange = () => {
     if (!loadedShape) return null;
+    if (!loadedShape.getPosition || loadedShape.getPosition === undefined) return null;
     const { lat, lng } = loadedShape.getPosition();
     if (shape.lat !== lat() && shape.lng !== lng())
       setShape({
         lat: lat(),
         lng: lng(),
         type: 'marker',
+        viewport: viewport,
+        zoom: zoom,
       });
   };
   const onPolygonPositionChange = () => {
@@ -139,15 +154,22 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
     });
   };
 
+  // Discard / Confirm
+
   const onDiscard = () => {
     // onClick={this.props.isCreating ? this.props.stopNewPlace : this.props.onDiscard}
     props.onDiscard();
   };
   const onConfirm = () => {
-    props.onUpdate(shape);
+    props.onUpdate({
+      ...shape,
+      viewport: viewport,
+      zoom: zoom,
+    });
     setMode(null);
-    // setShape(null);
   };
+
+  // Effects & co.
 
   useEffect(() => {
     if (!entityShape) return null;
@@ -161,7 +183,7 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
   }, [props.mode]);
 
   useEffect(() => {
-    if (!shape) {
+    if (!entityShape) {
       inputRef.current.dispatchEvent(
         new KeyboardEvent('keydown', {
           keyCode: 40,
@@ -183,15 +205,16 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
     }
   }, [mapInstance]);
 
-  // console.group('MapControls.js');
+  console.group('MapControls.js');
   // console.log('center', center);
-  // console.log('entityShape:', entityShape);
   // console.log('loadedMap:', loadedMap);
   // console.log('loadedShape:', loadedShape);
+  console.log('entityShape:', entityShape);
   // console.log('mode:', mode);
-  // console.log('shape:', shape);
+  console.log('shape:', shape);
+  // console.log('viewport:', viewport);
   // console.log('zoom:', zoom);
-  // console.groupEnd();
+  console.groupEnd();
 
   return (
     <>
@@ -222,7 +245,7 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
                     className={classes.iconButton}
                     color={mode === 'marker' ? 'primary' : 'default'}
                     disabled={!mode || mode === 'polygon' ? false : true}
-                    onClick={onBeforePinDrop}>
+                    onClick={onToggleMarkerMode}>
                     <AddLocationIcon fontSize="small" />
                   </IconButton>
                 </span>
@@ -233,7 +256,7 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
                     className={classes.iconButton}
                     color={mode === 'polygon' ? 'primary' : 'default'}
                     disabled={!mode || mode === 'marker' ? false : true}
-                    onClick={onBeforePolygonDraw}>
+                    onClick={onTogglePolygonMode}>
                     <FormatShapesIcon fontSize="small" />
                   </IconButton>
                 </span>
