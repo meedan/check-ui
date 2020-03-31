@@ -183,7 +183,7 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
   }, [props.mode]);
 
   useEffect(() => {
-    if (!entityShape) {
+    if (!shape) {
       inputRef.current.dispatchEvent(
         new KeyboardEvent('keydown', {
           keyCode: 40,

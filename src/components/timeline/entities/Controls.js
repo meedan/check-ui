@@ -54,7 +54,6 @@ export default function Controls({
   const classes = useStyles();
   const controlsRoot = useRef();
 
-  const [marker, setMarker] = useState(null);
   const [mode, setMode] = useState(isLocal ? 'edit' : 'read');
   const [newEntityName, setNewEntityName] = useState(null);
 
@@ -93,6 +92,7 @@ export default function Controls({
   };
   const onEntityUpdateStart = () => {
     setMode('edit');
+    morePopupState.close();
   };
   const onEntityUpdate = str => {
     setNewEntityName(str);
@@ -149,12 +149,6 @@ export default function Controls({
     mapPopupState.open();
     // setMode('reposition');
   };
-  // const onStopEntityReposition = () => {
-  //   console.log('onStopEntityReposition');
-  // };
-  // const onEntityReposition = () => {
-  //   console.log('onEntityReposition');
-  // };
 
   const readControls = (
     <Grid alignItems="center" className={classes.readGrid} container justify="space-between" wrap="nowrap">
