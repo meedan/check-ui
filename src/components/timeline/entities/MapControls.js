@@ -43,23 +43,51 @@ const getCenter = shape => {
 
 export default function MapControls({ anchorRef, entityName, entityShape, ...props }) {
   const inputRef = useRef();
-  const mapRef = useRef();
-
-  let autocomplete;
-
   const classes = useStyles();
+
+  let mapInstance;
+  let autocompleteInstance;
 
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const [loadedShape, setLoadedShape] = useState(null);
   const [mode, setMode] = useState(null);
   const [shape, setShape] = useState(null);
+  const [viewport, setViewport] = useState(3);
   const [zoom, setZoom] = useState(3);
 
-  const onMapLoad = map => {
-    if (!window.google.maps.places) return null;
+  const onPlaceSelect = e => {
+    const place = autocompleteInstance.getPlace();
+    if (place && place.geometry) {
+      console.log({ place });
+      mapInstance.fitBounds(place.geometry.viewport.toJSON());
+      // const { lat, lng } = place.geometry.location;
+      // this.setState({
+      //   dropPin: false,
+      //   marker: {
+      //     lat: lat(),
+      //     lng: lng(),
+      //     viewport: place.geometry.viewport.toJSON(),
+      //     type: 'marker',
+      //   },
+      //   saved: false,
+      // });
+    }
+  };
 
-    autocomplete = new window.google.maps.places.Autocomplete(inputRef.current, {});
-    autocomplete.addListener('place_changed', onPlaceSelect);
+  const onBoundsChanged = () => {
+    const viewport = mapInstance.getBounds().toJSON();
+    setViewport(viewport);
+
+    const zoom = mapInstance.getZoom();
+    setZoom(zoom);
+  };
+
+  const onMapLoad = map => {
+    autocompleteInstance = new window.google.maps.places.Autocomplete(inputRef.current, {});
+    autocompleteInstance.addListener('place_changed', onPlaceSelect);
+
+    mapInstance = map;
+    mapInstance.addListener('idle', onBoundsChanged);
   };
 
   const onBeforePinDrop = () => {
@@ -87,25 +115,6 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
         type: 'polygon',
       });
     }
-  };
-
-  const onPlaceSelect = e => {
-    console.log(autocomplete.getPlace());
-    // const place = this.autocomplete.getPlace();
-    // if (place && place.geometry) {
-    //   this.map.fitBounds(place.geometry.viewport.toJSON());
-    //   const { lat, lng } = place.geometry.location;
-    //   this.setState({
-    //     dropPin: false,
-    //     marker: {
-    //       lat: lat(),
-    //       lng: lng(),
-    //       viewport: place.geometry.viewport.toJSON(),
-    //       type: 'marker',
-    //     },
-    //     saved: false,
-    //   });
-    // }
   };
 
   const onMarkerPositionChange = () => {
@@ -151,46 +160,28 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
     setMode(props.mode);
   }, [props.mode]);
 
-  // const onMapLoad = map => {
-  // setLoadedMap(map);
-  // this.map = map;
-  // this.autocomplete = new window.google.maps.places.Autocomplete(this.inputRef.current, {});
-  // this.autocomplete.addListener('place_changed', this.handlePlaceSelect);
-  // this.map.addListener('idle', this.handleBoundsChanged);
-  // // window.google.maps.event.trigger(this.inputRef.current, 'focus');
-  // };
-
-  // useEffect(() => {
-  // console.log({ mapRef });
-  // this.map = map;
-  // this.autocomplete = new window.google.maps.places.Autocomplete(this.inputRef.current, {});
-  // this.autocomplete.addListener('place_changed', this.handlePlaceSelect);
-  // this.map.addListener('idle', this.handleBoundsChanged);
-  // // window.google.maps.event.trigger(this.inputRef.current, 'focus');
-  // }, [mapRef]);
-
-  // useEffect(() => {
-  //   if (!shape) {
-  //     inputRef.current.dispatchEvent(
-  //       new KeyboardEvent('keydown', {
-  //         keyCode: 40,
-  //         which: 40,
-  //         code: 'ArrowDown',
-  //         key: 'ArrowDown',
-  //       })
-  //     );
-  //   } else {
-  //     const {
-  //       lat,
-  //       lng,
-  //       viewport,
-  //       // zoom
-  //     } = shape.type === 'marker' ? shape : shape.polygon[0];
-  //     setCenter({ lat, lng });
-  //     // setZoom(zoom);
-  //     // this.map.panToBounds(viewport);
-  //   }
-  // }, [loadedMap]);
+  useEffect(() => {
+    if (!shape) {
+      inputRef.current.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          keyCode: 40,
+          which: 40,
+          code: 'ArrowDown',
+          key: 'ArrowDown',
+        })
+      );
+    } else {
+      const {
+        lat,
+        lng,
+        viewport,
+        // zoom
+      } = shape.type === 'marker' ? shape : shape.polygon[0];
+      setCenter({ lat, lng });
+      // setZoom(zoom);
+      // this.map.panToBounds(viewport);
+    }
+  }, [mapInstance]);
 
   // console.group('MapControls.js');
   // console.log('center', center);
@@ -277,7 +268,6 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
         center={center}
         onClick={onMapClick}
         onLoad={map => onMapLoad(map)}
-        ref={mapRef}
         options={{
           draggableCursor: mode ? 'crosshair' : 'grab',
           mapTypeControl: false,
