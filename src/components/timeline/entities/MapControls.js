@@ -94,7 +94,7 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
     autocompleteInstance.addListener('place_changed', onPlaceSelect);
     mapInstance = map;
     mapInstance.addListener('idle', onBoundsChanged);
-    window.google.maps.event.trigger(inputRef.current, 'focus');
+    // window.google.maps.event.trigger(inputRef.current, 'focus'); // TODO: test this
   };
 
   // switch between map drawing modes
@@ -245,8 +245,8 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
                 <span>
                   <IconButton
                     className={classes.iconButton}
-                    color={mode === 'marker' ? 'primary' : 'default'}
-                    disabled={!mode || mode === 'polygon' ? false : true}
+                    color={mode === 'marker' ? 'primary' : 'inherit'}
+                    // disabled={!mode || mode === 'polygon' ? false : true}
                     onClick={onToggleMarkerMode}>
                     <AddLocationIcon fontSize="small" />
                   </IconButton>
@@ -256,8 +256,8 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
                 <span>
                   <IconButton
                     className={classes.iconButton}
-                    color={mode === 'polygon' ? 'primary' : 'default'}
-                    disabled={!mode || mode === 'marker' ? false : true}
+                    color={mode === 'polygon' ? 'primary' : 'inherit'}
+                    // disabled={!mode || mode === 'marker' ? false : true}
                     onClick={onTogglePolygonMode}>
                     <FormatShapesIcon fontSize="small" />
                   </IconButton>

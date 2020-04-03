@@ -66,7 +66,7 @@ export default function Controls({
     popupId: 'MapControls',
   });
 
-  const displayEntityName = mode === 'processing' ? newEntityName : entityName;
+  const displayEntityName = mode === 'processing' && newEntityName ? newEntityName : entityName;
 
   // mode methods
 
@@ -94,11 +94,6 @@ export default function Controls({
     setMode('edit');
     morePopupState.close();
   };
-  const onEntityUpdate = str => {
-    setNewEntityName(str);
-    setMode('processing');
-    props.onEntityUpdate(str, onModeReset);
-  };
   const onEntityDeleteStart = () => {
     setMode('delete');
   };
@@ -106,6 +101,17 @@ export default function Controls({
     setNewEntityName(entityName);
     setMode('processing');
     props.onEntityDelete(onModeReset);
+  };
+  const onEntityRename = str => {
+    setNewEntityName(str);
+    setMode('processing');
+    props.onEntityUpdate({ [`project_${entityType}`]: { name: str } }, onModeReset);
+  };
+  const onUpdateShape = payload => {
+    setMode('processing');
+    mapPopupState.close();
+    props.onEntityUpdate(payload, onModeReset);
+    // console.log('Controls.js onUpdate', payload);
   };
 
   // instance methods
@@ -212,7 +218,7 @@ export default function Controls({
       entityName={displayEntityName}
       entityType={entityType}
       onCancel={onModeReset}
-      onSubmit={isLocal ? onEntityCreate : onEntityUpdate}
+      onSubmit={isLocal ? onEntityCreate : onEntityRename}
       suggestions={suggestions}
     />
   );
@@ -254,11 +260,7 @@ export default function Controls({
             setMode('read');
             mapPopupState.close();
           }}
-          onUpdate={payload => {
-            setMode('read');
-            mapPopupState.close();
-            console.log('Controls.js onUpdate', payload);
-          }}
+          onUpdate={payload => onUpdateShape(payload)}
         />
       </Popover>
       {mode === 'delete' && !isLocal ? (
