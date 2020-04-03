@@ -1,4 +1,10 @@
+const Dotenv = require('dotenv-webpack');
+
 module.exports = {
+  webpackFinal: async config => {
+    config.plugins.push(new Dotenv());
+    return config;
+  },
   stories: ['../src/**/*.stories.(js|mdx)'],
   addons: [
     '@storybook/addon-actions/register',

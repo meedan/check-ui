@@ -66,11 +66,7 @@ export default function Playhead(props) {
   const onHandlePress = e => {
     if (!e) return null;
 
-    if (
-      e.pageX <= rootRect.left - 100 ||
-      e.pageX >= rootRect.left + rootRect.width + 100
-    )
-      return null;
+    if (e.pageX <= rootRect.left - 100 || e.pageX >= rootRect.left + rootRect.width + 100) return null;
     const v = ((e.pageX - rootRect.left) * duration) / rootRect.width;
 
     setDragging(true);
@@ -87,6 +83,9 @@ export default function Playhead(props) {
   const onHandleRelease = () => {
     setDragging(false);
   };
+  const getRootRect = () => {
+    setRootRect(playheadRoot.current.getBoundingClientRect());
+  };
 
   useEffect(() => {
     window.addEventListener('mousemove', onHandleMove);
@@ -99,24 +98,24 @@ export default function Playhead(props) {
   }, [onHandleRelease]);
 
   useEffect(() => {
-    setRootRect(playheadRoot.current.getBoundingClientRect());
+    getRootRect();
   }, [playheadRoot]);
 
   useEffect(() => {
     if (props && props.setSkip) props.setSkip(dragging);
   }, [dragging]);
 
+  // recalc rootRect on window resize
+  useEffect(() => {
+    window.addEventListener('resize', getRootRect);
+    return () => window.removeEventListener('resize', getRootRect);
+  });
+
   const pos = rootRect ? (currentTime * rootRect.width) / duration : 0;
 
   return (
-    <div
-      className={`${props.className} ${classes.playheadRoot}`}
-      onMouseDown={onHandlePress}
-      ref={playheadRoot}>
-      <Tooltip
-        open={dragging}
-        title={formatSeconds(currentTime)}
-        placement="top">
+    <div className={`${props.className} ${classes.playheadRoot}`} onMouseDown={onHandlePress} ref={playheadRoot}>
+      <Tooltip open={dragging} title={formatSeconds(currentTime)} placement="top">
         <div
           className={classes.playheadHandle}
           onMouseDown={onHandlePress}

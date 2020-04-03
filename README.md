@@ -5,19 +5,11 @@ React component library for the Check App Ecosystem.
 ## With yarn:
 
 ```
-~ yarn
-```
-
-```
-~ yarn start
+$ yarn && yarn start
 ```
 
 ## With npm
 
 ```
-~ npm install
-```
-
-```
-~ npm run start
+$ npm install && npm run start
 ```
