@@ -15,6 +15,8 @@ import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
+import './MapControls.css';
+
 const useStyles = makeStyles(theme => ({
   input: {
     paddingTop: theme.spacing(1),
@@ -92,7 +94,7 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
     autocompleteInstance.addListener('place_changed', onPlaceSelect);
     mapInstance = map;
     mapInstance.addListener('idle', onBoundsChanged);
-    // window.google.maps.event.trigger(this.searchRef.current, 'focus');
+    window.google.maps.event.trigger(inputRef.current, 'focus');
   };
 
   // switch between map drawing modes
@@ -205,16 +207,16 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
     }
   }, [mapInstance]);
 
-  console.group('MapControls.js');
+  // console.group('MapControls.js');
   // console.log('center', center);
   // console.log('loadedMap:', loadedMap);
   // console.log('loadedShape:', loadedShape);
-  console.log('entityShape:', entityShape);
+  // console.log('entityShape:', entityShape);
   // console.log('mode:', mode);
-  console.log('shape:', shape);
+  // console.log('shape:', shape);
   // console.log('viewport:', viewport);
   // console.log('zoom:', zoom);
-  console.groupEnd();
+  // console.groupEnd();
 
   return (
     <>
