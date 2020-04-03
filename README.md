@@ -1,6 +1,6 @@
 # Check UI
 
-React component library for the Check App Ecosystem.
+React component library and [Storybook documentation](https://meedan.github.io/check-ui/) for the Check App Ecosystem.
 
 ## With yarn:
 
