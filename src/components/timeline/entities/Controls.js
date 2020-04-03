@@ -88,7 +88,11 @@ export default function Controls({
   const onEntityCreate = str => {
     setNewEntityName(str);
     setMode('processing');
-    props.onEntityCreate(str, onModeReset);
+    props.onEntityCreate(str, () => {
+      onModeReset();
+      // the following is unlikely to trigger in the docs as map popover requires a mounted component to anchor to—we’re removing the new entity node with the callback. the if here is to avoid a react warning — Apr 3, 2020 @piotr
+      if (entityType === 'place' && mapPopupState) mapPopupState.open();
+    });
   };
   const onEntityUpdateStart = () => {
     setMode('edit');
@@ -111,7 +115,6 @@ export default function Controls({
     setMode('processing');
     mapPopupState.close();
     props.onEntityUpdate(payload, onModeReset);
-    // console.log('Controls.js onUpdate', payload);
   };
 
   // instance methods
