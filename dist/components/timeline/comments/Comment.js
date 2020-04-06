@@ -1,5 +1,3 @@
-'use strict';
-
 function _typeof(obj) {
   '@babel/helpers - typeof';
   if (typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol') {
@@ -8,10 +6,7 @@ function _typeof(obj) {
     };
   } else {
     _typeof = function _typeof(obj) {
-      return obj &&
-        typeof Symbol === 'function' &&
-        obj.constructor === Symbol &&
-        obj !== Symbol.prototype
+      return obj && typeof Symbol === 'function' && obj.constructor === Symbol && obj !== Symbol.prototype
         ? 'symbol'
         : typeof obj;
     };
@@ -19,454 +14,475 @@ function _typeof(obj) {
   return _typeof(obj);
 }
 
-Object.defineProperty(exports, '__esModule', {
-  value: true,
-});
-exports['default'] = Comment;
+(function (global, factory) {
+  if (typeof define === 'function' && define.amd) {
+    define([
+      'exports',
+      'prop-types',
+      'material-ui-popup-state/HoverPopover',
+      'react',
+      'material-ui-popup-state/hooks',
+      '@material-ui/core/Avatar',
+      '@material-ui/core/CircularProgress',
+      '@material-ui/core/IconButton',
+      '@material-ui/core/List',
+      '@material-ui/core/ListItem',
+      '@material-ui/core/ListItemAvatar',
+      '@material-ui/core/ListItemSecondaryAction',
+      '@material-ui/core/ListItemText',
+      '@material-ui/icons/MoreVert',
+      '@material-ui/core/Tooltip',
+      '@material-ui/core/Typography',
+      '@material-ui/core/styles/makeStyles',
+      './Form',
+    ], factory);
+  } else if (typeof exports !== 'undefined') {
+    factory(
+      exports,
+      require('prop-types'),
+      require('material-ui-popup-state/HoverPopover'),
+      require('react'),
+      require('material-ui-popup-state/hooks'),
+      require('@material-ui/core/Avatar'),
+      require('@material-ui/core/CircularProgress'),
+      require('@material-ui/core/IconButton'),
+      require('@material-ui/core/List'),
+      require('@material-ui/core/ListItem'),
+      require('@material-ui/core/ListItemAvatar'),
+      require('@material-ui/core/ListItemSecondaryAction'),
+      require('@material-ui/core/ListItemText'),
+      require('@material-ui/icons/MoreVert'),
+      require('@material-ui/core/Tooltip'),
+      require('@material-ui/core/Typography'),
+      require('@material-ui/core/styles/makeStyles'),
+      require('./Form')
+    );
+  } else {
+    var mod = {
+      exports: {},
+    };
+    factory(
+      mod.exports,
+      global.propTypes,
+      global.HoverPopover,
+      global.react,
+      global.hooks,
+      global.Avatar,
+      global.CircularProgress,
+      global.IconButton,
+      global.List,
+      global.ListItem,
+      global.ListItemAvatar,
+      global.ListItemSecondaryAction,
+      global.ListItemText,
+      global.MoreVert,
+      global.Tooltip,
+      global.Typography,
+      global.makeStyles,
+      global.Form
+    );
+    global.Comment = mod.exports;
+  }
+})(typeof globalThis !== 'undefined' ? globalThis : typeof self !== 'undefined' ? self : this, function (
+  _exports,
+  _propTypes,
+  _HoverPopover,
+  _react,
+  _hooks,
+  _Avatar,
+  _CircularProgress,
+  _IconButton,
+  _List,
+  _ListItem,
+  _ListItemAvatar,
+  _ListItemSecondaryAction,
+  _ListItemText,
+  _MoreVert,
+  _Tooltip,
+  _Typography,
+  _makeStyles,
+  _Form
+) {
+  'use strict';
 
-var _HoverPopover = _interopRequireDefault(
-  require('material-ui-popup-state/HoverPopover')
-);
+  Object.defineProperty(_exports, '__esModule', {
+    value: true,
+  });
+  _exports['default'] = Comment;
+  _propTypes = _interopRequireDefault(_propTypes);
+  _HoverPopover = _interopRequireDefault(_HoverPopover);
+  _react = _interopRequireWildcard(_react);
+  _Avatar = _interopRequireDefault(_Avatar);
+  _CircularProgress = _interopRequireDefault(_CircularProgress);
+  _IconButton = _interopRequireDefault(_IconButton);
+  _List = _interopRequireDefault(_List);
+  _ListItem = _interopRequireDefault(_ListItem);
+  _ListItemAvatar = _interopRequireDefault(_ListItemAvatar);
+  _ListItemSecondaryAction = _interopRequireDefault(_ListItemSecondaryAction);
+  _ListItemText = _interopRequireDefault(_ListItemText);
+  _MoreVert = _interopRequireDefault(_MoreVert);
+  _Tooltip = _interopRequireDefault(_Tooltip);
+  _Typography = _interopRequireDefault(_Typography);
+  _makeStyles = _interopRequireDefault(_makeStyles);
+  _Form = _interopRequireDefault(_Form);
 
-var _react = _interopRequireWildcard(require('react'));
-
-var _styledComponents = _interopRequireDefault(require('styled-components'));
-
-var _hooks = require('material-ui-popup-state/hooks');
-
-var _MoreVert = _interopRequireDefault(require('@material-ui/icons/MoreVert'));
-
-var _core = require('@material-ui/core');
-
-var _styles = require('@material-ui/core/styles');
-
-var _CommentForm = _interopRequireDefault(require('./CommentForm'));
-
-function _getRequireWildcardCache() {
-  if (typeof WeakMap !== 'function') return null;
-  var cache = new WeakMap();
-  _getRequireWildcardCache = function _getRequireWildcardCache() {
+  function _getRequireWildcardCache() {
+    if (typeof WeakMap !== 'function') return null;
+    var cache = new WeakMap();
+    _getRequireWildcardCache = function _getRequireWildcardCache() {
+      return cache;
+    };
     return cache;
-  };
-  return cache;
-}
+  }
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  }
-  if (
-    obj === null ||
-    (_typeof(obj) !== 'object' && typeof obj !== 'function')
-  ) {
-    return { default: obj };
-  }
-  var cache = _getRequireWildcardCache();
-  if (cache && cache.has(obj)) {
-    return cache.get(obj);
-  }
-  var newObj = {};
-  var hasPropertyDescriptor =
-    Object.defineProperty && Object.getOwnPropertyDescriptor;
-  for (var key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      var desc = hasPropertyDescriptor
-        ? Object.getOwnPropertyDescriptor(obj, key)
-        : null;
-      if (desc && (desc.get || desc.set)) {
-        Object.defineProperty(newObj, key, desc);
-      } else {
-        newObj[key] = obj[key];
-      }
+  function _interopRequireWildcard(obj) {
+    if (obj && obj.__esModule) {
+      return obj;
     }
-  }
-  newObj['default'] = obj;
-  if (cache) {
-    cache.set(obj, newObj);
-  }
-  return newObj;
-}
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
-
-function _extends() {
-  _extends =
-    Object.assign ||
-    function(target) {
-      for (var i = 1; i < arguments.length; i++) {
-        var source = arguments[i];
-        for (var key in source) {
-          if (Object.prototype.hasOwnProperty.call(source, key)) {
-            target[key] = source[key];
-          }
+    if (obj === null || (_typeof(obj) !== 'object' && typeof obj !== 'function')) {
+      return { default: obj };
+    }
+    var cache = _getRequireWildcardCache();
+    if (cache && cache.has(obj)) {
+      return cache.get(obj);
+    }
+    var newObj = {};
+    var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
+    for (var key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
+        if (desc && (desc.get || desc.set)) {
+          Object.defineProperty(newObj, key, desc);
+        } else {
+          newObj[key] = obj[key];
         }
       }
-      return target;
-    };
-  return _extends.apply(this, arguments);
-}
-
-function _slicedToArray(arr, i) {
-  return (
-    _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest()
-  );
-}
-
-function _nonIterableRest() {
-  throw new TypeError('Invalid attempt to destructure non-iterable instance');
-}
-
-function _iterableToArrayLimit(arr, i) {
-  if (
-    !(
-      Symbol.iterator in Object(arr) ||
-      Object.prototype.toString.call(arr) === '[object Arguments]'
-    )
-  ) {
-    return;
-  }
-  var _arr = [];
-  var _n = true;
-  var _d = false;
-  var _e = undefined;
-  try {
-    for (
-      var _i = arr[Symbol.iterator](), _s;
-      !(_n = (_s = _i.next()).done);
-      _n = true
-    ) {
-      _arr.push(_s.value);
-      if (i && _arr.length === i) break;
     }
-  } catch (err) {
-    _d = true;
-    _e = err;
-  } finally {
+    newObj['default'] = obj;
+    if (cache) {
+      cache.set(obj, newObj);
+    }
+    return newObj;
+  }
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
+  }
+
+  function _extends() {
+    _extends =
+      Object.assign ||
+      function (target) {
+        for (var i = 1; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (Object.prototype.hasOwnProperty.call(source, key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      };
+    return _extends.apply(this, arguments);
+  }
+
+  function _slicedToArray(arr, i) {
+    return (
+      _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest()
+    );
+  }
+
+  function _nonIterableRest() {
+    throw new TypeError(
+      'Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.'
+    );
+  }
+
+  function _unsupportedIterableToArray(o, minLen) {
+    if (!o) return;
+    if (typeof o === 'string') return _arrayLikeToArray(o, minLen);
+    var n = Object.prototype.toString.call(o).slice(8, -1);
+    if (n === 'Object' && o.constructor) n = o.constructor.name;
+    if (n === 'Map' || n === 'Set') return Array.from(n);
+    if (n === 'Arguments' || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+  }
+
+  function _arrayLikeToArray(arr, len) {
+    if (len == null || len > arr.length) len = arr.length;
+    for (var i = 0, arr2 = new Array(len); i < len; i++) {
+      arr2[i] = arr[i];
+    }
+    return arr2;
+  }
+
+  function _iterableToArrayLimit(arr, i) {
+    if (typeof Symbol === 'undefined' || !(Symbol.iterator in Object(arr))) return;
+    var _arr = [];
+    var _n = true;
+    var _d = false;
+    var _e = undefined;
     try {
-      if (!_n && _i['return'] != null) _i['return']();
+      for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+        _arr.push(_s.value);
+        if (i && _arr.length === i) break;
+      }
+    } catch (err) {
+      _d = true;
+      _e = err;
     } finally {
-      if (_d) throw _e;
+      try {
+        if (!_n && _i['return'] != null) _i['return']();
+      } finally {
+        if (_d) throw _e;
+      }
     }
+    return _arr;
   }
-  return _arr;
-}
 
-function _arrayWithHoles(arr) {
-  if (Array.isArray(arr)) return arr;
-}
-
-function _templateObject2() {
-  var data = _taggedTemplateLiteral(['\n  ', ';\n']);
-
-  _templateObject2 = function _templateObject2() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject() {
-  var data = _taggedTemplateLiteral(['\n  visibility: hidden;\n']);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
-
-function _taggedTemplateLiteral(strings, raw) {
-  if (!raw) {
-    raw = strings.slice(0);
+  function _arrayWithHoles(arr) {
+    if (Array.isArray(arr)) return arr;
   }
-  return Object.freeze(
-    Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })
-  );
-}
 
-var useStyles = (0, _styles.makeStyles)(function(theme) {
-  return {
-    avatar: {
-      height: 28,
-      width: 28,
-    },
-    ListItem: {
-      width: '240px',
-    },
-    listItemSecondaryAction: {
-      top: 8,
-      transform: 'none',
-    },
-    ListItemAvatar: {
-      minWidth: '40px',
-    },
-    mask: {
-      alignItems: 'center',
-      background: 'rgba(255, 255, 255, 0.66)',
-      bottom: '0',
-      display: 'flex',
-      justifyContent: 'center',
-      left: '0',
-      position: 'absolute',
-      right: '0',
-      top: '0',
-      zIndex: '2',
-    },
-  };
-});
-
-var ElSideControls = _styledComponents['default'].div(_templateObject());
-
-var El = _styledComponents['default'].div(_templateObject2(), function(_ref) {
-  var hasAddornment = _ref.hasAddornment;
-  return hasAddornment
-    ? '\n  '.concat(ElSideControls, ' {\n    visibility: visible;\n  }\n')
-    : '';
-});
-
-function Comment(props) {
-  var classes = useStyles();
-  var isRoot = props.isRoot,
-    isActionable = props.isActionable,
-    id = props.id,
-    threadId = props.threadId,
-    fname = props.fname,
-    lname = props.lname,
-    avatar = props.avatar,
-    date = props.date,
-    text = props.text;
-
-  var _useState = (0, _react.useState)(false),
-    _useState2 = _slicedToArray(_useState, 2),
-    isEditing = _useState2[0],
-    setEditingStatus = _useState2[1];
-
-  var _useState3 = (0, _react.useState)(false),
-    _useState4 = _slicedToArray(_useState3, 2),
-    isProcessing = _useState4[0],
-    setProcessingStatus = _useState4[1];
-
-  var _useState5 = (0, _react.useState)(false),
-    _useState6 = _slicedToArray(_useState5, 2),
-    isHovering = _useState6[0],
-    setHoveringStatus = _useState6[1];
-
-  var popupState = (0, _hooks.usePopupState)({
-    popupId: 'MoreMenuItem',
-    variant: 'popover',
+  var useStyles = (0, _makeStyles['default'])(function (theme) {
+    return {
+      avatar: {
+        height: 28,
+        width: 28,
+      },
+      item: {
+        width: '240px',
+      },
+      itemAvatar: {
+        minWidth: '40px',
+      },
+      secondaryAction: {
+        top: 8,
+        transform: 'none',
+      },
+      mask: {
+        alignItems: 'center',
+        background: 'rgba(255, 255, 255, 0.66)',
+        bottom: '0',
+        display: 'flex',
+        justifyContent: 'center',
+        left: '0',
+        position: 'absolute',
+        right: '0',
+        top: '0',
+        zIndex: '2',
+      },
+    };
   });
 
-  var toggleCommentEdit = function toggleCommentEdit() {
-    setEditingStatus(true);
-    popupState.close();
-  };
+  function Comment(props) {
+    var classes = useStyles();
+    var avatar = props.avatar,
+      date = props.date,
+      fname = props.fname,
+      isActionable = props.isActionable,
+      isRoot = props.isRoot,
+      lname = props.lname,
+      text = props.text,
+      threadId = props.threadId;
 
-  var handleCommentEdit = function handleCommentEdit(text) {
-    // TODO: wire this up to save changes to the comment
-    // the first comment will have `isRoot` prop set
-    // the first comment can be accessed with `id`
-    // subsequent comments have also threadId (which is first comment’s id)
-    setProcessingStatus(true);
-    setEditingStatus(false);
-    setTimeout(function() {
-      return setProcessingStatus(false);
-    }, 1000); // TODO: make this real
+    var _useState = (0, _react.useState)(false),
+      _useState2 = _slicedToArray(_useState, 2),
+      isEditing = _useState2[0],
+      setEditingState = _useState2[1];
 
-    console.group('handleCommentEdit()');
-    console.log(
-      isRoot
-        ? {
-            id: id,
-          }
-        : ''.concat(id, ' > ').concat(threadId)
-    );
-    console.log({
-      text: text,
+    var _useState3 = (0, _react.useState)(false),
+      _useState4 = _slicedToArray(_useState3, 2),
+      isHovering = _useState4[0],
+      setHoveringState = _useState4[1];
+
+    var _useState5 = (0, _react.useState)(false),
+      _useState6 = _slicedToArray(_useState5, 2),
+      isProcessing = _useState6[0],
+      setProcessingState = _useState6[1]; // make obvious what is what
+
+    var commentId = props.id;
+    var popupState = (0, _hooks.usePopupState)({
+      popupId: 'MoreMenuItem',
+      variant: 'popover',
     });
-    console.groupEnd();
-  };
 
-  var handleCommentDelete = function handleCommentDelete() {
-    // TODO: wire this up to delete comment
-    setProcessingStatus(true);
-    setEditingStatus(false);
-    setTimeout(function() {
-      return setProcessingStatus(false);
-    }, 1000); // TODO: make this real
+    var onCommentStop = function onCommentStop() {
+      console.log('—— onCommentStop()');
+      setEditingState(false);
+      popupState.close();
+    };
 
-    popupState.close();
-    console.group('handleCommentDelete()');
-    console.log({
-      threadId: threadId,
-    });
-    console.log({
-      id: id,
-    });
-    console.groupEnd();
-  };
+    var onCommentEditToggle = function onCommentEditToggle() {
+      console.log('—— onCommentEditToggle()');
+      setEditingState(true);
+      popupState.close();
+    };
 
-  var displayActions = function displayActions() {
-    if (isActionable) {
-      return _react['default'].createElement(
-        _react['default'].Fragment,
-        null,
-        _react['default'].createElement(
-          ElSideControls,
-          null,
-          _react['default'].createElement(
-            _core.IconButton,
-            (0, _hooks.bindHover)(popupState),
-            _react['default'].createElement(_MoreVert['default'], null)
-          ),
-          _react['default'].createElement(
-            _HoverPopover['default'],
-            _extends({}, (0, _hooks.bindPopover)(popupState), {
-              anchorOrigin: {
-                vertical: 'bottom',
-                horizontal: 'center',
-              },
-              transformOrigin: {
-                vertical: 'top',
-                horizontal: 'center',
-              },
-              disableRestoreFocus: true,
-            }),
-            _react['default'].createElement(
-              _core.List,
+    var onCommentEdit = function onCommentEdit(text) {
+      console.log('—— onCommentEdit()');
+      setProcessingState(true);
+      setEditingState(false);
+      props.onCommentEdit(threadId, commentId, text);
+    };
+
+    var onCommentDelete = function onCommentDelete() {
+      setProcessingState(true);
+      props.onCommentDelete(threadId, commentId);
+    };
+
+    var displayActions = function displayActions() {
+      if (!isActionable) return null;
+      return /*#__PURE__*/ _react['default'].createElement(
+        'div',
+        {
+          style: {
+            visibility: isHovering && !isEditing ? 'visible' : 'hidden',
+          },
+        },
+        /*#__PURE__*/ _react['default'].createElement(
+          _IconButton['default'],
+          (0, _hooks.bindHover)(popupState),
+          /*#__PURE__*/ _react['default'].createElement(_MoreVert['default'], null)
+        ),
+        /*#__PURE__*/ _react['default'].createElement(
+          _HoverPopover['default'],
+          _extends({}, (0, _hooks.bindPopover)(popupState), {
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'center',
+            },
+            transformOrigin: {
+              vertical: 'top',
+              horizontal: 'center',
+            },
+            disableRestoreFocus: true,
+          }),
+          /*#__PURE__*/ _react['default'].createElement(
+            _List['default'],
+            {
+              dense: true,
+            },
+            /*#__PURE__*/ _react['default'].createElement(
+              _ListItem['default'],
               {
-                dense: true,
+                button: true,
+                onClick: onCommentEditToggle,
               },
-              _react['default'].createElement(
-                _core.ListItem,
-                {
-                  button: true,
-                  onClick: toggleCommentEdit,
-                },
-                _react['default'].createElement(
-                  _core.ListItemText,
-                  null,
-                  'Edit'
+              /*#__PURE__*/ _react['default'].createElement(_ListItemText['default'], null, 'Edit')
+            ),
+            !isRoot
+              ? /*#__PURE__*/ _react['default'].createElement(
+                  _ListItem['default'],
+                  {
+                    button: true,
+                    onClick: onCommentDelete,
+                  },
+                  /*#__PURE__*/ _react['default'].createElement(_ListItemText['default'], null, 'Delete')
                 )
-              ),
-              !isRoot
-                ? _react['default'].createElement(
-                    _core.ListItem,
-                    {
-                      button: true,
-                      onClick: handleCommentDelete,
-                    },
-                    _react['default'].createElement(
-                      _core.ListItemText,
-                      null,
-                      'Delete'
-                    )
-                  )
-                : null
-            )
+              : null
           )
         )
       );
-    }
+    };
 
-    return null;
-  };
-
-  return _react['default'].createElement(
-    El,
-    {
-      hasAddornment: isHovering && !isEditing,
-      onMouseEnter: function onMouseEnter() {
-        return setHoveringStatus(true);
-      },
-      onMouseLeave: function onMouseLeave() {
-        return setHoveringStatus(false);
-      },
-    },
-    _react['default'].createElement(
-      _core.ListItem,
+    return /*#__PURE__*/ _react['default'].createElement(
+      'div',
       {
-        alignItems: 'flex-start',
-        className: classes.ListItem,
-        key: id,
+        onMouseEnter: function onMouseEnter() {
+          return setHoveringState(true);
+        },
+        onMouseLeave: function onMouseLeave() {
+          return setHoveringState(false);
+        },
       },
-      _react['default'].createElement(
-        _core.ListItemAvatar,
+      /*#__PURE__*/ _react['default'].createElement(
+        _ListItem['default'],
         {
-          className: classes.ListItemAvatar,
+          alignItems: 'flex-start',
+          className: classes.item,
         },
-        _react['default'].createElement(
-          _core.Tooltip,
+        /*#__PURE__*/ _react['default'].createElement(
+          _ListItemAvatar['default'],
           {
-            title: _react['default'].createElement(
-              _core.Typography,
-              {
-                align: 'center',
-                color: 'inherit',
-                variant: 'caption',
-              },
-              date
-            ),
+            className: classes.itemAvatar,
           },
-          _react['default'].createElement(_core.Avatar, {
-            alt: ''.concat(fname, ' ').concat(lname),
-            src: avatar,
-            className: classes.avatar,
-          })
-        )
-      ),
-      _react['default'].createElement(
-        _core.ListItemText,
-        null,
-        _react['default'].createElement(
-          _core.Typography,
-          {
-            variant: 'body2',
-          },
-          ''.concat(fname, ' ').concat(lname)
-        ),
-        isEditing
-          ? _react['default'].createElement(_CommentForm['default'], {
-              isEditing: true,
-              onCancel: function onCancel() {
-                return setEditingStatus(false);
-              },
-              onSubmit: function onSubmit(text) {
-                return handleCommentEdit(text, id);
-              },
-              value: text,
-            })
-          : _react['default'].createElement(
-              _core.Typography,
-              {
-                color: 'textSecondary',
-                display: 'block',
-                variant: 'body2',
-                style: {
-                  fontSize: '13px',
+          /*#__PURE__*/ _react['default'].createElement(
+            _Tooltip['default'],
+            {
+              title: /*#__PURE__*/ _react['default'].createElement(
+                _Typography['default'],
+                {
+                  align: 'center',
+                  color: 'inherit',
+                  variant: 'caption',
                 },
-              },
-              text
-            )
-      ),
-      _react['default'].createElement(
-        _core.ListItemSecondaryAction,
-        {
-          className: classes.listItemSecondaryAction,
-        },
-        displayActions()
-      ),
-      isProcessing &&
-        _react['default'].createElement(
-          'div',
+                date
+              ),
+            },
+            /*#__PURE__*/ _react['default'].createElement(_Avatar['default'], {
+              alt: ''.concat(fname, ' ').concat(lname),
+              src: avatar,
+              className: classes.avatar,
+            })
+          )
+        ),
+        /*#__PURE__*/ _react['default'].createElement(
+          _ListItemText['default'],
+          null,
+          /*#__PURE__*/ _react['default'].createElement(
+            _Typography['default'],
+            {
+              variant: 'body2',
+            },
+            ''.concat(fname, ' ').concat(lname)
+          ),
+          isEditing
+            ? /*#__PURE__*/ _react['default'].createElement(_Form['default'], {
+                onCancel: onCommentStop,
+                onSubmit: text.length > 0 ? onCommentEdit : onCommentStop,
+                value: text,
+              })
+            : /*#__PURE__*/ _react['default'].createElement(
+                _Typography['default'],
+                {
+                  color: 'textSecondary',
+                  display: 'block',
+                  style: {
+                    fontSize: '13px',
+                  },
+                  variant: 'body2',
+                },
+                text
+              )
+        ),
+        isProcessing &&
+          /*#__PURE__*/ _react['default'].createElement(
+            'div',
+            {
+              className: classes.mask,
+            },
+            /*#__PURE__*/ _react['default'].createElement(_CircularProgress['default'], {
+              size: 22,
+            })
+          ),
+        /*#__PURE__*/ _react['default'].createElement(
+          _ListItemSecondaryAction['default'],
           {
-            className: classes.mask,
+            className: classes.secondaryAction,
           },
-          _react['default'].createElement(_core.CircularProgress, {
-            size: 22,
-          })
+          displayActions()
         )
-    )
-  );
-}
+      )
+    );
+  }
+
+  Comment.propTypes = {
+    isActionable: _propTypes['default'].bool,
+    onCommentCreate: _propTypes['default'].func.isRequired,
+    onCommentDelete: _propTypes['default'].func.isRequired,
+    onCommentEdit: _propTypes['default'].func.isRequired,
+  };
+  Comment.defaultProps = {
+    isActionable: false,
+  };
+});
