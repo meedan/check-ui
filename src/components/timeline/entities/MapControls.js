@@ -65,17 +65,6 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
     if (place && place.geometry) {
       console.log({ place });
       mapInstance.fitBounds(place.geometry.viewport.toJSON());
-      // const { lat, lng } = place.geometry.location;
-      // this.setState({
-      //   dropPin: false,
-      //   marker: {
-      //     lat: lat(),
-      //     lng: lng(),
-      //     viewport: place.geometry.viewport.toJSON(),
-      //     type: 'marker',
-      //   },
-      //   saved: false,
-      // });
     }
   };
 
@@ -195,27 +184,13 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
         })
       );
     } else {
-      const {
-        lat,
-        lng,
-        viewport,
-        // zoom
-      } = shape.type === 'marker' ? shape : shape.polygon[0];
+      const { lat, lng } = shape.type === 'marker' ? shape : shape.polygon[0];
       setCenter({ lat, lng });
-      // setZoom(zoom);
-      // this.map.panToBounds(viewport);
     }
   }, [mapInstance]);
 
   // console.group('MapControls.js');
   // console.log('center', center);
-  // console.log('loadedMap:', loadedMap);
-  // console.log('loadedShape:', loadedShape);
-  // console.log('entityShape:', entityShape);
-  // console.log('mode:', mode);
-  // console.log('shape:', shape);
-  // console.log('viewport:', viewport);
-  // console.log('zoom:', zoom);
   // console.groupEnd();
 
   return (

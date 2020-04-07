@@ -150,13 +150,9 @@ export default function Controls({
   };
 
   // map/place methods
-
-  // TODO: bring in map bits
   const onStartEntityReposition = () => {
-    console.log('onStartEntityReposition');
     morePopupState.close();
     mapPopupState.open();
-    // setMode('reposition');
   };
 
   const readControls = (

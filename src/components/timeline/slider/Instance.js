@@ -42,13 +42,7 @@ const useStyles = () =>
     },
   }));
 
-export default function Instance({
-  duration,
-  instances,
-  isLocal,
-  isLocked,
-  ...props
-}) {
+export default function Instance({ duration, instances, isLocal, isLocked, ...props }) {
   const classes = useStyles()();
 
   const { left, width } = props.sliderRect;
@@ -116,25 +110,16 @@ export default function Instance({
     if (draggingHandle === 'start') {
       // 1 check if start doesnt go over (end - MIN_LENGTH)
       // 2 check if start doesnt go over RANGE_MIN
-      setStart(prevState =>
-        v < end - MIN_LENGTH && v >= RANGE_MIN ? v : prevState
-      );
+      setStart(prevState => (v < end - MIN_LENGTH && v >= RANGE_MIN ? v : prevState));
     } else if (draggingHandle === 'end') {
       // 1 check if end doesnt go over (start + MIN_LENGTH)
       // 2 check if end doesnt go over RANGE_MAX
-      setEnd(prevState =>
-        v > start + MIN_LENGTH && v <= RANGE_MAX ? v : prevState
-      );
+      setEnd(prevState => (v > start + MIN_LENGTH && v <= RANGE_MAX ? v : prevState));
     }
     // props.onHandleMove(draggingHandle === 'start' ? start : end);
     props.onInstanceUpdate({ start_seconds: start, end_seconds: end });
   };
   const onHandleRelease = e => {
-    // props.onInstanceUpdate({
-    //   end_seconds: end,
-    //   start_seconds: start,
-    // });
-
     if (!draggingHandle) return null;
     props.onHandleRelease(draggingHandle === 'start' ? start : end);
     setDraggingHandle(null);
@@ -146,7 +131,7 @@ export default function Instance({
     // setHoveringInstance(prevState => (prevState ? prevState : null));
   };
   const onHandleAdjust = (edge, dir) => {
-    // TODO: it all works perfectly fine, but clean this up one day
+    // it all works perfectly fine, but clean this up one day:
     const val = prevState => {
       if (dir === 'fwd') {
         return prevState + UNIT < RANGE_MAX ? prevState + UNIT : RANGE_MAX;
@@ -155,13 +140,9 @@ export default function Instance({
       }
     };
     if (dir === 'fwd') {
-      edge === 'end'
-        ? setEnd(prevState => val(prevState))
-        : setStart(prevState => val(prevState));
+      edge === 'end' ? setEnd(prevState => val(prevState)) : setStart(prevState => val(prevState));
     } else if (dir === 'bwd') {
-      edge === 'end'
-        ? setEnd(prevState => val(prevState))
-        : setStart(prevState => val(prevState));
+      edge === 'end' ? setEnd(prevState => val(prevState)) : setStart(prevState => val(prevState));
     }
 
     props.onInstanceUpdate({ start_seconds: start, end_seconds: end });
@@ -215,10 +196,7 @@ export default function Instance({
         onMouseEnter={!isLocked && !isLocal ? onInstanceEnter : null}
         onMouseLeave={!isLocked && !isLocal ? onInstanceLeave : null}>
         {!isLocked && !isLocal ? (
-          <div
-            {...bindHover(instancePopupState)}
-            style={{ width: `100%`, height: `28px` }}
-          />
+          <div {...bindHover(instancePopupState)} style={{ width: `100%`, height: `28px` }} />
         ) : null}
       </div>
       {!draggingHandle ? (
@@ -247,19 +225,12 @@ export default function Instance({
                   onMouseLeave={onHandleLeave}
                   style={{
                     left: edge === 'start' ? `${x1}px` : `${x2}px`,
-                    opacity:
-                      isActive || handlePopupState[edge].isOpen ? '1' : '0',
+                    opacity: isActive || handlePopupState[edge].isOpen ? '1' : '0',
                     transform: edge === 'end' ? 'translateX(-100%)' : 'none',
                     width: draggingHandle ? '1px' : '3px',
                   }}>
-                  <Tooltip
-                    open={isDragged}
-                    placement="top"
-                    title={formatSeconds(value)}>
-                    <div
-                      className={classes.handleThumb}
-                      {...bindHover(handlePopupState[edge])}
-                    />
+                  <Tooltip open={isDragged} placement="top" title={formatSeconds(value)}>
+                    <div className={classes.handleThumb} {...bindHover(handlePopupState[edge])} />
                   </Tooltip>
                 </div>
                 {!draggingHandle ? (
