@@ -1,0 +1,190 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Components/Map Map 1`] = `
+Array [
+  <div />,
+  <div>
+    Loading...
+  </div>,
+]
+`;
+
+exports[`Storyshots Components/Player Player 1`] = `
+<div
+  style={
+    Object {
+      "height": 315,
+      "width": 560,
+    }
+  }
+>
+  <div
+    style={
+      Object {
+        "height": "100%",
+        "width": "100%",
+      }
+    }
+  >
+    <div
+      style={
+        Object {
+          "display": undefined,
+          "height": "100%",
+          "width": "100%",
+        }
+      }
+    >
+      <div />
+    </div>
+  </div>
+  Duration: 
+  0
+   
+  <br />
+  Progress: 
+  0
+   
+  <br />
+  <input
+    disabled={true}
+    max={0}
+    min="0"
+    style={
+      Object {
+        "width": "100%",
+      }
+    }
+    type="range"
+    value={0}
+  />
+  Time: 
+  0
+   
+  <br />
+  seekTo: 
+   
+  <br />
+  <input
+    max={0}
+    min="0"
+    onChange={[Function]}
+    onMouseOut={[Function]}
+    onMouseUp={[Function]}
+    step="0.1"
+    style={
+      Object {
+        "width": "100%",
+      }
+    }
+    type="range"
+    value={0}
+  />
+  scrubTo: 
+   
+  <br />
+  <input
+    max={0}
+    min="0"
+    onChange={[Function]}
+    onMouseOut={[Function]}
+    onMouseUp={[Function]}
+    step="0.1"
+    style={
+      Object {
+        "width": "100%",
+      }
+    }
+    type="range"
+    value={0}
+  />
+  <br />
+  <button
+    onClick={[Function]}
+  >
+    Play
+  </button>
+</div>
+`;
+
+exports[`Storyshots Components/Timeline Controlled 1`] = `
+Array [
+  <div />,
+  <div>
+    Loading...
+  </div>,
+]
+`;
+
+exports[`Storyshots Components/Timeline Plain 1`] = `
+Array [
+  <div />,
+  <div>
+    Loading...
+  </div>,
+]
+`;
+
+exports[`Storyshots Components/Timeline Rich 1`] = `
+Array [
+  <div />,
+  <div>
+    Loading...
+  </div>,
+]
+`;
+
+exports[`Storyshots Elements/Icons Icons 1`] = `
+Array [
+  <svg
+    aria-hidden="true"
+    className="MuiSvgIcon-root"
+    focusable="false"
+    viewBox="0 0 24 24"
+  >
+    <path
+      d="M4.026 12c0-1.364.24-2.599.723-3.706a8.515 8.515 0 0 1 1.975-2.84 8.729 8.729 0 0 1 2.951-1.816A10.23 10.23 0 0 1 13.301 3c1.317 0 2.562.213 3.734.638 1.172.425 2.152.998 2.94 1.72l-3.518 4.236a3.103 3.103 0 0 0-1.205-.951 3.894 3.894 0 0 0-1.614-.325c-.482 0-.931.084-1.349.253a3.175 3.175 0 0 0-1.096.734c-.313.32-.558.71-.735 1.167A4.21 4.21 0 0 0 10.193 12c0 .562.093 1.063.277 1.504.185.441.434.822.747 1.143.313.32.679.566 1.096.734.418.168.86.253 1.325.253.659 0 1.225-.137 1.699-.41.473-.272.847-.593 1.12-.962l3.517 4.211c-.77.77-1.718 1.384-2.843 1.841-1.124.457-2.4.686-3.83.686a10.06 10.06 0 0 1-3.626-.65 8.786 8.786 0 0 1-2.95-1.84 8.68 8.68 0 0 1-1.976-2.84c-.482-1.1-.723-2.322-.723-3.67z"
+    />
+  </svg>,
+  <svg
+    aria-hidden="true"
+    className="MuiSvgIcon-root"
+    focusable="false"
+    viewBox="0 0 24 24"
+  >
+    <path
+      d="M14.8636 5H7.2273c-.7032 0-1.2728.5695-1.2728 1.2727v8.9091h1.2728v-8.909h7.6363V5zm1.9091 2.5455h-7c-.7032 0-1.2727.5695-1.2727 1.2727v8.909C8.5 18.4306 9.0695 19 9.7727 19h7c.7032 0 1.2728-.5695 1.2728-1.2727V8.8182c0-.7032-.5696-1.2727-1.2728-1.2727zm0 10.1818h-7V8.8182h7v8.909z"
+    />
+  </svg>,
+  <svg
+    aria-hidden="true"
+    className="MuiSvgIcon-root"
+    focusable="false"
+    viewBox="0 0 24 24"
+  >
+    <path
+      d="M17.587 4.8h2.4v.787L14.4 11.212 12.787 9.6l4.8-4.8zM12 12.412a.416.416 0 0 0 .412-.412.416.416 0 0 0-.412-.412.416.416 0 0 0-.413.412c0 .225.188.412.413.412zm-4.8 6c.862 0 1.612-.712 1.612-1.612 0-.9-.75-1.612-1.612-1.612-.863 0-1.613.712-1.613 1.612 0 .9.75 1.613 1.613 1.613zm0-9.6c.862 0 1.612-.712 1.612-1.612 0-.9-.75-1.612-1.612-1.612-.863 0-1.613.712-1.613 1.612 0 .9.75 1.613 1.613 1.613zm2.925-.3l9.862 9.9v.788h-2.4L12 13.613l-1.875 1.875c.187.412.262.825.262 1.312A3.185 3.185 0 0 1 7.2 19.988 3.185 3.185 0 0 1 4.012 16.8 3.185 3.185 0 0 1 7.2 13.613c.487 0 .9.075 1.312.262L10.387 12l-1.875-1.875c-.412.188-.825.263-1.312.263A3.185 3.185 0 0 1 4.012 7.2 3.185 3.185 0 0 1 7.2 4.013 3.185 3.185 0 0 1 10.387 7.2c0 .488-.075.9-.262 1.313z"
+    />
+  </svg>,
+  <svg
+    aria-hidden="true"
+    className="MuiSvgIcon-root"
+    focusable="false"
+    viewBox="0 0 24 24"
+  >
+    <path
+      d="M12.478 11.043h2.87v-2.87L19.174 12l-3.826 3.826v-2.87H8.652v2.87L4.826 12l3.826-3.826v2.87h3.826zM1 19.653h1.913V4.347H1v15.304zm20.087 0H23V4.347h-1.913v15.304z"
+    />
+  </svg>,
+  <svg
+    aria-hidden="true"
+    className="MuiSvgIcon-root"
+    focusable="false"
+    viewBox="0 0 24 24"
+  >
+    <path
+      d="M9.5818 13.3413h-.0391v5.5216H5V5h4.523v5.1105h.0392L13.263 5h5.4826l-5.2084 6.344L19 18.863h-5.7175z"
+    />
+  </svg>,
+]
+`;

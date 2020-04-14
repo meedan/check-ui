@@ -79,6 +79,7 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
   // init map
 
   const onMapLoad = map => {
+    if (!window.google.maps.places) return;
     autocompleteInstance = new window.google.maps.places.Autocomplete(inputRef.current, {});
     autocompleteInstance.addListener('place_changed', onPlaceSelect);
     mapInstance = map;
