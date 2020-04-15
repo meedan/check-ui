@@ -60,9 +60,9 @@
     "build": "yarn run clean && NODE_ENV=production `yarn bin`/babel --plugins @babel/plugin-transform-modules-umd ./src --out-dir ./dist",
     "build-storybook": "build-storybook",
     "clean": "rm -rf ./dist",
-    "deploy": "storybook-to-ghpages",
+    "deploy": "yarn run test && storybook-to-ghpages",
     "start": "start-storybook -p 8080 --ci",
-    "test": "jest",
+    "test": "jest --json --outputFile=.jest-test-results.json || true",
     "test:watch": "jest --watch --json --outputFile=.jest-test-results.json || true"
   },
   "husky": {
