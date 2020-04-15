@@ -28,6 +28,7 @@
     "@storybook/addon-actions": "5.3.18",
     "@storybook/addon-docs": "5.3.18",
     "@storybook/addon-essentials": "5.3.18",
+    "@storybook/addon-jest": "5.3.18",
     "@storybook/addon-knobs": "5.3.18",
     "@storybook/addon-links": "5.3.18",
     "@storybook/addon-storyshots": "5.3.18",
@@ -56,13 +57,13 @@
     "stylelint-prettier": "1.1.2"
   },
   "scripts": {
-    "build": "yarn run clean-dist && NODE_ENV=production `yarn bin`/babel --plugins @babel/plugin-transform-modules-umd ./src --out-dir ./dist",
+    "build": "yarn run clean && NODE_ENV=production `yarn bin`/babel --plugins @babel/plugin-transform-modules-umd ./src --out-dir ./dist",
     "build-storybook": "build-storybook",
-    "clean-dist": "rm -rf ./dist",
-    "deploy-storybook": "storybook-to-ghpages",
+    "clean": "rm -rf ./dist",
+    "deploy": "storybook-to-ghpages",
     "start": "start-storybook -p 8080 --ci",
     "test": "jest",
-    "storybook": "start-storybook -p 8080"
+    "test:watch": "jest --watch --json --outputFile=.jest-test-results.json || true"
   },
   "husky": {
     "hooks": {
