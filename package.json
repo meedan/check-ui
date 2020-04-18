@@ -5,10 +5,10 @@
   "repository": "git@github.com:meedan/check-ui.git",
   "license": "MIT",
   "dependencies": {
-    "@material-ui/core": "4.9.10",
+    "@material-ui/core": "4.9.11",
     "@material-ui/icons": "4.9.1",
-    "@material-ui/lab": "4.0.0-alpha.49",
-    "@react-google-maps/api": "1.8.6",
+    "@material-ui/lab": "4.0.0-alpha.50",
+    "@react-google-maps/api": "1.8.7",
     "fast-deep-equal": "3.1.1",
     "lodash": "4.17.15",
     "material-ui-popup-state": "1.5.4",
@@ -48,12 +48,12 @@
     "husky": "4.2.5",
     "identity-obj-proxy": "3.0.0",
     "jest": "25.3.0",
-    "lint-staged": "10.1.3",
+    "lint-staged": "10.1.5",
     "prettier": "2.0.4",
     "prettier-eslint": "9.0.1",
     "prettier-stylelint": "0.4.2",
     "react-test-renderer": "16.13.1",
-    "storybook-dark-mode": "0.4.0",
+    "storybook-dark-mode": "0.4.1",
     "stylelint-prettier": "1.1.2"
   },
   "scripts": {
