@@ -84,7 +84,7 @@ export default function Playhead(props) {
     setDragging(false);
   };
   const getRootRect = () => {
-    setRootRect(playheadRoot.current.getBoundingClientRect());
+    if (playheadRoot && playheadRoot.current) setRootRect(playheadRoot.current.getBoundingClientRect());
   };
 
   useEffect(() => {

@@ -29,8 +29,7 @@ class Player extends Component {
 
     if (scrubTo !== prevProps.scrubTo && ready) {
       if (scrubTo !== null) {
-        if (prevProps.scrubTo === null)
-          this.setState({ position: this.player.current.getCurrentTime() });
+        if (prevProps.scrubTo === null) this.setState({ position: this.player.current.getCurrentTime() });
         this.internalPlayer.seekTo(scrubTo, seekAhead);
         // (buffering || !playing) &&
         onTimeUpdate(scrubTo);
@@ -50,24 +49,14 @@ class Player extends Component {
     const { onTimeUpdate, onProgress, roundTime, seekTo, scrubTo } = this.props;
     const { buffering } = this.state;
 
-    onProgress(
-      roundTime ? Math.round(playedSeconds * 1e3) / 1e3 : playedSeconds
-    );
+    onProgress(roundTime ? Math.round(playedSeconds * 1e3) / 1e3 : playedSeconds);
 
     const time = (seekTo || scrubTo) && buffering ? seekTo : playedSeconds;
     onTimeUpdate(roundTime ? Math.round(time * 1e3) / 1e3 : time);
   };
 
   render() {
-    const {
-      config,
-      muted,
-      playing,
-      onDuration,
-      onPlay,
-      onPause,
-      scrubTo,
-    } = this.props;
+    const { config, muted, playing, onDuration, onPlay, onPause, scrubTo } = this.props;
 
     return (
       <ReactPlayer
@@ -95,7 +84,7 @@ class Player extends Component {
 
 Player.propTypes = {
   config: PropTypes.object,
-  url: PropTypes.String,
+  url: PropTypes.string,
   muted: PropTypes.bool,
   playing: PropTypes.bool,
   roundTime: PropTypes.bool,

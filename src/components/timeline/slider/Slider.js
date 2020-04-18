@@ -23,7 +23,7 @@ export default function Slider({ duration, instances = [], ...props }) {
 
   //
   const getRootRect = () => {
-    setRootRect(sliderRoot.current.getBoundingClientRect());
+    if (sliderRoot && sliderRoot.current) setRootRect(sliderRoot.current.getBoundingClientRect());
   };
 
   // get rootRect on component mount
@@ -44,32 +44,28 @@ export default function Slider({ duration, instances = [], ...props }) {
 
   const renderInstances = () => {
     if (!rootRect) return null;
-    return instances.map(
-      ({ end_seconds, id, isLocal, start_seconds, ...instance }) => {
-        return (
-          <Instance
-            duration={duration}
-            end={end_seconds}
-            instance={instance}
-            instances={instances}
-            isLocal={isLocal}
-            isLocked={draggedInstance && draggedInstance !== id}
-            key={id}
-            lockSiblings={() => setDraggedInstance(id)}
-            onHandleMove={props.onDrag}
-            onHandlePress={props.onDragStart}
-            onHandleRelease={props.onDragEnd}
-            onInstanceClip={
-              props.onInstanceClip ? () => props.onInstanceClip(id) : null
-            }
-            onInstanceDelete={() => props.onInstanceDelete(id)}
-            onInstanceUpdate={payload => props.onInstanceUpdate(id, payload)}
-            sliderRect={rootRect}
-            start={start_seconds}
-          />
-        );
-      }
-    );
+    return instances.map(({ end_seconds, id, isLocal, start_seconds, ...instance }) => {
+      return (
+        <Instance
+          duration={duration}
+          end={end_seconds}
+          instance={instance}
+          instances={instances}
+          isLocal={isLocal}
+          isLocked={draggedInstance && draggedInstance !== id}
+          key={id}
+          lockSiblings={() => setDraggedInstance(id)}
+          onHandleMove={props.onDrag}
+          onHandlePress={props.onDragStart}
+          onHandleRelease={props.onDragEnd}
+          onInstanceClip={props.onInstanceClip ? () => props.onInstanceClip(id) : null}
+          onInstanceDelete={() => props.onInstanceDelete(id)}
+          onInstanceUpdate={payload => props.onInstanceUpdate(id, payload)}
+          sliderRect={rootRect}
+          start={start_seconds}
+        />
+      );
+    });
   };
 
   return (

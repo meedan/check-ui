@@ -170,3 +170,7 @@ temp/
 tmtags
 
 # End of https://www.gitignore.io/api/node,code,linux,macos,dotenv,direnv,textmate
+
+# Jest test results
+.jest-test-results.json
+__snapshots__
