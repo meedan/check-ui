@@ -10,9 +10,10 @@ module.exports = {
     '@storybook/addon-actions/register',
     '@storybook/addon-docs',
     '@storybook/addon-essentials',
+    '@storybook/addon-jest/register',
+    '@storybook/addon-knobs/register',
     '@storybook/addon-links/register',
     '@storybook/addon-viewport/register',
     'storybook-dark-mode/register',
-    '@storybook/addon-knobs/register',
   ],
 };

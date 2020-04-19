@@ -174,3 +174,7 @@ tmtags
 public/
 dist/
 lib/
+
+# Jest test results
+.jest-test-results.json
+__snapshots__

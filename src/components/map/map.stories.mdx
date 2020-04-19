@@ -1,3 +1,4 @@
+import { LoadScript } from '@react-google-maps/api';
 import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
 import { action } from '@storybook/addon-actions';
 import { State, Store } from "@sambego/storybook-state";
@@ -88,7 +89,7 @@ Based on [React Google Maps Api](https://react-google-maps-api-docs.netlify.com/
   <Story name="Map">
     <State store={store}>
       {state =>
-        <>
+        <LoadScript googleMapsApiKey={process.env.STORYBOOK_GOOGLEMAPS_API_KEY}>
           <div style={{
             width: 560,
             height: 315
@@ -98,7 +99,7 @@ Based on [React Google Maps Api](https://react-google-maps-api-docs.netlify.com/
           <input 
             onChange={e => store.set({index: parseInt(e.nativeEvent.target.value)})} 
             type="number" min="-1" max={state.places.length - 1} value={state.index} />
-        </>
+        </LoadScript>
       }
     </State>
   </Story>

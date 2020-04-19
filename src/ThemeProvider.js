@@ -5,8 +5,8 @@ import grey from '@material-ui/core/colors/grey';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 
-import '../assets/fonts/noto/stylesheet.css';
-import '../assets/fonts/roboto/stylesheet.css';
+import './assets/fonts/noto/stylesheet.css';
+import './assets/fonts/roboto/stylesheet.css';
 
 const mui = createMuiTheme();
 
@@ -132,12 +132,7 @@ const CustomThemeProvider = ({ children }) => {
 };
 
 CustomThemeProvider.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.array,
-    PropTypes.node,
-    PropTypes.object,
-    PropTypes.string,
-  ]).isRequired,
+  children: PropTypes.oneOfType([PropTypes.array, PropTypes.node, PropTypes.object, PropTypes.string]).isRequired,
 };
 
 export default CustomThemeProvider;

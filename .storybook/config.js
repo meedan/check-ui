@@ -4,10 +4,13 @@ import { DocsPage, DocsContainer } from '@storybook/addon-docs/blocks';
 import { MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
 import { addDecorator, addParameters } from '@storybook/react';
 import { configureActions } from '@storybook/addon-actions';
+import { withTests } from '@storybook/addon-jest';
+
+import results from '../.jest-test-results.json';
 
 // import './storybook.css';
 
-import ThemeProvider from '../src/utils/ThemeProvider';
+import ThemeProvider from '../src/ThemeProvider';
 
 addParameters({
   options: {
@@ -33,3 +36,5 @@ addDecorator(story => (
     {story()}
   </ThemeProvider>
 ));
+
+addDecorator(withTests({ results }));

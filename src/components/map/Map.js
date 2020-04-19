@@ -61,8 +61,7 @@ class Map extends Component {
     let center = places
       .reduce(
         (acc, d) => {
-          const coords =
-            d.type === 'marker' ? [{ lat: d.lat, lng: d.lng }] : d.polygon;
+          const coords = d.type === 'marker' ? [{ lat: d.lat, lng: d.lng }] : d.polygon;
           return [...coords, ...acc];
         },
         [{ lat: 0, lng: 0 }]
@@ -71,8 +70,7 @@ class Map extends Component {
       .pop();
 
     if (this.state.center) center = this.state.center;
-    if (marker && marker.lat && marker.lng)
-      center = { lat: marker.lat, lng: marker.lng };
+    if (marker && marker.lat && marker.lng) center = { lat: marker.lat, lng: marker.lng };
 
     if (this.map && this.map.center) center = this.map.center;
 
