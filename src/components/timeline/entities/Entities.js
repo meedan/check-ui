@@ -23,6 +23,7 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
     places: 'Places',
     tags: 'Tags',
   };
+
   const types = {
     clips: 'clip',
     places: 'place',
@@ -41,24 +42,27 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
 
     setNewEntity(newEntity);
   };
+
   const onEntityCreate = (payload, callback) => {
     const newEntity = {
       id: Date.now(),
+      fragment: `t=${currentTime},${currentTime + 30}&type=${type}`,
       [`project_${types[type]}`]: {
         name: payload,
       },
     };
+
     props.onEntityCreate(types[type], newEntity, () => {
       setNewEntity(null);
       callback();
     });
   };
+
   const onEntityStop = () => {
     setNewEntity(null);
   };
 
   // entity methods
-
   const onEntityUpdate = (entityId, payload, callback) => {
     props.onEntityUpdate(types[type], entityId, payload, callback);
   };
@@ -67,22 +71,27 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
   };
 
   // instance methods
-
   const onInstanceCreate = (entityId, payload) => {
+    payload.fragment = `t=${currentTime},${currentTime + 30}&type=${type}`;
+
     setNewInstance({
       ...payload,
       id: Date.now() + Math.random(),
       isLocal: true,
     });
+
     props.onInstanceCreate(types[type], entityId, payload, () => setNewInstance(null));
   };
+
   const onInstanceClip = (entityId, instanceId) => {
     if (!props.onInstanceClip) return null;
     props.onInstanceClip(types[type], entityId, instanceId);
   };
+
   const onInstanceDelete = (entityId, instanceId) => {
     props.onInstanceDelete(types[type], entityId, instanceId);
   };
+
   const onInstanceUpdate = (entityId, instanceId, payload) => {
     props.onInstanceUpdate(types[type], entityId, instanceId, payload);
   };
