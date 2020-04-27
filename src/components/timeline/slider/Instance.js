@@ -58,6 +58,7 @@ export default function Instance({ duration, instances, isLocal, isLocked, ...pr
     variant: 'popover',
     popupId: 'instancePopover',
   });
+
   const handlePopupState = {
     start: usePopupState({
       variant: 'popover',
@@ -74,10 +75,12 @@ export default function Instance({ duration, instances, isLocal, isLocked, ...pr
     _.filter(instances, i => i.end_seconds <= start),
     i => i.end_seconds
   );
+
   const nextInstance = _.minBy(
     _.filter(instances, i => i.start_seconds >= end),
     i => i.start_seconds
   );
+
   const MIN_LENGTH = (8 * duration) / width;
   const RANGE_MAX = nextInstance ? nextInstance.start_seconds : duration;
   const RANGE_MIN = prevInstance ? prevInstance.end_seconds : 0;
@@ -86,6 +89,7 @@ export default function Instance({ duration, instances, isLocal, isLocked, ...pr
   const onInstanceEnter = () => {
     setHoveringInstance(true);
   };
+
   const onInstanceLeave = () => {
     setHoveringHandle(null);
     setHoveringInstance(false);
@@ -94,6 +98,7 @@ export default function Instance({ duration, instances, isLocal, isLocked, ...pr
   const onHandleEnter = edge => {
     setHoveringHandle(edge);
   };
+
   const onHandlePress = (e, edge) => {
     if (!e || !edge) return null;
     // e.persist();
@@ -101,6 +106,7 @@ export default function Instance({ duration, instances, isLocal, isLocked, ...pr
     props.lockSiblings();
     props.onHandlePress(edge === 'start' ? start : end);
   };
+
   const onHandleMove = e => {
     if (!draggingHandle) return null;
     if (e.pageX <= left - 100 || e.pageX >= left + width + 100) return null;
@@ -117,19 +123,23 @@ export default function Instance({ duration, instances, isLocal, isLocked, ...pr
       setEnd(prevState => (v > start + MIN_LENGTH && v <= RANGE_MAX ? v : prevState));
     }
     // props.onHandleMove(draggingHandle === 'start' ? start : end);
-    props.onInstanceUpdate({ start_seconds: start, end_seconds: end });
+    // props.onInstanceUpdate({ start_seconds: start, end_seconds: end });
   };
+
   const onHandleRelease = e => {
     if (!draggingHandle) return null;
     props.onHandleRelease(draggingHandle === 'start' ? start : end);
     setDraggingHandle(null);
     props.lockSiblings(null);
+    props.onInstanceUpdate({ start_seconds: start, end_seconds: end });
   };
+
   const onHandleLeave = () => {
     if (draggingHandle) return null;
     setHoveringHandle(null);
     // setHoveringInstance(prevState => (prevState ? prevState : null));
   };
+
   const onHandleAdjust = (edge, dir) => {
     // it all works perfectly fine, but clean this up one day:
     const val = prevState => {
