@@ -3,7 +3,7 @@ import { render, screen } from 'test-utils';
 
 import Timeline from '../Timeline';
 
-test('Plain Timeline renders', () => {
+test('<Timeline /> Test:', () => {
   render(
     <Timeline
       currentTime={0}
@@ -44,8 +44,12 @@ test('Plain Timeline renders', () => {
     />
   );
 
-  expect(screen.queryByText('Clips')).toBeInTheDocument();
-  expect(screen.queryByText('Comments')).toBeInTheDocument();
-  expect(screen.queryByText('Places')).toBeInTheDocument();
-  expect(screen.queryByText('Tags')).toBeInTheDocument();
+  // check if all timeline parts are present
+  expect(screen.queryByTestId('entities-clips')).toBeInTheDocument();
+  expect(screen.queryByTestId('entities-comments')).toBeInTheDocument();
+  expect(screen.queryByTestId('entities-places')).toBeInTheDocument();
+  expect(screen.queryByTestId('entities-playhead')).toBeInTheDocument();
+  expect(screen.queryByTestId('entities-tags')).toBeInTheDocument();
+
+  // check if comments
 });

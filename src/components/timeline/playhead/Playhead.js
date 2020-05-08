@@ -114,7 +114,11 @@ export default function Playhead(props) {
   const pos = rootRect ? (currentTime * rootRect.width) / duration : 0;
 
   return (
-    <div className={`${props.className} ${classes.playheadRoot}`} onMouseDown={onHandlePress} ref={playheadRoot}>
+    <div
+      className={`${props.className} ${classes.playheadRoot}`}
+      data-testid="entities-playhead"
+      onMouseDown={onHandlePress}
+      ref={playheadRoot}>
       <Tooltip open={dragging} title={formatSeconds(currentTime)} placement="top">
         <div
           className={classes.playheadHandle}

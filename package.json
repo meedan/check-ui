@@ -63,7 +63,7 @@
     "deploy": "yarn run test && storybook-to-ghpages",
     "start": "start-storybook -p 8080 --ci",
     "test": "jest --json --outputFile=.jest-test-results.json || true",
-    "test:watch": "jest --watch --json --outputFile=.jest-test-results.json || true"
+    "test:watch": "jest --watchAll --json --outputFile=.jest-test-results.json || true"
   },
   "husky": {
     "hooks": {
