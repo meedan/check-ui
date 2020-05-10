@@ -1,4 +1,5 @@
 {
   "parser": "babel-eslint",
-  "extends": ["prettier"]
+  "extends": ["prettier", "plugin:testing-library/react"],
+  "plugins": ["testing-library"]
 }
