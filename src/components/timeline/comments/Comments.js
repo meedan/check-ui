@@ -59,9 +59,7 @@ export default function Comments(props) {
     threads,
     (object, param) => ({
       ...object,
-      [param.start_seconds]: (
-        <Marker {...props} key={param.id} thread={param} />
-      ),
+      [param.start_seconds]: <Marker {...props} key={param.id} thread={param} />,
     }),
     {}
   );
@@ -93,7 +91,7 @@ export default function Comments(props) {
       title="Comments"
       actions={
         <Tooltip title="New comment">
-          <IconButton onClick={onCommentThreadStart}>
+          <IconButton onClick={onCommentThreadStart} data-testid="new-comment-thread-button">
             <AddIcon fontSize="small" />
           </IconButton>
         </Tooltip>

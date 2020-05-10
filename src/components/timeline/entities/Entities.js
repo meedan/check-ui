@@ -100,12 +100,12 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
       actions={
         <>
           <Tooltip title="Play all">
-            <IconButton onClick={props.onPlaylistLaunch}>
+            <IconButton onClick={props.onPlaylistLaunch} data-testid={`play-${types[type]}-button`}>
               <PlayArrowIcon fontSize="small" />
             </IconButton>
           </Tooltip>
           <Tooltip title="New…">
-            <IconButton onClick={onEntityStart}>
+            <IconButton onClick={onEntityStart} data-testid={`new-${types[type]}-button`}>
               <AddIcon fontSize="small" />
             </IconButton>
           </Tooltip>

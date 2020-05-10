@@ -1,9 +1,4 @@
-import {
-  anchorRef,
-  bindPopover,
-  bindTrigger,
-  usePopupState,
-} from 'material-ui-popup-state/hooks';
+import { anchorRef, bindPopover, bindTrigger, usePopupState } from 'material-ui-popup-state/hooks';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef } from 'react';
 
@@ -35,7 +30,7 @@ export default function NewThreadPopover(props) {
 
   const thisPopupState = usePopupState({
     variant: 'popover',
-    popupId: 'newThreadPopupState',
+    popupId: 'newThreadPopover',
   });
 
   const onCommentThreadCreate = (text, formCallback) => {
@@ -85,10 +80,7 @@ export default function NewThreadPopover(props) {
         onClick={e => e.stopPropagation()}
         onEscapeKeyDown={props.onCommentThreadStop}>
         <Grid className={classes.grid}>
-          <Form
-            onCancel={onCommentThreadStop}
-            onSubmit={onCommentThreadCreate}
-          />
+          <Form onCancel={onCommentThreadStop} onSubmit={onCommentThreadCreate} />
         </Grid>
       </Popover>
     </>
