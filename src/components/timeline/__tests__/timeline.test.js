@@ -34,7 +34,7 @@ const Component = props => (
   ——————————————————————————————————————————
 */
 
-test('Timeline: renders', () => {
+test('Timeline: renders w/ Clips, Comments, Places, Tags and Playhead', () => {
   const { getByTestId } = render(<Component currentTime={1} />);
 
   // expect playhead, clips, comments, places and tags to be rendered
