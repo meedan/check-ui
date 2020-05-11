@@ -34,7 +34,7 @@ const Component = props => (
   ——————————————————————————————————————————
 */
 
-test('Timeline: render w/ clips, comments, places, tags and playhead', () => {
+test('Timeline → Render w/ clips, comments, places, tags and playhead', () => {
   const { getByTestId } = render(<Component currentTime={1} />);
 
   // expect playhead, clips, comments, places and tags to be rendered
@@ -45,7 +45,7 @@ test('Timeline: render w/ clips, comments, places, tags and playhead', () => {
   expect(getByTestId('entities-tags')).toBeInTheDocument();
 });
 
-test('Comments: display existing comments as avatars with src and alt attributes', async () => {
+test('↪ Comments → Display existing comments as avatars with src and alt attributes', async () => {
   render(<Component currentTime={1} />);
   // find all markers returned as map on the dataset
   const markers = document.querySelectorAll('.rc-slider-mark-text');
@@ -64,7 +64,7 @@ test('Comments: display existing comments as avatars with src and alt attributes
   ).toBeTruthy();
 });
 
-test('Comments: allow to open/close new comment thread', async () => {
+test('↪ Comments → Allow to open/close new comment thread', async () => {
   const { getByText, getByTestId } = render(<Component currentTime={1} />);
 
   // click on the new comment (+) button
@@ -77,23 +77,7 @@ test('Comments: allow to open/close new comment thread', async () => {
   await waitFor(() => expect(document.getElementById('newThreadPopover')).not.toBeInTheDocument());
 });
 
-test('Comments: allow to open/close existing comment thread', async () => {
-  const { getByText } = render(<Component currentTime={1} />);
-  const markers = document.querySelectorAll('.rc-slider-mark-text');
-  const marker = markers[_.random(0, markers.length - 1)];
-  const avatar = marker.querySelectorAll('[aria-haspopup="true"]')[0];
-
-  // click on one of the avatars appearing in on the comments section
-  fireEvent.click(avatar);
-  // wait for comment popover to appear
-  await waitFor(() => document.getElementById('markerEditPopover'));
-  // click on Cancel button
-  fireEvent.click(getByText('Cancel'), { container: document.getElementById('markerEditPopover') });
-  // expect comment popover to disappear
-  await waitFor(() => expect(document.getElementById('markerEditPopover')).not.toBeInTheDocument());
-});
-
-test('Comments: allow to save new comment thread', async () => {
+test('↪ Comments → Allow to save new comment thread', async () => {
   const onCommentThreadCreate = jest.fn((time, text, callback) => ({
     time: time,
     text: text,
@@ -115,7 +99,23 @@ test('Comments: allow to save new comment thread', async () => {
   expect(document.getElementById('newThreadPopover')).toBeInTheDocument();
 });
 
-test('Comments: allow to save reply to an existing comment thread', async () => {
+test('↪ Comments → Allow to open/close existing comment thread', async () => {
+  const { getByText } = render(<Component currentTime={1} />);
+  const markers = document.querySelectorAll('.rc-slider-mark-text');
+  const marker = markers[_.random(0, markers.length - 1)];
+  const avatar = marker.querySelectorAll('[aria-haspopup="true"]')[0];
+
+  // click on one of the avatars appearing in on the comments section
+  fireEvent.click(avatar);
+  // wait for comment popover to appear
+  await waitFor(() => document.getElementById('markerEditPopover'));
+  // click on Cancel button
+  fireEvent.click(getByText('Cancel'), { container: document.getElementById('markerEditPopover') });
+  // expect comment popover to disappear
+  await waitFor(() => expect(document.getElementById('markerEditPopover')).not.toBeInTheDocument());
+});
+
+test('↪ Comments → Allow to save reply to an existing comment thread', async () => {
   const onCommentCreate = jest.fn((threadId, text, callback) => ({
     text: text,
     threadId: threadId ? 1 : null, // fake thread id if present
