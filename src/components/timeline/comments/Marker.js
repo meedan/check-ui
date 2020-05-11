@@ -1,13 +1,7 @@
 import PropTypes from 'prop-types';
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
 import React from 'react';
-import {
-  anchorRef,
-  bindHover,
-  bindPopover,
-  bindTrigger,
-  usePopupState,
-} from 'material-ui-popup-state/hooks';
+import { anchorRef, bindHover, bindPopover, bindTrigger, usePopupState } from 'material-ui-popup-state/hooks';
 
 import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
@@ -36,11 +30,11 @@ export default function Marker(props) {
 
   const readPopupState = usePopupState({
     variant: 'popover',
-    popupId: 'readMarkerPopup',
+    popupId: 'markerReadPopover',
   });
   const editPopupState = usePopupState({
     variant: 'popover',
-    popupId: 'editMarkerPopup',
+    popupId: 'markerEditPopover',
   });
 
   const popoverProps = {
@@ -70,11 +64,7 @@ export default function Marker(props) {
         ref={anchorRef(editPopupState)}
         src={user.profile_img_url}
       />
-      <HoverPopover
-        {...bindPopover(readPopupState)}
-        {...popoverProps}
-        disableRestoreFocus
-        onClick={onToggleActionable}>
+      <HoverPopover {...bindPopover(readPopupState)} {...popoverProps} disableRestoreFocus onClick={onToggleActionable}>
         <Card className={classes.hoverCard}>
           <Thread
             {...props}
