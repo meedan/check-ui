@@ -64,6 +64,11 @@ test('↪ Comments → Display existing comments as avatars with src and alt att
   ).toBeTruthy();
 });
 
+test('↪ Comments → Display media time in comment popovers', async () => {
+  const condition = false;
+  expect(condition).toBeTrue(true);
+}).todo();
+
 test('↪ Comments → Allow to open/close new comment thread', async () => {
   const { getByText, getByTestId } = render(<Component currentTime={1} />);
 
@@ -141,3 +146,9 @@ test('↪ Comments → Allow to save reply to an existing comment thread', async
   // expect comment thread popover to remain visible
   expect(document.getElementById('markerEditPopover')).toBeInTheDocument();
 });
+
+test('↪ Comments → Allow to delete comment thread', async () => {}).todo();
+
+test('↪ Comments → Allow to delete single comment', async () => {}).todo();
+
+test('↪ Comments → Allow to edit comment', async () => {}).todo();
