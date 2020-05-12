@@ -166,11 +166,26 @@ test('↪ Comments → Allow to save reply to an existing comment thread', async
   fireEvent.click(getByText('Save'), { container: document.getElementById('markerEditPopover') });
   // expect Save button to return the same value entered in the input field
   expect(onCommentCreate).toHaveReturnedWith({ text: 'A new comment', threadId: 1 });
-  // expect comment thread popover to remain visible
-  expect(document.getElementById('markerEditPopover')).toBeInTheDocument();
 });
 
-test('↪ Comments → Allow to delete comment thread', async () => {}).todo();
+test('↪ Comments → Allow to delete comment thread', async () => {
+  const onCommentThreadDelete = jest.fn((threadId, callback) => ({
+    threadId: threadId ? 1 : null,
+  }));
+  const { getByText } = render(<Component currentTime={1} onCommentThreadDelete={onCommentThreadDelete} />);
+  const markers = document.querySelectorAll('.rc-slider-mark-text');
+  const marker = markers[_.random(0, markers.length - 1)];
+  const avatar = marker.querySelectorAll('[aria-haspopup="true"]')[0];
+
+  // click on one of the avatars appearing in on the comments section
+  fireEvent.click(avatar);
+  // wait for comment popover to appear
+  await waitFor(() => document.getElementById('markerEditPopover'));
+  // click on Delete button
+  fireEvent.click(document.getElementById('markerEditPopover').querySelectorAll('[aria-label="Delete thread"]')[0]);
+  // expect Delete button to return deleted threadId
+  expect(onCommentThreadDelete).toHaveReturnedWith({ threadId: 1 });
+});
 
 test('↪ Comments → Allow to delete single comment', async () => {}).todo();
 
