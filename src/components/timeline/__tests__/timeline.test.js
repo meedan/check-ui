@@ -45,7 +45,7 @@ test('Timeline → Render w/ clips, comments, places, tags and playhead', () => 
   expect(getByTestId('entities-tags')).toBeInTheDocument();
 });
 
-test('↪ Comments → Display existing comments as avatars with src and alt attributes', async () => {
+test('↪ Comments → Tease existing threads w/ authors’ avatars', async () => {
   render(<Component currentTime={1} />);
   // find all markers returned as map on the dataset
   const markers = document.querySelectorAll('.rc-slider-mark-text');
@@ -64,10 +64,33 @@ test('↪ Comments → Display existing comments as avatars with src and alt att
   ).toBeTruthy();
 });
 
-test('↪ Comments → Display media time in comment popovers', async () => {
-  const condition = false;
-  expect(condition).toBeTrue(true);
-}).todo();
+test('↪ Comments → Display thread time position in comment hover popover', async () => {
+  const { getByText } = render(<Component currentTime={1} />);
+  const markers = document.querySelectorAll('.rc-slider-mark-text');
+  const marker = markers[_.random(0, markers.length - 1)];
+  const avatar = marker.querySelectorAll('[aria-haspopup="true"]')[0];
+
+  // click on one of the avatars appearing in on the comments section
+  fireEvent.mouseEnter(avatar);
+  // wait for comment popover to appear
+  await waitFor(() => document.getElementById('markerReadPopover'));
+  // expect a HH:MM:SS time to appear
+  expect(getByText(/\d\d:\d\d:\d\d/g)).toBeInTheDocument();
+});
+
+test('↪ Comments → Display thread time position in comment onClick popover', async () => {
+  const { getByText } = render(<Component currentTime={1} />);
+  const markers = document.querySelectorAll('.rc-slider-mark-text');
+  const marker = markers[_.random(0, markers.length - 1)];
+  const avatar = marker.querySelectorAll('[aria-haspopup="true"]')[0];
+
+  // click on one of the avatars appearing in on the comments section
+  fireEvent.click(avatar);
+  // wait for comment popover to appear
+  await waitFor(() => document.getElementById('markerEditPopover'));
+  // expect a HH:MM:SS time to appear
+  expect(getByText(/\d\d:\d\d:\d\d/g)).toBeInTheDocument();
+});
 
 test('↪ Comments → Allow to open/close new comment thread', async () => {
   const { getByText, getByTestId } = render(<Component currentTime={1} />);
