@@ -130,7 +130,7 @@ export const onPlaylistLaunch = (type) => {
 
 <Preview withToolbar={true}>
   <Story name="Plain" parameters={{
-    jest: ['render-plain-timeline.test.js']
+    jest: ['timeline.test.js']
   }}>
     <State store={plainTimelineStore}>
       {state =>
@@ -165,7 +165,7 @@ export const onPlaylistLaunch = (type) => {
 
 <Preview withToolbar={true}>
   <Story name="Rich" parameters={{
-    jest: ['render-rich-timeline.test.js']
+    jest: ['timeline.test.js']
   }}>
     <State store={richTimelineStore}>
       {state =>
@@ -199,7 +199,9 @@ export const onPlaylistLaunch = (type) => {
 ## Controlled
 
 <Preview withToolbar={true}>
-  <Story name="Controlled">
+  <Story name="Controlled" parameters={{
+    jest: ['timeline.test.js']
+  }}>
     <State store={controlledTimelineStore}>
       {state =>
         <LoadScript googleMapsApiKey={process.env.STORYBOOK_GOOGLEMAPS_API_KEY}>

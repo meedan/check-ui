@@ -22,16 +22,12 @@ export default function TableSection(props) {
   const classes = useStyles();
   const { actions, children, firstRowContent, title } = props;
   return (
-    <div className={classes.root} onMouseLeave={props.onMouseLeave}>
+    <div className={classes.root} onMouseLeave={props.onMouseLeave} data-testid={`entities-${title.toLowerCase()}`}>
       <TableBlock
         plain={props.plain}
         section
         leftColContent={
-          <Grid
-            alignItems="center"
-            className={classes.grid}
-            container
-            justify="space-between">
+          <Grid alignItems="center" className={classes.grid} container justify="space-between">
             <Grid item>
               <Typography variant="subtitle2">{title}</Typography>
             </Grid>
@@ -46,21 +42,12 @@ export default function TableSection(props) {
 }
 
 TableSection.propTypes = {
-  actions: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]),
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]),
+  actions: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
+  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
   onMouseLeave: PropTypes.func,
   plain: PropTypes.bool,
   title: PropTypes.string.isRequired,
-  firstRowContent: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]),
+  firstRowContent: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
 };
 
 TableSection.defaultProps = {
