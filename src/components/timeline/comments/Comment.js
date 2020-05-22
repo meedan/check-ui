@@ -1,11 +1,7 @@
 import PropTypes from 'prop-types';
 import Popover from 'material-ui-popup-state/HoverPopover';
 import React, { useState } from 'react';
-import {
-  usePopupState,
-  bindHover,
-  bindPopover,
-} from 'material-ui-popup-state/hooks';
+import { usePopupState, bindHover, bindPopover } from 'material-ui-popup-state/hooks';
 
 import Avatar from '@material-ui/core/Avatar';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -54,16 +50,7 @@ const useStyles = makeStyles(theme => ({
 export default function Comment(props) {
   const classes = useStyles();
 
-  const {
-    avatar,
-    date,
-    fname,
-    isActionable,
-    isRoot,
-    lname,
-    text,
-    threadId,
-  } = props;
+  const { avatar, date, fname, isActionable, isRoot, lname, text, threadId } = props;
 
   const [isEditing, setEditingState] = useState(false);
   const [isHovering, setHoveringState] = useState(false);
@@ -73,24 +60,24 @@ export default function Comment(props) {
   const commentId = props.id;
 
   const popupState = usePopupState({
-    popupId: 'MoreMenuItem',
+    popupId: 'replyActionsPopover',
     variant: 'popover',
   });
 
   const onCommentStop = () => {
-    console.log('—— onCommentStop()');
+    // console.log('—— onCommentStop()');
     setEditingState(false);
     popupState.close();
   };
 
   const onCommentEditToggle = () => {
-    console.log('—— onCommentEditToggle()');
+    // console.log('—— onCommentEditToggle()');
     setEditingState(true);
     popupState.close();
   };
 
   const onCommentEdit = text => {
-    console.log('—— onCommentEdit()');
+    // console.log('—— onCommentEdit()');
     setProcessingState(true);
     setEditingState(false);
     props.onCommentEdit(threadId, commentId, text);
@@ -108,7 +95,7 @@ export default function Comment(props) {
         style={{
           visibility: isHovering && !isEditing ? 'visible' : 'hidden',
         }}>
-        <IconButton {...bindHover(popupState)}>
+        <IconButton {...bindHover(popupState)} data-testid="comment-toggle-actions">
           <MoreVertIcon />
         </IconButton>
         <Popover
@@ -140,7 +127,8 @@ export default function Comment(props) {
   return (
     <div
       onMouseEnter={() => setHoveringState(true)}
-      onMouseLeave={() => setHoveringState(false)}>
+      onMouseLeave={() => setHoveringState(false)}
+      data-testid="thread-reply">
       <ListItem alignItems="flex-start" className={classes.item}>
         <ListItemAvatar className={classes.itemAvatar}>
           <Tooltip
@@ -149,27 +137,15 @@ export default function Comment(props) {
                 {date}
               </Typography>
             }>
-            <Avatar
-              alt={`${fname} ${lname}`}
-              src={avatar}
-              className={classes.avatar}
-            />
+            <Avatar alt={`${fname} ${lname}`} src={avatar} className={classes.avatar} />
           </Tooltip>
         </ListItemAvatar>
         <ListItemText>
           <Typography variant="body2">{`${fname} ${lname}`}</Typography>
           {isEditing ? (
-            <Form
-              onCancel={onCommentStop}
-              onSubmit={text.length > 0 ? onCommentEdit : onCommentStop}
-              value={text}
-            />
+            <Form onCancel={onCommentStop} onSubmit={text.length > 0 ? onCommentEdit : onCommentStop} value={text} />
           ) : (
-            <Typography
-              color="textSecondary"
-              display="block"
-              style={{ fontSize: '13px' }}
-              variant="body2">
+            <Typography color="textSecondary" display="block" style={{ fontSize: '13px' }} variant="body2">
               {text}
             </Typography>
           )}
@@ -179,9 +155,7 @@ export default function Comment(props) {
             <CircularProgress size={22} />
           </div>
         )}
-        <ListItemSecondaryAction className={classes.secondaryAction}>
-          {displayActions()}
-        </ListItemSecondaryAction>
+        <ListItemSecondaryAction className={classes.secondaryAction}>{displayActions()}</ListItemSecondaryAction>
       </ListItem>
     </div>
   );

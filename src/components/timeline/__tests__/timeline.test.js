@@ -174,6 +174,7 @@ test('↪ Comments → Allow to delete comment thread', async () => {
   }));
   const { getByText } = render(<Component currentTime={1} onCommentThreadDelete={onCommentThreadDelete} />);
   const markers = document.querySelectorAll('.rc-slider-mark-text');
+  // get a random marker
   const marker = markers[_.random(0, markers.length - 1)];
   const avatar = marker.querySelectorAll('[aria-haspopup="true"]')[0];
 
@@ -187,6 +188,40 @@ test('↪ Comments → Allow to delete comment thread', async () => {
   expect(onCommentThreadDelete).toHaveReturnedWith({ threadId: 1 });
 });
 
-test('↪ Comments → Allow to delete single comment', async () => {}).todo();
+test('↪ Comments → Allow to delete single comment', async () => {
+  const onCommentDelete = jest.fn((threadId, commentId) => ({
+    threadId: threadId ? 1 : null,
+    commentId: commentId ? 2 : null,
+  }));
+  const { getAllByTestId, getByTestId, getByText } = render(
+    <Component currentTime={1} onCommentDelete={onCommentDelete} />
+  );
+  const markers = document.querySelectorAll('.rc-slider-mark-text');
+  // get the marker where there is at least one reply, otherwise it’s impossible to delete a single comment
+  const marker = markers[markers.length - 1];
+  const avatar = marker.querySelectorAll('[aria-haspopup="true"]')[0];
+
+  // click on the avatar
+  fireEvent.click(avatar);
+  // wait for comment popover to appear
+  await waitFor(() => document.getElementById('markerEditPopover'));
+  // mouse enter the first reply
+  fireEvent.mouseEnter(getAllByTestId('thread-reply', { container: document.getElementById('markerEditPopover') })[0]);
+  // mouse enter ••• icon
+  fireEvent.mouseEnter(
+    getAllByTestId('comment-toggle-actions', { container: document.getElementById('markerEditPopover') })[0]
+  );
+
+  // wait for 'more actions' popover to appear
+  await waitFor(() => document.getElementById('replyActionsPopover'));
+
+  // console.log('TODO:', document.getElementById('replyActionsPopover'));
+
+  // // click on the delete menu item
+  // fireEvent.click(getByText('Delete', { container: document.getElementById('replyActionsPopover') }));
+
+  // // expect function to return comment thread id and reply id specified above
+  // expect(onCommentDelete).toHaveReturnedWith({ threadId: 1, commentId: 2 });
+}).todo();
 
 test('↪ Comments → Allow to edit comment', async () => {}).todo();
