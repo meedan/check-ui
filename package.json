@@ -59,6 +59,7 @@
     "prettier-stylelint": "0.4.2",
     "react-test-renderer": "16.13.1",
     "storybook-dark-mode": "0.4.1",
+    "style-loader": "^1.2.1",
     "stylelint-prettier": "1.1.2",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
