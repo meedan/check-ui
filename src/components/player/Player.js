@@ -14,8 +14,6 @@ class Player extends Component {
     };
   }
 
-  // shouldComponentUpdate(nextProps) {}
-
   componentDidUpdate(prevProps) {
     const { seekTo, seekAhead, scrubTo, playing, onTimeUpdate } = this.props;
     const { ready, buffering, position } = this.state;
@@ -31,8 +29,7 @@ class Player extends Component {
       if (scrubTo !== null) {
         if (prevProps.scrubTo === null) this.setState({ position: this.player.current.getCurrentTime() });
         this.internalPlayer.seekTo(scrubTo, seekAhead);
-        // (buffering || !playing) &&
-        onTimeUpdate(scrubTo);
+        (buffering || !playing) && onTimeUpdate(scrubTo);
       } else if (prevProps.scrubTo !== null) {
         this.internalPlayer.seekTo(position, seekAhead || playing);
         (buffering || !playing) && onTimeUpdate(position);
