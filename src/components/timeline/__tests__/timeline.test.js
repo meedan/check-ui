@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { fireEvent, render, waitFor, waitForElementToBeRemoved } from 'test-utils';
 
 import Timeline from '../Timeline';
-import data from '../Timeline.data.json';
+import data from '../timeline.data.json';
 
 const Component = props => (
   <Timeline
