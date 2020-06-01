@@ -42,5 +42,6 @@ module.exports = {
         amd: 'react-dom',
       },
     },
+    /^(@material-ui(\/.*)?)$/,
   ],
 };
