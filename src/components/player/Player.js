@@ -40,6 +40,7 @@ class Player extends Component {
   handleOnReady = () => {
     this.internalPlayer = this.player.current.getInternalPlayer();
     this.setState({ ready: true });
+    this.props.onReady();
   };
 
   handleOnProgress = ({ playedSeconds }) => {
@@ -81,14 +82,15 @@ class Player extends Component {
 
 Player.propTypes = {
   config: PropTypes.object,
-  url: PropTypes.string,
   muted: PropTypes.bool,
+  onDuration: PropTypes.func,
+  onPause: PropTypes.func,
+  onPlay: PropTypes.func,
+  onReady: PropTypes.func,
   playing: PropTypes.bool,
   roundTime: PropTypes.bool,
   seekAhead: PropTypes.bool,
-  onDuration: PropTypes.func,
-  onPlay: PropTypes.func,
-  onPause: PropTypes.func,
+  url: PropTypes.string,
 };
 
 Player.defaultProps = {
