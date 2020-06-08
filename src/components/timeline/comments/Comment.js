@@ -77,10 +77,12 @@ export default function Comment(props) {
   };
 
   const onCommentEdit = text => {
-    // console.log('—— onCommentEdit()');
     setProcessingState(true);
     setEditingState(false);
-    props.onCommentEdit(threadId, commentId, text);
+    props.onCommentEdit(threadId, commentId, text, () => {
+      setProcessingState(false);
+      setEditingState(false);
+    });
   };
 
   const onCommentDelete = () => {
@@ -143,7 +145,12 @@ export default function Comment(props) {
         <ListItemText>
           <Typography variant="body2">{`${fname} ${lname}`}</Typography>
           {isEditing ? (
-            <Form onCancel={onCommentStop} onSubmit={text.length > 0 ? onCommentEdit : onCommentStop} value={text} />
+            <Form
+              onCancel={onCommentStop}
+              onSubmit={text.length > 0 ? onCommentEdit : onCommentStop}
+              value={text}
+              isEditing={isEditing}
+            />
           ) : (
             <Typography color="textSecondary" display="block" style={{ fontSize: '13px' }} variant="body2">
               {text}

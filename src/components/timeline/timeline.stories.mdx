@@ -24,7 +24,7 @@ export const plainTimelineStore = new Store({
     videoClips: [],
     videoPlaces: [],
     videoTags: [],
-    user: { 
+    user: {
       first_name: "Mark",
       id: 2376,
       last_name: "Boas",
@@ -76,7 +76,7 @@ export const onCommentDelete = (threadId, commentId) => {
   action('onCommentDelete')(threadId, commentId);
 }
 export const onCommentEdit = (threadId, commentId, payload, callback) => {
-  action('onCommentDelete')(threadId, commentId, payload, 'callback');
+  action('onCommentEdit')(threadId, commentId, payload, 'callback');
   if (callback) setTimeout(callback, 3000);
 }
 export const onCommentCreate = (threadId, payload, callback) => {
@@ -91,32 +91,32 @@ export const onCommentThreadCreate = (time, payload, callback) => {
   action('onCommentThreadCreate')(time, payload, 'callback');
   if (callback) setTimeout(callback, 3000);
 }
-export const onEntityDelete = (type, entityId, callback) => { 
+export const onEntityDelete = (type, entityId, callback) => {
   action('onEntityDelete')(type, entityId, 'callback');
   if (callback) setTimeout(callback, 3000);
 }
-export const onEntityUpdate = (type, entityId, payload, callback) => { 
+export const onEntityUpdate = (type, entityId, payload, callback) => {
   action('onEntityUpdate')(type, entityId, payload, 'callback');
   if (callback) setTimeout(callback, 3000);
 }
-export const onEntityCreate = (type, payload, callback) => { 
+export const onEntityCreate = (type, payload, callback) => {
   action('onEntityCreate')(type, payload, 'callback');
   if (callback) setTimeout(callback, 3000);
 }
-export const onInstanceCreate = (type, entityId, payload, callback) => { 
+export const onInstanceCreate = (type, entityId, payload, callback) => {
   action('onInstanceCreate')(type, entityId, payload, 'callback');
   if (callback) setTimeout(callback, 3000);
 }
-export const onInstanceClip = (type, entityId, instanceId) => { 
+export const onInstanceClip = (type, entityId, instanceId) => {
   action('onInstanceClip')(type, entityId, instanceId);
 }
-export const onInstanceDelete = (type, entityId, instanceId) => { 
+export const onInstanceDelete = (type, entityId, instanceId) => {
   action('onInstanceDelete')(type, entityId, instanceId);
 }
-export const onInstanceUpdate = (type, entityId, instanceId, payload) => { 
+export const onInstanceUpdate = (type, entityId, instanceId, payload) => {
   action('onInstanceUpdate')(type, entityId, instanceId, payload);
 }
-export const onPlaylistLaunch = (type) => { 
+export const onPlaylistLaunch = (type) => {
   action('onPlaylistLaunch')(type);
 }
 

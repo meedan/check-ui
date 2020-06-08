@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 
 export default function Form(props) {
-  const { value } = props;
+  const { isEditing, value } = props;
 
   const [comment, setComment] = useState(value);
   const [saving, setSaving] = useState(false);
@@ -53,23 +53,19 @@ export default function Form(props) {
         />
       </Grid>
       <Grid item>
-        <Grid
-          container
-          direction="row-reverse"
-          justify="space-between"
-          wrap="nowrap">
+        <Grid container direction="row-reverse" justify="space-between" wrap="nowrap">
           <Grid item>
             <Button
               color="primary"
               disabled={!comment || comment.length === 0 || saving}
               onClick={onSubmit}
               size="small">
-              {isCreating ? 'Save' : 'Reply'}
+              {isCreating || isEditing ? 'Save' : 'Reply'}
             </Button>
           </Grid>
           <Grid item>
             <Button disabled={saving} onClick={onCancel} size="small">
-              {isCreating ? 'Cancel' : 'Close'}
+              {isCreating || isEditing ? 'Cancel' : 'Close'}
             </Button>
           </Grid>
         </Grid>
@@ -81,8 +77,10 @@ export default function Form(props) {
 Form.propTypes = {
   onCancel: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  isEditing: PropTypes.bool.isRequired,
 };
 
 Form.defaultProps = {
+  isEditing: null,
   value: null,
 };
