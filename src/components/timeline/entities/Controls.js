@@ -1,6 +1,6 @@
 import Menu from 'material-ui-popup-state/HoverMenu';
 import PropTypes from 'prop-types';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import find from 'lodash/find';
 import { usePopupState, bindHover, bindMenu, bindPopover } from 'material-ui-popup-state/hooks';
 
@@ -46,7 +46,6 @@ export default function Controls({
   entityName,
   entityType,
   instances = [],
-  isLocal = false,
   sliderRect,
   suggestions = [],
   ...props
@@ -54,8 +53,8 @@ export default function Controls({
   const classes = useStyles();
   const controlsRoot = useRef();
 
-  const [mode, setMode] = useState(isLocal ? 'edit' : 'read');
-  const [newEntityName, setNewEntityName] = useState(null);
+  const [mode, setMode] = useState(entityName ? 'read' : 'editName');
+  const [name, setName] = useState(null);
 
   const morePopupState = usePopupState({
     variant: 'popover',
@@ -66,62 +65,75 @@ export default function Controls({
     popupId: 'MapControls',
   });
 
-  const displayEntityName = mode === 'processing' && newEntityName ? newEntityName : entityName;
+  const displayEntityName = mode === 'processing' && name ? name : entityName;
 
   // mode methods
 
+  const onModeReset = () => {
+    mapPopupState?.close();
+    morePopupState?.close();
+    setMode('read');
+    setName(null);
+  };
   const onMouseEnter = () => {
     if (mode === 'read') setMode('hovering');
   };
   const onMouseLeave = () => {
     if (mode === 'hovering') setMode('read');
   };
-  const onModeReset = () => {
-    morePopupState.close();
+
+  // create methods
+
+  const onCancelEntityCreate = () => props.onEntityStop();
+  const onEntityNameCreate = str => {
+    setName(str);
+    if (entityType === 'place') {
+      mapPopupState?.open();
+    } else {
+      setMode('processing');
+      props.onEntityCreate({ name: str }, onModeReset);
+    }
+  };
+  const onEntityPlaceCreate = place => {
+    setMode('processing');
+    mapPopupState.close();
+    props.onEntityCreate({ name: name, place: place }, onModeReset);
+  };
+
+  // rename methods
+
+  const onCancelEntityNameUpdate = () => {
     setMode('read');
-    setNewEntityName(null);
-    if (isLocal) props.onEntityStop();
   };
 
   // entity methods
 
-  const onEntityCreate = str => {
-    setNewEntityName(str);
-    setMode('processing');
-    props.onEntityCreate(str, () => {
-      onModeReset();
-      // the following is unlikely to trigger in the docs as map popover requires a mounted component to anchor to—we’re removing the new entity node with the callback. the if here is to avoid a react warning — Apr 3, 2020 @piotr
-      if (entityType === 'place' && mapPopupState) mapPopupState.open();
-    });
-  };
   const onEntityUpdateStart = () => {
-    setMode('edit');
+    setMode('editName');
     morePopupState.close();
   };
-  const onEntityDeleteStart = () => {
-    setMode('delete');
-  };
-  const onEntityDelete = () => {
-    setNewEntityName(entityName);
-    setMode('processing');
-    props.onEntityDelete(onModeReset);
-  };
-  const onEntityRename = str => {
-    setNewEntityName(str);
+  const onEntityNameUpdate = str => {
+    setName(str);
     setMode('processing');
     props.onEntityUpdate({ [`project_${entityType}`]: { name: str } }, onModeReset);
   };
-  const onUpdateShape = payload => {
+  const onEntityPlaceUpdate = place => {
     setMode('processing');
-    mapPopupState.close();
-    props.onEntityUpdate(payload, onModeReset);
+    mapPopupState?.close();
+    props.onEntityUpdate(place, onModeReset);
+  };
+  const onEntityDeleteStart = () => setMode('delete');
+  const onEntityDelete = () => {
+    setMode('processing');
+    props.onEntityDelete();
+    // props.onEntityDelete(onModeReset);
   };
 
   // instance methods
 
   const onInstanceCreate = () => {
     // prevent instance creation when editing or processing
-    if (['edit', 'processing'].includes(mode)) return null;
+    if (['editName', 'editPlace', 'processing'].includes(mode)) return null;
 
     // prevent instance creation if no sliderRect found
     if (!sliderRect) return null;
@@ -151,8 +163,8 @@ export default function Controls({
 
   // map/place methods
   const onStartEntityReposition = () => {
-    morePopupState.close();
-    mapPopupState.open();
+    morePopupState?.close();
+    mapPopupState?.open();
   };
 
   const readControls = (
@@ -214,17 +226,19 @@ export default function Controls({
   );
   const editControls = (
     <NameField
-      entityName={displayEntityName}
+      entityName={entityName}
       entityType={entityType}
-      onCancel={onModeReset}
-      onSubmit={isLocal ? onEntityCreate : onEntityRename}
+      onCancel={entityName ? onCancelEntityNameUpdate : onCancelEntityCreate}
+      onSubmit={entityName ? onEntityNameUpdate : onEntityNameCreate}
       suggestions={suggestions}
     />
   );
 
-  // console.group('Controls');
-  // console.log({ props });
-  // console.groupEnd();
+  if (!entityName) {
+    // console.group('Controls');
+    // console.log({ entityName });
+    // console.groupEnd();
+  }
 
   return (
     <div
@@ -233,7 +247,7 @@ export default function Controls({
       onMouseEnter={mode === 'read' ? onMouseEnter : null}
       onMouseLeave={onMouseLeave}
       ref={controlsRoot}>
-      {mode === 'edit' ? editControls : readControls}
+      {mode === 'editName' ? editControls : readControls}
       <Popover
         {...bindPopover(mapPopupState)}
         anchorEl={controlsRoot.current}
@@ -247,22 +261,15 @@ export default function Controls({
         }}
         onClick={e => e.stopPropagation()}>
         <MapControls
+          entityName={name || entityName}
           entityShape={entityShape}
-          entityName={entityName}
-          mode={entityShape ? entityShape.type : null}
-          onBeforeRename={payload => {
-            setMode('edit');
-            mapPopupState.close();
-            console.log('Controls.js onBeforeRename', payload);
-          }}
-          onDiscard={() => {
-            setMode('read');
-            mapPopupState.close();
-          }}
-          onUpdate={payload => onUpdateShape(payload)}
+          mode={entityShape?.type || null}
+          onBeforeRename={() => setMode('editName')}
+          onDiscard={onModeReset}
+          onUpdate={entityName ? onEntityPlaceUpdate : onEntityPlaceCreate}
         />
       </Popover>
-      {mode === 'delete' && !isLocal ? (
+      {entityName && mode === 'delete' ? (
         <DeleteModal
           entityName={displayEntityName}
           entityType={entityType}
@@ -281,7 +288,7 @@ Controls.propTypes = {
   entityShape: PropTypes.object,
   entityType: PropTypes.string.isRequired,
   instances: PropTypes.array,
-  isLocal: PropTypes.bool,
+  onEntityCreate: PropTypes.func.isRequired,
   onEntityDelete: PropTypes.func.isRequired,
   onEntityStop: PropTypes.func.isRequired,
   onEntityUpdate: PropTypes.func.isRequired,

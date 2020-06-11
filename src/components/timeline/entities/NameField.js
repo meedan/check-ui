@@ -34,9 +34,10 @@ export default function NameField({ entityName, entityType, suggestions = [], ..
     const newName = e ? e.target.value : name;
     if (newName !== entityName && newName.length > 0) {
       props.onSubmit(newName);
-    } else {
-      props.onCancel();
     }
+    //  else {
+    //   props.onCancel();
+    // }
   };
 
   useEffect(() => {

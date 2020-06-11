@@ -31,31 +31,45 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
   };
 
   const onEntityStart = () => {
-    // construct a new dummy entity
-    const newEntity = {
-      id: Date.now(),
-      [`project_${types[type]}`]: {
-        name: '',
+    const ifPlace = {
+      lat: 0,
+      lng: 0,
+      type: 'marker',
+      viewport: {
+        south: 0,
+        west: 0,
+        north: 0,
+        east: 0,
       },
-      isLocal: true,
+      zoom: 3,
     };
 
-    setNewEntity(newEntity);
+    setNewEntity({
+      id: Date.now(),
+      [`project_${types[type]}`]: {
+        name: null,
+      },
+      ...(types[type] === 'place' ? ifPlace : null),
+    });
   };
 
   const onEntityCreate = (payload, callback) => {
-    const newEntity = {
-      id: Date.now(),
-      fragment: `t=${currentTime},${currentTime + 30}&type=${type}`,
-      [`project_${types[type]}`]: {
-        name: payload,
+    console.log('onEntityCreate', { payload });
+    props.onEntityCreate(
+      types[type],
+      {
+        ...(types[type] === 'place' ? payload.place : null),
+        id: Date.now(),
+        fragment: `t=${currentTime},${currentTime + 30}&type=${type}`,
+        [`project_${types[type]}`]: {
+          name: payload.name,
+        },
       },
-    };
-
-    props.onEntityCreate(types[type], newEntity, () => {
-      setNewEntity(null);
-      callback();
-    });
+      () => {
+        setNewEntity(null);
+        callback();
+      }
+    );
   };
 
   const onEntityStop = () => {
@@ -120,7 +134,7 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
           </Tooltip>
         </>
       }>
-      {displayEntities.map(({ instances = [], isLocal = false, ...entity }, i) => {
+      {displayEntities.map(({ instances = [], ...entity }, i) => {
         const entityId = entity.id;
         const entityName = entity[`project_${types[type]}`].name;
         const entityType = types[type];
@@ -147,7 +161,6 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
                 entityShape={entityType === 'place' ? entityShape : null}
                 entityType={entityType}
                 instances={instances}
-                isLocal={isLocal}
                 onEntityCreate={onEntityCreate}
                 onEntityDelete={callback => onEntityDelete(entityId, callback)}
                 onEntityStop={onEntityStop}

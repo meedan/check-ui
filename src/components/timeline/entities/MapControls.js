@@ -43,7 +43,7 @@ const getCenter = shape => {
   return { lat: 0, lng: 0 };
 };
 
-export default function MapControls({ anchorRef, entityName, entityShape, ...props }) {
+export default function MapControls({ anchorRef, entityName, entityShape = null, ...props }) {
   const inputRef = useRef();
   const classes = useStyles();
 
@@ -52,7 +52,7 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
 
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const [loadedShape, setLoadedShape] = useState(null);
-  const [mode, setMode] = useState(null);
+  const [mode, setMode] = useState(props.mode || 'marker');
   const [shape, setShape] = useState(null);
   const [viewport, setViewport] = useState(3);
   const [zoom, setZoom] = useState(3);
@@ -148,10 +148,7 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
 
   // Discard / Confirm
 
-  const onDiscard = () => {
-    // onClick={this.props.isCreating ? this.props.stopNewPlace : this.props.onDiscard}
-    props.onDiscard();
-  };
+  const onDiscard = () => props.onDiscard();
   const onConfirm = () => {
     props.onUpdate({
       ...shape,
@@ -170,9 +167,9 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
     setZoom(entityShape.zoom);
   }, [entityShape]);
 
-  useEffect(() => {
-    setMode(props.mode);
-  }, [props.mode]);
+  // useEffect(() => {
+  //   setMode(props.mode);
+  // }, [props.mode]);
 
   useEffect(() => {
     if (!shape) {
@@ -191,7 +188,13 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
   }, [mapInstance]);
 
   // console.group('MapControls.js');
-  // console.log('center', center);
+  // console.log(entityName);
+  // console.log(entityShape);
+  // console.log(mode);
+  // console.log(props.onBeforeRename);
+  // console.log(props.onDiscard);
+  // console.log(props.onUpdate);
+  // console.log(props);
   // console.groupEnd();
 
   return (
@@ -208,7 +211,7 @@ export default function MapControls({ anchorRef, entityName, entityShape, ...pro
           startAdornment: (
             <InputAdornment position="start">
               <Tooltip title="Rename location…">
-                <IconButton onClick={props.onBeforeRename} className={classes.iconButton}>
+                <IconButton disabled={entityName} onClick={props.onBeforeRename} className={classes.iconButton}>
                   <KeyboardBackspaceIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
