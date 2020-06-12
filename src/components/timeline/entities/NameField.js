@@ -68,7 +68,7 @@ export default function NameField({ entityName, entityType, suggestions = [], ..
                   setName(e.target.value);
                 }
               },
-              onBlur: e => onBeforeSubmit(e),
+              // onBlur: e => onBeforeSubmit(e),
             }}
             placeholder={entityName}
             required
@@ -101,7 +101,7 @@ export default function NameField({ entityName, entityType, suggestions = [], ..
 }
 
 NameField.propTypes = {
-  entityName: PropTypes.string.isRequired,
+  entityName: PropTypes.string,
   entityType: PropTypes.string.isRequired,
   onCancel: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,

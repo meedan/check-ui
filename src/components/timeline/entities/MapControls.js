@@ -211,7 +211,10 @@ export default function MapControls({ anchorRef, entityName, entityShape = null,
           startAdornment: (
             <InputAdornment position="start">
               <Tooltip title="Rename location…">
-                <IconButton disabled={entityName} onClick={props.onBeforeRename} className={classes.iconButton}>
+                <IconButton
+                  disabled={entityName !== null || entityName !== undefined}
+                  onClick={props.onBeforeRename}
+                  className={classes.iconButton}>
                   <KeyboardBackspaceIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
