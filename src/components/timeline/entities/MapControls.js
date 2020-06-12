@@ -85,6 +85,31 @@ export default function MapControls({ anchorRef, entityName, entityShape = null,
     mapInstance = map;
     mapInstance.addListener('idle', onBoundsChanged);
     // window.google.maps.event.trigger(inputRef.current, 'focus'); // TODO: test this
+
+    if (!entityShape) {
+      setTimeout(
+        () =>
+          inputRef.current.dispatchEvent(
+            new KeyboardEvent('keydown', {
+              keyCode: 40,
+              which: 40,
+              code: 'ArrowDown',
+              key: 'ArrowDown',
+            })
+          ),
+        500
+      );
+    }
+    //  else {
+    //   const { type } = marker;
+    //   const { lat, lng, viewport, zoom } = type === 'marker' ? marker : marker.polygon[0];
+
+    //   setTimeout(() => {
+    //     this.map.setCenter({ lat, lng });
+    //     if (zoom) this.map.setZoom(zoom);
+    //     this.map.panToBounds(viewport);
+    //   }, 100);
+    // }
   };
 
   // switch between map drawing modes
@@ -161,7 +186,7 @@ export default function MapControls({ anchorRef, entityName, entityShape = null,
   // Effects & co.
 
   useEffect(() => {
-    if (!entityShape) return null;
+    if (!entityShape) return;
     setCenter(getCenter(entityShape));
     setShape(entityShape);
     setZoom(entityShape.zoom);
@@ -211,12 +236,14 @@ export default function MapControls({ anchorRef, entityName, entityShape = null,
           startAdornment: (
             <InputAdornment position="start">
               <Tooltip title="Rename location…">
-                <IconButton
-                  disabled={entityName !== null || entityName !== undefined}
-                  onClick={props.onBeforeRename}
-                  className={classes.iconButton}>
-                  <KeyboardBackspaceIcon fontSize="small" />
-                </IconButton>
+                <span>
+                  <IconButton
+                    disabled={entityName !== null || entityName !== undefined}
+                    onClick={props.onBeforeRename}
+                    className={classes.iconButton}>
+                    <KeyboardBackspaceIcon fontSize="small" />
+                  </IconButton>
+                </span>
               </Tooltip>
             </InputAdornment>
           ),
@@ -274,7 +301,7 @@ export default function MapControls({ anchorRef, entityName, entityShape = null,
         zoom={zoom}
         center={center}
         onClick={onMapClick}
-        onLoad={map => onMapLoad(map)}
+        onLoad={onMapLoad}
         options={{
           draggableCursor: mode ? 'crosshair' : 'grab',
           mapTypeControl: false,

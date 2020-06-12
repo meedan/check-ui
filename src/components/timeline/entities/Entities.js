@@ -54,7 +54,7 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
   };
 
   const onEntityCreate = (payload, callback) => {
-    console.log('onEntityCreate', { payload });
+    // console.log('onEntityCreate', { payload });
     props.onEntityCreate(
       types[type],
       {
@@ -141,14 +141,16 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
 
         const isLastChild = i === displayEntities.length - 1;
 
-        const entityShape = {
-          lat: entity.lat,
-          lng: entity.lng,
-          polygon: entity.polygon,
-          type: entity.type,
-          viewport: entity.viewport,
-          zoom: entity.zoom,
-        };
+        const entityShape = entityName
+          ? {
+              lat: entity.lat,
+              lng: entity.lng,
+              polygon: entity.polygon,
+              type: entity.type,
+              viewport: entity.viewport,
+              zoom: entity.zoom,
+            }
+          : null;
 
         return (
           <TableBlock
