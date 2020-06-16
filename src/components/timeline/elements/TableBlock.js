@@ -42,15 +42,11 @@ export default function TableBlock(props) {
   const classes = useStyles();
   const { leftColContent, plain, rightColContent } = props;
   return (
-    <div className={classes.row}>
-      <div
-        className={classes.leftCol}
-        style={plain ? { border: 'none' } : null}>
+    <div className={classes.row} data-entity-id={props.dataEntityId}>
+      <div className={classes.leftCol} style={plain ? { border: 'none' } : null}>
         <div>{leftColContent}</div>
       </div>
-      <div
-        className={classes.rightCol}
-        style={plain ? { border: 'none' } : null}>
+      <div className={classes.rightCol} style={plain ? { border: 'none' } : null}>
         <div>{rightColContent}</div>
       </div>
     </div>
@@ -58,16 +54,10 @@ export default function TableBlock(props) {
 }
 
 TableBlock.propTypes = {
-  leftColContent: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]).isRequired,
+  leftColContent: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]).isRequired,
   plain: PropTypes.bool,
   section: PropTypes.bool,
-  rightColContent: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]),
+  rightColContent: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
 };
 
 TableBlock.defaultProps = {

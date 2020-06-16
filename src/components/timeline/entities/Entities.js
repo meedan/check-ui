@@ -155,6 +155,7 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
         return (
           <TableBlock
             key={entityId}
+            dataEntityId={`${entityType}-${entityId}`}
             leftColContent={
               <Controls
                 currentTime={currentTime}
