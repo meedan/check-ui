@@ -213,7 +213,9 @@ export default function Instance({ duration, instances, isLocal, isLocked, ...pr
         <InstancePopover
           instance={props.instance}
           onInstanceClip={props.onInstanceClip}
+          onInstanceCopyPermalink={instancePopupState.close}
           onInstanceDelete={props.onInstanceDelete}
+          permalink={props.permalink}
           popupState={instancePopupState}
         />
       ) : null}

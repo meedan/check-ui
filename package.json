@@ -16,6 +16,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.52",
     "material-ui-popup-state": "1.5.4",
+    "react-copy-to-clipboard": "5.0.2",
     "react": "16.13.1",
     "react-dom": "16.13.1"
   },
@@ -34,6 +35,7 @@
     "@storybook/addon-actions": "5.3.18",
     "@storybook/addon-docs": "5.3.18",
     "@storybook/addon-essentials": "5.3.18",
+    "react-copy-to-clipboard": "5.0.2",
     "@storybook/addon-jest": "5.3.18",
     "@storybook/addon-knobs": "5.3.18",
     "@storybook/addon-links": "5.3.18",

@@ -91,7 +91,7 @@
   "videoClips": [
     {
       "id": 129001,
-      "instances": [{ "end_seconds": 60, "id": 1238806, "start_seconds": 4 }],
+      "instances": [{ "end_seconds": 60, "id": 1238806, "start_seconds": 4, "url": "a-permalink" }],
       "project_clip": { "name": "Hardcoded clip" }
     }
   ],

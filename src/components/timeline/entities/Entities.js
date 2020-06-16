@@ -177,11 +177,19 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
             rightColContent={
               <Slider
                 duration={duration}
+                entityType={entityType}
                 instances={newInstance ? [...instances, newInstance] : instances}
                 onDrag={props.onTimeChange}
                 onDragEnd={props.onAfterChange}
                 onDragStart={props.onBeforeChange}
-                onInstanceClip={instanceId => onInstanceClip(entityId, instanceId)}
+                onInstanceClip={
+                  props.onInstanceClip ? instanceId => onInstanceClip(types[type], entityId, instanceId) : null
+                }
+                onInstanceCopyPermalink={
+                  props.onInstanceCopyPermalink
+                    ? instanceId => onInstanceCopyPermalink(types[type], entityId, instanceId)
+                    : null
+                }
                 onInstanceDelete={instanceId => onInstanceDelete(entityId, instanceId)}
                 onInstanceUpdate={(instanceId, payload) => onInstanceUpdate(entityId, instanceId, payload)}
                 returnSliderRect={rect => setSliderRect(rect)}

@@ -2,10 +2,12 @@ import Popover from 'material-ui-popup-state/HoverPopover';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { bindPopover } from 'material-ui-popup-state/hooks';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 
 import CutIcon from '../../icons/Cut';
 
@@ -27,6 +29,15 @@ export default function InstancePopover({ instance, popupState, ...props }) {
         vertical: 'top',
         horizontal: 'center',
       }}>
+      {props.permalink ? (
+        <Tooltip title="Copy permalink to clipboard">
+          <CopyToClipboard text={'permalink'} onCopy={props.onInstanceCopyPermalink}>
+            <IconButton>
+              <FileCopyIcon fontSize="small" />
+            </IconButton>
+          </CopyToClipboard>
+        </Tooltip>
+      ) : null}
       {props.onInstanceClip ? (
         <Tooltip title="Copy to Clips">
           <IconButton onClick={e => fireAction(props.onInstanceClip, e)}>

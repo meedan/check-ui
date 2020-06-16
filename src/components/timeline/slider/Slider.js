@@ -44,7 +44,7 @@ export default function Slider({ duration, instances = [], ...props }) {
 
   const renderInstances = () => {
     if (!rootRect) return null;
-    return instances.map(({ end_seconds, id, isLocal, start_seconds, ...instance }) => {
+    return instances.map(({ end_seconds, id, isLocal, start_seconds, url, ...instance }) => {
       return (
         <Instance
           duration={duration}
@@ -61,6 +61,7 @@ export default function Slider({ duration, instances = [], ...props }) {
           onInstanceClip={props.onInstanceClip ? () => props.onInstanceClip(id) : null}
           onInstanceDelete={() => props.onInstanceDelete(id)}
           onInstanceUpdate={payload => props.onInstanceUpdate(id, payload)}
+          permalink={url}
           sliderRect={rootRect}
           start={start_seconds}
         />
