@@ -50,7 +50,7 @@ class Player extends Component {
     onProgress(roundTime ? Math.round(playedSeconds * 1e3) / 1e3 : playedSeconds);
 
     const time = (seekTo || scrubTo) && buffering ? seekTo : playedSeconds;
-    onTimeUpdate(roundTime ? Math.round(time * 1e3) / 1e3 : time);
+    scrubTo || onTimeUpdate(roundTime ? Math.round(time * 1e3) / 1e3 : time);
   };
 
   render() {
