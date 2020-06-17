@@ -97,9 +97,9 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
     props.onInstanceCreate(types[type], entityId, payload, () => setNewInstance(null));
   };
 
-  const onInstanceClip = (entityId, instanceId) => {
+  const onInstanceClip = (type, entityId, instanceId) => {
     if (!props.onInstanceClip) return null;
-    props.onInstanceClip(types[type], entityId, instanceId);
+    props.onInstanceClip(type, entityId, instanceId);
   };
 
   const onInstanceDelete = (entityId, instanceId) => {
