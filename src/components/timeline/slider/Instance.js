@@ -197,7 +197,7 @@ export default function Instance({ duration, instances, isLocal, isLocked, ...pr
     <>
       <div
         className={classes.instance}
-        data-instance-id={`${props.entityType}-${props.id.trim()}`}
+        data-instance-id={`${props.entityType}-${props.id ? props.id.trim() : null}`}
         style={{
           left: `${x1}px`,
           width: `${instanceWidth}px`,
