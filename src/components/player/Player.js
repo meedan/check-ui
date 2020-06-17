@@ -54,7 +54,11 @@ class Player extends Component {
   };
 
   render() {
-    const { config, muted, playing, onDuration, onPlay, onPause, scrubTo } = this.props;
+    const { config, muted, playing, onDuration, onPlay, onPause, scrubTo, start, end } = this.props;
+    const url = new URL(this.props.url);
+
+    if (start) url.searchParams.set('start', start);
+    if (end) url.searchParams.set('end', end);
 
     return (
       <ReactPlayer
@@ -64,7 +68,7 @@ class Player extends Component {
         controls
         config={config}
         progressInterval={200}
-        url={this.props.url}
+        url={url.href}
         muted={muted}
         playing={playing && !scrubTo}
         onPlay={() => !scrubTo && onPlay()}
