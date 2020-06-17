@@ -31,7 +31,7 @@ export default function InstancePopover({ instance, popupState, ...props }) {
       }}>
       {props.permalink ? (
         <Tooltip title="Copy permalink to clipboard">
-          <CopyToClipboard text={'permalink'} onCopy={props.onInstanceCopyPermalink}>
+          <CopyToClipboard text={props.permalink} onCopy={props.onInstanceCopyPermalink}>
             <IconButton>
               <FileCopyIcon fontSize="small" />
             </IconButton>
