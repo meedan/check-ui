@@ -6,7 +6,6 @@ class Player extends Component {
   constructor(props) {
     super(props);
 
-    this.player = React.createRef();
     this.state = {
       ready: false,
       buffering: false,
@@ -37,20 +36,27 @@ class Player extends Component {
     }
   }
 
-  handleOnReady = () => {
-    this.internalPlayer = this.player.current.getInternalPlayer();
+  handleOnReady = player => {
+    this.player = player;
+    this.internalPlayer = this.player.getInternalPlayer();
     this.setState({ ready: true });
     this.props.onReady();
   };
 
   handleOnProgress = ({ playedSeconds }) => {
-    const { onTimeUpdate, onProgress, roundTime, seekTo, scrubTo } = this.props;
-    const { buffering } = this.state;
+    const { onTimeUpdate, onProgress, roundTime, seekTo, seekAhead, scrubTo, gaps = [] } = this.props;
+    const { buffering, playing } = this.state;
 
-    onProgress(roundTime ? Math.round(playedSeconds * 1e3) / 1e3 : playedSeconds);
+    scrubTo || onProgress(roundTime ? Math.round(playedSeconds * 1e3) / 1e3 : playedSeconds);
 
     const time = (seekTo || scrubTo) && buffering ? seekTo : playedSeconds;
     scrubTo || onTimeUpdate(roundTime ? Math.round(time * 1e3) / 1e3 : time);
+
+    const gap = gaps.find(([a, b]) => a <= time && time < b);
+    if (gap) {
+      console.log(gap);
+      this.internalPlayer.seekTo(gap[1], seekAhead || playing);
+    }
   };
 
   render() {
@@ -63,7 +69,6 @@ class Player extends Component {
 
     return (
       <ReactPlayer
-        ref={this.player}
         width="100%"
         height="100%"
         controls
@@ -102,7 +107,7 @@ Player.defaultProps = {
   config: {
     youtube: {
       playerVars: {
-        autoplay: 0,
+        autoplay: 1,
       },
       preload: true,
     },
