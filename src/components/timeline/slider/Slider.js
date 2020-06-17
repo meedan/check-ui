@@ -63,6 +63,7 @@ export default function Slider({ duration, instances = [], ...props }) {
           onInstanceClip={props.onInstanceClip ? () => props.onInstanceClip(id) : null}
           onInstanceDelete={() => props.onInstanceDelete(id)}
           onInstanceUpdate={payload => props.onInstanceUpdate(id, payload)}
+          onScrub={props.onScrub}
           permalink={url}
           sliderRect={rootRect}
           start={start_seconds}

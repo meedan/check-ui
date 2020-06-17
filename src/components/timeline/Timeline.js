@@ -65,6 +65,7 @@ export default function Timeline({ currentTime = 0, duration, playing = false, d
         onInstanceDelete={props.onInstanceDelete}
         onInstanceUpdate={props.onInstanceUpdate}
         onPlaylistLaunch={() => props.onPlaylistLaunch('clips')}
+        onScrub={props.onScrub}
         onTimeChange={props.onTimeChange}
         playing={playing}
         skip={skip}
@@ -86,6 +87,7 @@ export default function Timeline({ currentTime = 0, duration, playing = false, d
         onInstanceDelete={props.onInstanceDelete}
         onInstanceUpdate={props.onInstanceUpdate}
         onPlaylistLaunch={() => props.onPlaylistLaunch('tags')}
+        onScrub={props.onScrub}
         onTimeChange={props.onTimeChange}
         playing={playing}
         skip={skip}
@@ -107,6 +109,7 @@ export default function Timeline({ currentTime = 0, duration, playing = false, d
         onInstanceDelete={props.onInstanceDelete}
         onInstanceUpdate={props.onInstanceUpdate}
         onPlaylistLaunch={() => props.onPlaylistLaunch('places')}
+        onScrub={props.onScrub}
         onTimeChange={props.onTimeChange}
         playing={playing}
         skip={skip}

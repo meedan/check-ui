@@ -122,7 +122,7 @@ export default function Instance({ duration, instances, isLocal, isLocked, ...pr
       // 2 check if end doesnt go over RANGE_MAX
       setEnd(prevState => (v > start + MIN_LENGTH && v <= RANGE_MAX ? v : prevState));
     }
-    // props.onHandleMove(draggingHandle === 'start' ? start : end);
+    props.onScrub(draggingHandle === 'start' ? start : end);
     // props.onInstanceUpdate({ start_seconds: start, end_seconds: end });
   };
 

@@ -52,6 +52,9 @@ export const onPlainTimelineChange = (newTime) => {
   action('onTimeChange')(newTime);
   plainTimelineStore.set({ currentTime: newTime });
 }
+export const onPlainTimelineScrub = (newTime) => {
+  action('onScrub')(newTime);
+}
 export const onPlainTimelineUpdate = (data) => {
   action('onPlainTimelineUpdate')(data);
   plainTimelineStore.set({ data: data });
@@ -60,9 +63,15 @@ export const onRichTimelineChange = (newTime) => {
   action('onTimeChange')(newTime);
   richTimelineStore.set({ currentTime: newTime });
 }
+export const onRichTimelineScrub = (newTime) => {
+  action('onScrub')(newTime);
+}
 export const onRichTimelineUpdate = (data) => {
   action('onRichTimelineUpdate')(data);
   richTimelineStore.set({ data: data });
+}
+export const onControlledTimelineScrub = (newTime) => {
+  action('onScrub')(newTime);
 }
 export const onControlledTimelineUpdate = (data) => {
   action('onControlledTimelineUpdate')(data);
@@ -153,6 +162,7 @@ export const onPlaylistLaunch = (type) => {
             onInstanceDelete={onInstanceDelete}
             onInstanceUpdate={onInstanceUpdate}
             onPlaylistLaunch={onPlaylistLaunch}
+            onScrub={onPlainTimelineScrub}
             onTimeChange={onPlainTimelineChange}
           />
         </LoadScript>
@@ -188,6 +198,7 @@ export const onPlaylistLaunch = (type) => {
             onInstanceDelete={onInstanceDelete}
             onInstanceUpdate={onInstanceUpdate}
             onPlaylistLaunch={onPlaylistLaunch}
+            onScrub={onRichTimelineScrub}
             onTimeChange={onRichTimelineChange}
           />
         </LoadScript>
@@ -223,6 +234,7 @@ export const onPlaylistLaunch = (type) => {
             onInstanceDelete={onInstanceDelete}
             onInstanceUpdate={onInstanceUpdate}
             onPlaylistLaunch={onPlaylistLaunch}
+            onScrub={onControlledTimelineScrub}
             onTimeChange={action('onTimeChange')}
           />
         </LoadScript>

@@ -191,6 +191,7 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
                 }
                 onInstanceDelete={instanceId => onInstanceDelete(entityId, instanceId)}
                 onInstanceUpdate={(instanceId, payload) => onInstanceUpdate(entityId, instanceId, payload)}
+                onScrub={props.onScrub}
                 returnSliderRect={rect => setSliderRect(rect)}
               />
             }></TableBlock>
