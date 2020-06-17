@@ -59,6 +59,7 @@ class Player extends Component {
 
     if (start) url.searchParams.set('start', start);
     if (end) url.searchParams.set('end', end);
+    if (start || end) config.youtube.playerVars.autoplay = 1;
 
     return (
       <ReactPlayer
@@ -101,12 +102,12 @@ Player.defaultProps = {
   config: {
     youtube: {
       playerVars: {
-        autoplay: 1,
+        autoplay: 0,
       },
       preload: true,
     },
   },
-  muted: true,
+  muted: false,
   roundTime: false,
   seekAhead: false,
 };
