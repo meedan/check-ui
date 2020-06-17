@@ -49,6 +49,8 @@ export default function Slider({ duration, instances = [], ...props }) {
         <Instance
           duration={duration}
           end={end_seconds}
+          entityType={props.entityType}
+          id={id}
           instance={instance}
           instances={instances}
           isLocal={isLocal}

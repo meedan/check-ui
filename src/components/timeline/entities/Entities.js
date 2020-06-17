@@ -155,7 +155,6 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
         return (
           <TableBlock
             key={entityId}
-            dataEntityId={`${entityType}-${entityId}`}
             leftColContent={
               <Controls
                 currentTime={currentTime}
@@ -177,6 +176,7 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
             rightColContent={
               <Slider
                 duration={duration}
+                entityType={entityType}
                 instances={newInstance ? [...instances, newInstance] : instances}
                 onDrag={props.onTimeChange}
                 onDragEnd={props.onAfterChange}

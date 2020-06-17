@@ -42,7 +42,7 @@ export default function TableBlock(props) {
   const classes = useStyles();
   const { leftColContent, plain, rightColContent } = props;
   return (
-    <div className={classes.row} data-entity-id={props.dataEntityId}>
+    <div className={classes.row}>
       <div className={classes.leftCol} style={plain ? { border: 'none' } : null}>
         <div>{leftColContent}</div>
       </div>
