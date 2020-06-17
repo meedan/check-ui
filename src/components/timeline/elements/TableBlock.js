@@ -33,9 +33,6 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: 0,
     paddingRight: 0,
   },
-  plain: {
-    border: 'none',
-  },
 }));
 
 export default function TableBlock(props) {
@@ -43,10 +40,10 @@ export default function TableBlock(props) {
   const { leftColContent, plain, rightColContent } = props;
   return (
     <div className={classes.row}>
-      <div className={classes.leftCol} style={plain ? { border: 'none' } : null}>
+      <div className={classes.leftCol} style={plain ? { border: 'none' } : {}}>
         <div>{leftColContent}</div>
       </div>
-      <div className={classes.rightCol} style={plain ? { border: 'none' } : null}>
+      <div className={classes.rightCol} style={plain ? { border: 'none' } : {}}>
         <div>{rightColContent}</div>
       </div>
     </div>
