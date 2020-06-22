@@ -19,19 +19,17 @@ class Player extends Component {
 
     if (seekTo !== prevProps.seekTo && ready) {
       if (seekTo !== null) {
-        this.internalPlayer.seekTo(seekTo, seekAhead || playing);
+        this.internalPlayer.seekTo(seekTo, seekAhead);
         (buffering || !playing) && onTimeUpdate(seekTo);
       }
     }
 
     if (scrubTo !== prevProps.scrubTo && ready) {
       if (scrubTo !== null) {
-        if (prevProps.scrubTo === null) this.setState({ position: this.player.current.getCurrentTime() });
+        if (prevProps.scrubTo === null) this.setState({ position: this.internalPlayer ? this.internalPlayer.getCurrentTime() : 0 });
         this.internalPlayer.seekTo(scrubTo, seekAhead);
-        (buffering || !playing) && onTimeUpdate(scrubTo);
-      } else if (prevProps.scrubTo !== null) {
-        this.internalPlayer.seekTo(position, seekAhead || playing);
-        (buffering || !playing) && onTimeUpdate(position);
+      } else if (prevProps.scrubTo !== null && position) {
+        this.internalPlayer.seekTo(position, seekAhead);
       }
     }
   }
@@ -39,6 +37,12 @@ class Player extends Component {
   handleOnReady = player => {
     this.player = player;
     this.internalPlayer = this.player.getInternalPlayer();
+    window.internalPlayer = this.internalPlayer;
+
+    // const { register } = this.props;
+    // register('seekTo', this.seekTo);
+    // register('seekTo', this.seekTo);
+
     this.setState({ ready: true });
     this.props.onReady();
   };
@@ -107,7 +111,7 @@ Player.defaultProps = {
   config: {
     youtube: {
       playerVars: {
-        autoplay: 0,
+        autoplay: 1,
       },
       preload: true,
     },
