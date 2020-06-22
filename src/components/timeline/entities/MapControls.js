@@ -59,15 +59,6 @@ export default function MapControls({ anchorRef, entityName, entityShape = null,
 
   // a couple of things necessary for the map init
 
-  const onPlaceSelect = e => {
-    // when place gets selected via autocomplete (input field aka inputRef)
-    const place = autocompleteInstance.getPlace();
-    if (place && place.geometry) {
-      console.log({ place });
-      mapInstance.fitBounds(place.geometry.viewport.toJSON());
-    }
-  };
-
   const onBoundsChanged = () => {
     // when map view changes (zoom/viewport)
     const viewport = mapInstance.getBounds().toJSON();
@@ -99,17 +90,35 @@ export default function MapControls({ anchorRef, entityName, entityShape = null,
           ),
         500
       );
+    } else {
+      // console.group('we’re here!');
+      // console.log({ shape });
+      // console.log({ loadedShape });
+      // console.groupEnd();
+      // const { type } = marker;
+      // const { lat, lng, viewport, zoom } = type === 'marker' ? marker : marker.polygon[0];
+      // setTimeout(() => {
+      //   setCenter({ lat, lng });
+      //   setZoom(zoom);
+      //   mapInstance.panToBounds(viewport);
+      // }, 100);
     }
-    //  else {
-    //   const { type } = marker;
-    //   const { lat, lng, viewport, zoom } = type === 'marker' ? marker : marker.polygon[0];
+  };
 
-    //   setTimeout(() => {
-    //     this.map.setCenter({ lat, lng });
-    //     if (zoom) this.map.setZoom(zoom);
-    //     this.map.panToBounds(viewport);
-    //   }, 100);
-    // }
+  const onPlaceSelect = e => {
+    // when place gets selected via autocomplete (input field aka inputRef)
+    const place = autocompleteInstance.getPlace();
+    if (place?.geometry) {
+      const vp = place.geometry.viewport.toJSON();
+      mapInstance.fitBounds(vp);
+      setMode('marker');
+      setShape({
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng(),
+        type: 'marker',
+        viewport: vp,
+      });
+    }
   };
 
   // switch between map drawing modes
@@ -212,15 +221,19 @@ export default function MapControls({ anchorRef, entityName, entityShape = null,
     }
   }, [mapInstance]);
 
-  // console.group('MapControls.js');
-  // console.log(entityName);
+  console.group('MapControls.js');
+  console.log({ center });
+  console.log({ loadedShape });
+  console.log({ shape });
+  console.log({ viewport });
+  console.log({ zoom });
   // console.log(entityShape);
   // console.log(mode);
   // console.log(props.onBeforeRename);
   // console.log(props.onDiscard);
   // console.log(props.onUpdate);
   // console.log(props);
-  // console.groupEnd();
+  console.groupEnd();
 
   return (
     <>
