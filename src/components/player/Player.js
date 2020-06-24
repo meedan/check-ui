@@ -47,8 +47,9 @@ class Player extends Component {
   }
 
   handleOnReady = player => {
+    const internalPlayer = player.getInternalPlayer();
     this.player = player;
-    this.internalPlayer = this.player.getInternalPlayer();
+    this.internalPlayer = internalPlayer.nodeName === 'VIDEO' ? null : internalPlayer;
     window.internalPlayer = this.internalPlayer;
 
     // const { register } = this.props;
