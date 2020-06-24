@@ -19,17 +19,29 @@ class Player extends Component {
 
     if (seekTo !== prevProps.seekTo && ready) {
       if (seekTo !== null) {
-        this.internalPlayer.seekTo(seekTo, seekAhead);
+        if (this.internalPlayer) {
+          this.internalPlayer.seekTo(seekTo, seekAhead);
+        } else {
+          this.player.seekTo(seekTo, 'seconds');
+        }
         (buffering || !playing) && onTimeUpdate(seekTo);
       }
     }
 
     if (scrubTo !== prevProps.scrubTo && ready) {
       if (scrubTo !== null) {
-        if (prevProps.scrubTo === null) this.setState({ position: this.internalPlayer ? this.internalPlayer.getCurrentTime() : 0 });
-        this.internalPlayer.seekTo(scrubTo, seekAhead);
+        if (prevProps.scrubTo === null) this.setState({ position: this.internalPlayer ? this.internalPlayer.getCurrentTime() : this.player.getCurrentTime() });
+        if (this.internalPlayer) {
+          this.internalPlayer.seekTo(scrubTo, seekAhead);
+        } else {
+          this.player.seekTo(scrubTo, 'seconds');
+        }
       } else if (prevProps.scrubTo !== null && position) {
-        this.internalPlayer.seekTo(position, seekAhead);
+        if (this.internalPlayer) {
+          this.internalPlayer.seekTo(position, seekAhead);
+        } else {
+          this.player.seekTo(position, 'seconds');
+        }
       }
     }
   }
