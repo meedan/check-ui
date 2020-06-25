@@ -140,7 +140,7 @@ Player.defaultProps = {
   config: {
     youtube: {
       playerVars: {
-        autoplay: 1,
+        autoplay: 0,
       },
       preload: true,
     },
