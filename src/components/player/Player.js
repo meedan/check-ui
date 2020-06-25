@@ -20,7 +20,7 @@ class Player extends Component {
     if (seekTo !== prevProps.seekTo && ready) {
       if (seekTo !== null) {
         if (this.internalPlayer) {
-          this.internalPlayer.seekTo(seekTo, seekAhead);
+          this.internalPlayer.seekTo?.(seekTo, seekAhead);
         } else {
           this.player.seekTo(seekTo, 'seconds');
         }
@@ -30,15 +30,15 @@ class Player extends Component {
 
     if (scrubTo !== prevProps.scrubTo && ready) {
       if (scrubTo !== null) {
-        if (prevProps.scrubTo === null) this.setState({ position: this.internalPlayer ? this.internalPlayer.getCurrentTime() : this.player.getCurrentTime() });
+        if (prevProps.scrubTo === null) this.setState({ position: this.internalPlayer ? this.internalPlayer.getCurrentTime?.() : this.player.getCurrentTime() });
         if (this.internalPlayer) {
-          this.internalPlayer.seekTo(scrubTo, seekAhead);
+          this.internalPlayer.seekTo?.(scrubTo, seekAhead);
         } else {
           this.player.seekTo(scrubTo, 'seconds');
         }
       } else if (prevProps.scrubTo !== null && position) {
         if (this.internalPlayer) {
-          this.internalPlayer.seekTo(position, seekAhead);
+          this.internalPlayer.seekTo?.(position, seekAhead);
         } else {
           this.player.seekTo(position, 'seconds');
         }
@@ -71,8 +71,11 @@ class Player extends Component {
 
     const gap = gaps.find(([a, b]) => a <= time && time < b);
     if (gap) {
-      console.log(gap);
-      this.internalPlayer.seekTo(gap[1], seekAhead || playing);
+      if (this.internalPlayer) {
+        this.internalPlayer.seekTo?.(gap[1], seekAhead || playing);
+      } else {
+        this.player.seekTo(gap[1], 'seconds');
+      }
     }
   };
 
