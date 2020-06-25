@@ -77,7 +77,18 @@ class Player extends Component {
   };
 
   render() {
-    const { config, muted, playing, onDuration, onPlay, onPause, scrubTo, start, end } = this.props;
+    const {
+      config,
+      muted,
+      playbackRate,
+      playing,
+      onDuration,
+      onPlay,
+      onPause,
+      scrubTo,
+      start,
+      end
+    } = this.props;
     const url = new URL(this.props.url);
 
     if (start) url.searchParams.set('start', start);
@@ -93,6 +104,7 @@ class Player extends Component {
         progressInterval={200}
         url={url.href}
         muted={muted}
+        playbackRate={playbackRate}
         playing={playing && !scrubTo}
         onPlay={() => !scrubTo && onPlay()}
         onPause={() => !scrubTo && onPause()}
@@ -114,6 +126,7 @@ Player.propTypes = {
   onPause: PropTypes.func,
   onPlay: PropTypes.func,
   onReady: PropTypes.func,
+  playbackRate: PropTypes.number,
   playing: PropTypes.bool,
   roundTime: PropTypes.bool,
   seekAhead: PropTypes.bool,
