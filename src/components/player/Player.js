@@ -94,9 +94,9 @@ class Player extends Component {
     } = this.props;
     const url = new URL(this.props.url);
 
-    if (start) url.searchParams.set('start', start);
-    if (end) url.searchParams.set('end', end);
-    if (start || end) config.youtube.playerVars.autoplay = 1;
+    if (!isNaN(start)) url.searchParams.set('start', start);
+    if (!isNaN(end)) url.searchParams.set('end', end);
+    if (!isNaN(start) || !isNaN(end)) config.youtube.playerVars.autoplay = 1;
 
     return (
       <ReactPlayer
