@@ -20,7 +20,7 @@ class Player extends Component {
     if (seekTo !== prevProps.seekTo && ready) {
       if (seekTo !== null) {
         if (this.internalPlayer) {
-          this.internalPlayer.seekTo?.(seekTo, seekAhead);
+          this.internalPlayer.seekTo?.(seekTo, true);
         } else {
           this.player.seekTo(seekTo, 'seconds');
         }
