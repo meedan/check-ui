@@ -33,26 +33,30 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Comments(props) {
+export default function Comments({ currentTime, ...props }) {
   const classes = useStyles();
 
-  const { duration, currentTime, threads, user } = props;
+  const { duration, threads, user } = props;
 
-  const [newTime, setNewTime] = useState(0);
-  const [isCreating, setCreatingState] = useState(false);
+  const [newThread, setNewThread] = useState();
 
-  const onCommentThreadStart = () => {
-    setCreatingState(true);
-  };
-  const onCommentThreadStop = () => {
-    setCreatingState(false);
-  };
+  const onCommentThreadStart = () =>
+    setNewThread({
+      id: Date.now() + '_' + currentTime,
+      replies: [],
+      start_seconds: currentTime,
+      text: '',
+      user: user,
+    });
+
+  const onCommentThreadStop = () => setNewThread(null);
+
   const onCommentThreadCreate = (text, popupCallback) => {
     const callback = () => {
       popupCallback();
-      setCreatingState(false);
+      setNewThread(null);
     };
-    props.onCommentThreadCreate(newTime, text, callback);
+    props.onCommentThreadCreate(newThread.start_seconds, text, callback);
   };
 
   const markers = _.reduce(
@@ -64,27 +68,11 @@ export default function Comments(props) {
     {}
   );
 
-  const newThread = {
-    id: Date.now() + Math.random(),
-    replies: [],
-    start_seconds: newTime,
-    text: '',
-    user: user,
-  };
-
-  const newMarker = (
-    <NewMarker
-      key={newThread.id}
-      onCommentThreadCreate={onCommentThreadCreate}
-      onCommentThreadStop={onCommentThreadStop}
-      thread={newThread}
-    />
-  );
-
-  useEffect(() => {
-    if (isCreating) return null;
-    setNewTime(currentTime);
-  }, [currentTime]);
+  console.group('Comments.js');
+  console.log('newThread: ', newThread);
+  console.log('markers: ', markers);
+  console.log('threads: ', threads);
+  console.groupEnd();
 
   return (
     <TableSection
@@ -102,7 +90,22 @@ export default function Comments(props) {
             defaultValue={null}
             disabled
             included={false}
-            marks={isCreating ? { ...markers, [newTime]: newMarker } : markers}
+            marks={
+              newThread
+                ? {
+                    ...markers,
+                    [newThread.start_seconds]: (
+                      <NewMarker
+                        {...props}
+                        key={newThread.id}
+                        onCommentThreadCreate={onCommentThreadCreate}
+                        onCommentThreadStop={onCommentThreadStop}
+                        thread={newThread}
+                      />
+                    ),
+                  }
+                : markers
+            }
             max={duration}
             min={0}
             value={null}
