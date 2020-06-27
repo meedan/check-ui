@@ -77,7 +77,7 @@ export default function Form(props) {
 Form.propTypes = {
   onCancel: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  isEditing: PropTypes.bool.isRequired,
+  isEditing: PropTypes.bool,
 };
 
 Form.defaultProps = {
