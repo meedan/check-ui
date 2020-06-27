@@ -68,12 +68,6 @@ export default function Comments({ currentTime, ...props }) {
     {}
   );
 
-  console.group('Comments.js');
-  console.log('newThread: ', newThread);
-  console.log('markers: ', markers);
-  console.log('threads: ', threads);
-  console.groupEnd();
-
   return (
     <TableSection
       title="Comments"
