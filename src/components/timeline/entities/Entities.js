@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 
 import AddIcon from '@material-ui/icons/Add';
@@ -122,12 +123,26 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
       title={titles[type]}
       actions={
         <>
-          <Tooltip title="Play all">
+          <Tooltip
+            title={
+              <FormattedMessage
+                id="entities.playAll"
+                defaultMessage="Play all"
+              />
+            }
+          >
             <IconButton onClick={props.onPlaylistLaunch} data-testid={`play-${types[type]}-button`}>
               <PlayArrowIcon fontSize="small" />
             </IconButton>
           </Tooltip>
-          <Tooltip title="New…">
+          <Tooltip
+            title={
+              <FormattedMessage
+                id="entities.new"
+                defaultMessage="New…"
+              />
+            }
+          >
             <IconButton onClick={onEntityStart} data-testid={`new-${types[type]}-button`}>
               <AddIcon fontSize="small" />
             </IconButton>

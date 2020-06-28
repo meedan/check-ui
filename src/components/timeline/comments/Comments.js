@@ -1,6 +1,7 @@
 import 'rc-slider/assets/index.css';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import Slider from 'rc-slider';
 import _ from 'lodash';
 
@@ -70,9 +71,21 @@ export default function Comments({ currentTime, ...props }) {
 
   return (
     <TableSection
-      title="Comments"
+      title={
+        <FormattedMessage
+          id="comments.tableSection"
+          defaultMessage="Comments"
+        />
+      }
       actions={
-        <Tooltip title="New comment">
+        <Tooltip
+          title={
+            <FormattedMessage
+              id="comments.newComment"
+              defaultMessage="New comment"
+            />
+          }
+        >
           <IconButton onClick={onCommentThreadStart} data-testid="new-comment-thread-button">
             <AddIcon fontSize="small" />
           </IconButton>

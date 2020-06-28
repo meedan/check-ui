@@ -1,6 +1,7 @@
 import Menu from 'material-ui-popup-state/HoverMenu';
 import PropTypes from 'prop-types';
 import React, { useRef, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import find from 'lodash/find';
 import { usePopupState, bindHover, bindMenu, bindPopover } from 'material-ui-popup-state/hooks';
 
@@ -170,7 +171,16 @@ export default function Controls({
   const readControls = (
     <Grid alignItems="center" className={classes.readGrid} container justify="space-between" wrap="nowrap">
       <Grid item>
-        <Tooltip enterDelay={1000} title={`Annotate: ${displayEntityName}`}>
+        <Tooltip
+          enterDelay={1000}
+          title={
+            <FormattedMessage
+              id="controls.tooltipAnnotate"
+              defaultMessage="Annotate: {displayEntityName}"
+              values={{ displayEntityName }}
+            />
+          }
+        >
           <Typography noWrap variant="body2" className={classes.entityName}>
             {displayEntityName}
           </Typography>
@@ -186,9 +196,19 @@ export default function Controls({
             <CircularProgress size={18} className={classes.circularProgress} />
           ) : (
             <>
-              <IconButton {...bindHover(morePopupState)} aria-label="More options…">
-                <MoreVertIcon />
-              </IconButton>
+              <FormattedMessage
+                id="controls.moreOptions"
+                defaultMessage="More options…"
+              >
+                {message => (
+                  <IconButton
+                    {...bindHover(morePopupState)}
+                    aria-label={message}
+                  >
+                    <MoreVertIcon />
+                  </IconButton>
+                )}
+              </FormattedMessage>
               <Menu
                 {...bindMenu(morePopupState)}
                 autoFocus={false}
@@ -204,18 +224,30 @@ export default function Controls({
                 }}
                 varant="menu">
                 <MenuItem dense divider={entityType === 'place'} onClick={onInstanceCreate}>
-                  Add highlight
+                  <FormattedMessage
+                    id="controls.addHighlight"
+                    defaultMessage="Add highlight"
+                  />
                 </MenuItem>
                 {entityType === 'place' ? (
                   <MenuItem dense onClick={onStartEntityReposition}>
-                    Edit place
+                    <FormattedMessage
+                      id="controls.editPlace"
+                      defaultMessage="Edit place"
+                    />
                   </MenuItem>
                 ) : null}
                 <MenuItem dense divider={entityType === 'place'} onClick={onEntityUpdateStart}>
-                  Edit name
+                  <FormattedMessage
+                    id="controls.editName"
+                    defaultMessage="Edit name"
+                  />
                 </MenuItem>
                 <MenuItem dense onClick={onEntityDeleteStart}>
-                  Delete
+                  <FormattedMessage
+                    id="controls.delete"
+                    defaultMessage="Delete"
+                  />
                 </MenuItem>
               </Menu>
             </>

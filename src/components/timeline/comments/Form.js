@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -47,7 +48,19 @@ export default function Form(props) {
             },
           }}
           onChange={onChange}
-          placeholder={isCreating ? 'New comment' : 'Enter comment'}
+          placeholder={
+            isCreating ? (
+              <FormattedMessage
+                id="form.newComment"
+                defaultMessage="New comment"
+              />
+            ) : (
+              <FormattedMessage
+                id="form.editComment"
+                defaultMessage="Enter comment"
+              />
+            )
+          }
           required
           type="text"
         />
@@ -60,12 +73,32 @@ export default function Form(props) {
               disabled={!comment || comment.length === 0 || saving}
               onClick={onSubmit}
               size="small">
-              {isCreating || isEditing ? 'Save' : 'Reply'}
+              {isCreating || isEditing ? (
+                <FormattedMessage
+                  id="form.save"
+                  defaultMessage="Save"
+                />
+              ) : (
+                <FormattedMessage
+                  id="form.reply"
+                  defaultMessage="Reply"
+                />
+              )}
             </Button>
           </Grid>
           <Grid item>
             <Button disabled={saving} onClick={onCancel} size="small">
-              {isCreating || isEditing ? 'Cancel' : 'Close'}
+              {isCreating || isEditing ? (
+                <FormattedMessage
+                  id="form.cancel"
+                  defaultMessage="Cancel"
+                />
+              ) : (
+                <FormattedMessage
+                  id="form.close"
+                  defaultMessage="Close"
+                />
+              )}
             </Button>
           </Grid>
         </Grid>

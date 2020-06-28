@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 
 import Button from '@material-ui/core/Button';
@@ -16,20 +17,36 @@ export default function DeleteModal({ entityName, entityType, ...props }) {
       maxWidth="xs"
       onClick={e => e.stopPropagation()}
       onClose={props.onCancel}
-      open>
-      <DialogTitle>Delete {entityType}</DialogTitle>
+      open
+    >
+      <DialogTitle>
+        <FormattedMessage
+          id="deleteModal.title"
+          defaultMessage="Delete {entityType}"
+          values={{ entityType }}
+        />
+      </DialogTitle>
       <DialogContent>
         <DialogContentText variant="body1">
-          Do you wish to remove all instances of <strong>{entityName}</strong>?
-          This can’t be undone.
+          <FormattedHTMLMessage
+            id="deleteModal.body"
+            defaultMessage="Do you wish to remove all instances of <strong>{entityName}</strong>?<br/>This can’t be undone."
+            values={{ entityName }}
+          />
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button size="large" onClick={props.onCancel}>
-          Cancel
+          <FormattedMessage
+            id="deleteModal.cancel"
+            defaultMessage="Cancel"
+          />
         </Button>
         <Button size="large" color="primary" onClick={props.onConfirm}>
-          Delete
+          <FormattedMessage
+            id="deleteModal.delete"
+            defaultMessage="Delete"
+          />
         </Button>
       </DialogActions>
     </Dialog>

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -77,7 +78,14 @@ export default function Thread(props) {
                   <CircularProgress size={16} className={classes.buttonProgress} />
                 ) : (
                   <IconButton aria-label="Delete thread" onClick={onCommentThreadDelete}>
-                    <Tooltip title="Delete thread">
+                    <Tooltip
+                      title={
+                        <FormattedMessage
+                          id="thread.tooltipDelete"
+                          defaultMessage="Delete thread"
+                        />
+                      }
+                    >
                       <DeleteIcon fontSize="small" />
                     </Tooltip>
                   </IconButton>

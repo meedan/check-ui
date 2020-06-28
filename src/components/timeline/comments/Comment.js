@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import Popover from 'material-ui-popup-state/HoverPopover';
 import React, { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { usePopupState, bindHover, bindPopover } from 'material-ui-popup-state/hooks';
 
 import Avatar from '@material-ui/core/Avatar';
@@ -113,11 +114,21 @@ export default function Comment(props) {
           disableRestoreFocus>
           <List dense>
             <ListItem button onClick={onCommentEditToggle}>
-              <ListItemText>Edit</ListItemText>
+              <ListItemText>
+                <FormattedMessage
+                  id="comment.edit"
+                  defaultMessage="Edit"
+                />
+              </ListItemText>
             </ListItem>
             {!isRoot ? (
               <ListItem button onClick={onCommentDelete}>
-                <ListItemText>Delete</ListItemText>
+                <ListItemText>
+                  <FormattedMessage
+                    id="comment.delete"
+                    defaultMessage="Delete"
+                  />
+                </ListItemText>
               </ListItem>
             ) : null}
           </List>
