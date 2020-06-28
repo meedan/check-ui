@@ -20,9 +20,18 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
   const displayEntities = newEntity ? [newEntity, ...entities] : entities;
 
   const titles = {
-    clips: 'Clips',
-    places: 'Places',
-    tags: 'Tags',
+    clips: <FormattedMessage
+            id="entities.clips"
+            defaultMessage="Clips"
+          />,
+    places: <FormattedMessage
+            id="entities.places"
+            defaultMessage="Places"
+          />,
+    tags: <FormattedMessage
+            id="entities.tags"
+            defaultMessage="Tags"
+          />,
   };
 
   const types = {
@@ -111,16 +120,11 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
     props.onInstanceUpdate(types[type], entityId, instanceId, payload);
   };
 
-  // console.group('Entities');
-  // console.log({ props });
-  // console.log({ newEntity });
-  // console.log({ displayEntities });
-  // console.groupEnd();
-
   return (
     <TableSection
       plain={displayEntities.length > 0}
       title={titles[type]}
+      type={type}
       actions={
         <>
           <Tooltip

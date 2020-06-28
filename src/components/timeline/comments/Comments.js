@@ -77,6 +77,7 @@ export default function Comments({ currentTime, ...props }) {
           defaultMessage="Comments"
         />
       }
+      type="comments"
       actions={
         <Tooltip
           title={

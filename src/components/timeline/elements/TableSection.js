@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import {injectIntl} from 'react-intl';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -20,9 +21,9 @@ const useStyles = makeStyles({
 
 export default function TableSection(props) {
   const classes = useStyles();
-  const { actions, children, firstRowContent, title } = props;
+  const { actions, children, firstRowContent, title, type } = props;
   return (
-    <div className={classes.root} onMouseLeave={props.onMouseLeave} data-testid={`entities-${title.toLowerCase()}`}>
+    <div className={classes.root} onMouseLeave={props.onMouseLeave} data-testid={`entities-${type}`}>
       <TableBlock
         plain={props.plain}
         section
@@ -46,7 +47,8 @@ TableSection.propTypes = {
   children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
   onMouseLeave: PropTypes.func,
   plain: PropTypes.bool,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.node.isRequired,
+  type: PropTypes.string.isRequired,
   firstRowContent: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
 };
 
