@@ -1,6 +1,6 @@
 import Menu from 'material-ui-popup-state/HoverMenu';
 import PropTypes from 'prop-types';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import find from 'lodash/find';
 import { usePopupState, bindHover, bindMenu, bindPopover } from 'material-ui-popup-state/hooks';
 
