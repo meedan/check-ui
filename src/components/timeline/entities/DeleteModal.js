@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 
 import Button from '@material-ui/core/Button';
@@ -28,9 +28,9 @@ export default function DeleteModal({ entityName, entityType, ...props }) {
       </DialogTitle>
       <DialogContent>
         <DialogContentText variant="body1">
-          <FormattedHTMLMessage
+          <FormattedMessage
             id="deleteModal.body"
-            defaultMessage="Do you wish to remove all instances of <strong>{entityName}</strong>?<br/>This can’t be undone."
+            defaultMessage="Do you wish to remove all instances of {entityName}? This can’t be undone."
             values={{ entityName }}
           />
         </DialogContentText>

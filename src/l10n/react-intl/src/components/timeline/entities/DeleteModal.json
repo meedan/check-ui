@@ -1,0 +1,1 @@
+[{"id":"deleteModal.title","defaultMessage":"Delete {entityType}"},{"id":"deleteModal.body","defaultMessage":"Do you wish to remove all instances of {entityName}? This can’t be undone."},{"id":"deleteModal.cancel","defaultMessage":"Cancel"},{"id":"deleteModal.delete","defaultMessage":"Delete"}]
