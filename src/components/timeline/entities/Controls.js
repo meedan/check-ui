@@ -42,9 +42,10 @@ const useStyles = makeStyles(theme => ({
 export default function Controls({
   currentTime = 0,
   duration,
-  entityShape,
   entityName,
+  entityShape,
   entityType,
+  existingEntityNames,
   instances = [],
   sliderRect,
   suggestions = [],
@@ -82,10 +83,19 @@ export default function Controls({
     if (mode === 'hovering') setMode('read');
   };
 
+  // utils
+
+  const detectDuplicates = str => {
+    // look for duplicates in already existing entities. if found, the UI should prevent creation of a new entity with the same name
+    const collection = existingEntityNames.map(s => s.toLowerCase());
+    return collection.includes(str.toLowerCase()) ? true : false;
+  };
+
   // create methods
 
   const onCancelEntityCreate = () => props.onEntityStop();
   const onEntityNameCreate = str => {
+    if (detectDuplicates(str)) return null;
     setName(str);
     if (entityType === 'place') {
       mapPopupState?.open();
@@ -113,6 +123,7 @@ export default function Controls({
     morePopupState.close();
   };
   const onEntityNameUpdate = str => {
+    if (detectDuplicates(str)) return null;
     setName(str);
     setMode('processing');
     props.onEntityUpdate({ [`project_${entityType}`]: { name: str } }, onModeReset);
@@ -234,12 +245,6 @@ export default function Controls({
     />
   );
 
-  if (!entityName) {
-    // console.group('Controls');
-    // console.log({ entityName });
-    // console.groupEnd();
-  }
-
   return (
     <div
       className={classes.controlsRoot}
@@ -283,6 +288,7 @@ export default function Controls({
 
 Controls.propTypes = {
   currentTime: PropTypes.number.isRequired,
+  existingEntityNames: PropTypes.array,
   duration: PropTypes.number.isRequired,
   entityName: PropTypes.string,
   entityShape: PropTypes.object,

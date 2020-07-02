@@ -16,8 +16,6 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
   const [newInstance, setNewInstance] = useState(null);
   const [sliderRect, setSliderRect] = useState(null);
 
-  const displayEntities = newEntity ? [newEntity, ...entities] : entities;
-
   const titles = {
     clips: 'Clips',
     places: 'Places',
@@ -29,6 +27,9 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
     places: 'place',
     tags: 'tag',
   };
+
+  const displayEntities = newEntity ? [newEntity, ...entities] : entities;
+  const existingEntityNames = entities.map(entity => entity[`project_${types[type]}`].name);
 
   const onEntityStart = () => {
     const ifPlace = {
@@ -54,7 +55,6 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
   };
 
   const onEntityCreate = (payload, callback) => {
-    // console.log('onEntityCreate', { payload });
     props.onEntityCreate(
       types[type],
       {
@@ -162,6 +162,7 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
                 entityName={entityName}
                 entityShape={entityType === 'place' ? entityShape : null}
                 entityType={entityType}
+                existingEntityNames={existingEntityNames}
                 instances={instances}
                 onEntityCreate={onEntityCreate}
                 onEntityDelete={callback => onEntityDelete(entityId, callback)}
