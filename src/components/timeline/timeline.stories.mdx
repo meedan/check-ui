@@ -145,6 +145,7 @@ export const onPlaylistLaunch = (type) => {
       {state =>
         <LoadScript googleMapsApiKey={process.env.STORYBOOK_GOOGLEMAPS_API_KEY} libraries={["places"]}>
           <Timeline
+            activeInstanceId={null}
             currentTime={state.currentTime}
             data={state.data}
             duration={state.duration}
@@ -181,6 +182,7 @@ export const onPlaylistLaunch = (type) => {
       {state =>
         <LoadScript googleMapsApiKey={process.env.STORYBOOK_GOOGLEMAPS_API_KEY} libraries={["places"]}>
           <Timeline
+            activeInstanceId={null}
             currentTime={state.currentTime}
             data={state.data}
             duration={state.duration}
@@ -217,6 +219,7 @@ export const onPlaylistLaunch = (type) => {
       {state =>
         <LoadScript googleMapsApiKey={process.env.STORYBOOK_GOOGLEMAPS_API_KEY} libraries={["places"]}>
           <Timeline
+            activeInstanceId={1238808}
             currentTime={number('Time', 100, {min: 0, max: 1000, step: 1, range: true})}
             data={state.data}
             duration={state.duration}

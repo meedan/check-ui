@@ -53,6 +53,7 @@ export default function Timeline({ currentTime = 0, duration, playing = false, d
         user={user}
       />
       <Entities
+        activeInstanceId={props.activeInstanceId}
         currentTime={currentTime}
         duration={duration}
         entities={videoClips}
@@ -121,6 +122,7 @@ export default function Timeline({ currentTime = 0, duration, playing = false, d
 }
 
 Timeline.propTypes = {
+  activeInstanceId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   data: PropTypes.shape({
     commentThreads: PropTypes.array,
     project: PropTypes.shape({

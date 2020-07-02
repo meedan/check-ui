@@ -176,6 +176,7 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
             plain={!isLastChild}
             rightColContent={
               <Slider
+                activeInstanceId={props.activeInstanceId}
                 duration={duration}
                 entityType={entityType}
                 instances={newInstance ? [...instances, newInstance] : instances}
@@ -203,6 +204,7 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
 }
 
 Entities.propTypes = {
+  activeInstanceId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   currentTime: PropTypes.number,
   duration: PropTypes.number.isRequired,
   entities: PropTypes.arrayOf(

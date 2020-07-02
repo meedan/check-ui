@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Slider({ duration, instances = [], ...props }) {
+export default function Slider({ activeInstanceId = null, duration, instances = [], ...props }) {
   const classes = useStyles();
   const sliderRoot = useRef();
 
@@ -55,6 +55,7 @@ export default function Slider({ duration, instances = [], ...props }) {
           instances={instances}
           isLocal={isLocal}
           isLocked={draggedInstance && draggedInstance !== id}
+          isSelected={activeInstanceId === id}
           key={id}
           lockSiblings={() => setDraggedInstance(id)}
           onHandleMove={props.onDrag}
@@ -80,6 +81,7 @@ export default function Slider({ duration, instances = [], ...props }) {
 }
 
 Slider.propTypes = {
+  activeInstanceId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   duration: PropTypes.number.isRequired,
   instances: PropTypes.array,
   onDrag: PropTypes.func.isRequired,

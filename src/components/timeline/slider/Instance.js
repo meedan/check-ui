@@ -5,6 +5,7 @@ import { usePopupState, bindHover } from 'material-ui-popup-state/hooks';
 
 import Tooltip from '@material-ui/core/Tooltip';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import useTheme from '@material-ui/core/styles/useTheme';
 
 import HandlePopover from './HandlePopover';
 import InstancePopover from './InstancePopover';
@@ -14,7 +15,6 @@ const useStyles = () =>
   makeStyles(theme => ({
     instance: {
       backfaceVisibility: 'visible',
-      background: 'rgba(71, 123, 181, 0.4)',
       bottom: '0',
       position: 'absolute',
       top: '0',
@@ -24,7 +24,6 @@ const useStyles = () =>
       },
     },
     handle: {
-      background: 'rgba(71, 123, 181, 1)',
       bottom: '0',
       cursor: 'ew-resize',
       position: 'absolute',
@@ -42,8 +41,9 @@ const useStyles = () =>
     },
   }));
 
-export default function Instance({ duration, instances, isLocal, isLocked, ...props }) {
+export default function Instance({ duration, instances, isSelected = false, isLocal, isLocked, ...props }) {
   const classes = useStyles()();
+  const theme = useTheme();
 
   const { left, width } = props.sliderRect;
 
@@ -203,6 +203,7 @@ export default function Instance({ duration, instances, isLocal, isLocked, ...pr
           width: `${instanceWidth}px`,
           zIndex: hoveringInstance ? `500` : `default`,
           opacity: isLocal ? '0.5' : '1',
+          background: isSelected ? 'rgba(255, 109, 0, 0.7)' : 'rgba(71, 123, 181, 0.4)',
         }}
         onMouseEnter={!isLocked && !isLocal ? onInstanceEnter : null}
         onMouseLeave={!isLocked && !isLocal ? onInstanceLeave : null}>
@@ -237,6 +238,7 @@ export default function Instance({ duration, instances, isLocal, isLocked, ...pr
                   onMouseEnter={() => onHandleEnter(edge)}
                   onMouseLeave={onHandleLeave}
                   style={{
+                    background: isSelected ? 'rgba(255, 109, 0, 1)' : 'rgba(71, 123, 181, 1)',
                     left: edge === 'start' ? `${x1}px` : `${x2}px`,
                     opacity: isActive || handlePopupState[edge].isOpen ? '1' : '0',
                     transform: edge === 'end' ? 'translateX(-100%)' : 'none',
