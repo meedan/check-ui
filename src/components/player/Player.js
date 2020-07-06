@@ -50,8 +50,9 @@ class Player extends Component {
     const internalPlayer = player.getInternalPlayer();
     this.player = player;
     this.internalPlayer = internalPlayer.nodeName === 'VIDEO' ? null : internalPlayer;
-    window.internalPlayer = this.internalPlayer;
+    // window.internalPlayer = this.internalPlayer;
 
+    // TBD
     // const { register } = this.props;
     // register('seekTo', this.seekTo);
     // register('seekTo', this.seekTo);
@@ -71,10 +72,16 @@ class Player extends Component {
 
     const gap = gaps.find(([a, b]) => a <= time && time < b);
     if (gap) {
+      const jumpTo = gap[1];
+      if (jumpTo === Number.MAX_VALUE || jumpTo === this.player.getDuration()) {
+        this.props.onPause();
+        return;
+      }
+
       if (this.internalPlayer) {
-        this.internalPlayer.seekTo?.(gap[1], seekAhead || playing);
+        this.internalPlayer.seekTo?.(jumpTo, seekAhead || playing);
       } else {
-        this.player.seekTo(gap[1], 'seconds');
+        this.player.seekTo(jumpTo, 'seconds');
       }
     }
   };
@@ -90,13 +97,9 @@ class Player extends Component {
       onPause,
       scrubTo,
       start,
-      end
+      end,
+      url,
     } = this.props;
-    const url = new URL(this.props.url);
-
-    if (!isNaN(start)) url.searchParams.set('start', start);
-    if (!isNaN(end)) url.searchParams.set('end', end);
-    if (!isNaN(start) || !isNaN(end)) config.youtube.playerVars.autoplay = 1;
 
     return (
       <ReactPlayer
@@ -105,7 +108,7 @@ class Player extends Component {
         controls
         config={config}
         progressInterval={200}
-        url={url.href}
+        url={url}
         muted={muted}
         playbackRate={playbackRate}
         playing={playing && !scrubTo}
