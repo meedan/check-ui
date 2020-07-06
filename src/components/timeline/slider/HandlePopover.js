@@ -8,23 +8,17 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 
-export default function HandlePopover({
-  id,
-  moveBackward,
-  moveForward,
-  popupState,
-  ...props
-}) {
+export default function HandlePopover({ id, moveBackward, moveForward, popupState, ...props }) {
   return (
     <Popover
       {...bindPopover(popupState)}
       anchorOrigin={{
-        vertical: 'bottom',
+        vertical: 'top',
         horizontal: 'center',
       }}
       id={id}
       transformOrigin={{
-        vertical: 'top',
+        vertical: 'bottom',
         horizontal: 'center',
       }}>
       <Tooltip placement="bottom" title="Move backward">
