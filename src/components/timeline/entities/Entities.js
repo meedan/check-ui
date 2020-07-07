@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import _ from 'lodash';
 
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
@@ -30,6 +31,7 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
 
   const displayEntities = newEntity ? [newEntity, ...entities] : entities;
   const existingEntityNames = entities.map(entity => entity[`project_${types[type]}`].name);
+  const hasInstances = _.filter(entities, o => o.instances.length > 0).length > 0;
 
   const onEntityStart = () => {
     const ifPlace = {
@@ -122,10 +124,15 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
       title={titles[type]}
       actions={
         <>
-          <Tooltip title="Play all">
-            <IconButton onClick={props.onPlaylistLaunch} data-testid={`play-${types[type]}-button`}>
-              <PlayArrowIcon fontSize="small" />
-            </IconButton>
+          <Tooltip title={`Play all ${titles[type].toLowerCase()}`}>
+            <span>
+              <IconButton
+                disabled={!hasInstances}
+                onClick={hasInstances ? props.onPlaylistLaunch : null}
+                data-testid={`play-${types[type]}-button`}>
+                <PlayArrowIcon fontSize="small" />
+              </IconButton>
+            </span>
           </Tooltip>
           <Tooltip title="New…">
             <IconButton onClick={onEntityStart} data-testid={`new-${types[type]}-button`}>
