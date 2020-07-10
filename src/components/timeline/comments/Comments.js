@@ -70,9 +70,9 @@ export default function Comments({ currentTime, ...props }) {
 
   return (
     <TableSection
-      title="Comments"
+      title="Notes"
       actions={
-        <Tooltip title="New comment">
+        <Tooltip title="New note">
           <IconButton onClick={onCommentThreadStart} data-testid="new-comment-thread-button">
             <AddIcon fontSize="small" />
           </IconButton>

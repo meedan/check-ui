@@ -39,7 +39,7 @@ test('Timeline → Render w/ clips, comments, places, tags and playhead', () => 
 
   // expect playhead, clips, comments, places and tags to be rendered
   expect(getByTestId('entities-clips')).toBeInTheDocument();
-  expect(getByTestId('entities-comments')).toBeInTheDocument();
+  expect(getByTestId('entities-notes')).toBeInTheDocument();
   expect(getByTestId('entities-places')).toBeInTheDocument();
   expect(getByTestId('entities-playhead')).toBeInTheDocument();
   expect(getByTestId('entities-tags')).toBeInTheDocument();
@@ -118,7 +118,7 @@ test('↪ Comments → Allow to save new comment thread', async () => {
   // wait for the new comment thread popover to show up
   await waitFor(() => document.getElementById('newThreadPopover'));
   // set new comment text as input value
-  fireEvent.change(getByPlaceholderText('New comment'), { target: { value: 'A new comment thread' } });
+  fireEvent.change(getByPlaceholderText('New note'), { target: { value: 'A new comment thread' } });
   // submit form
   fireEvent.click(getByText('Save'));
   // expect Save button to return the same value entered in the input field
@@ -158,7 +158,7 @@ test('↪ Comments → Allow to save reply to an existing comment thread', async
   // wait for comment popover to appear
   await waitFor(() => document.getElementById('markerEditPopover'));
   // set new comment text as input value
-  fireEvent.change(getByPlaceholderText('New comment'), {
+  fireEvent.change(getByPlaceholderText('New note'), {
     container: document.getElementById('markerEditPopover'),
     target: { value: 'A new comment' },
   });
@@ -215,13 +215,6 @@ test('↪ Comments → Allow to delete single comment', async () => {
   // wait for 'more actions' popover to appear
   await waitFor(() => document.getElementById('replyActionsPopover'));
 
-  // console.log('TODO:', document.getElementById('replyActionsPopover'));
-
-  // // click on the delete menu item
-  // fireEvent.click(getByText('Delete', { container: document.getElementById('replyActionsPopover') }));
-
-  // // expect function to return comment thread id and reply id specified above
-  // expect(onCommentDelete).toHaveReturnedWith({ threadId: 1, commentId: 2 });
 }).todo();
 
 test('↪ Comments → Allow to edit comment', async () => {}).todo();

@@ -47,7 +47,7 @@ export default function Form(props) {
             },
           }}
           onChange={onChange}
-          placeholder={isCreating ? 'New comment' : 'Enter comment'}
+          placeholder={isCreating ? 'New note' : 'Enter note'}
           required
           type="text"
         />

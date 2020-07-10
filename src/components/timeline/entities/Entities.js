@@ -112,12 +112,6 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
     props.onInstanceUpdate(types[type], entityId, instanceId, payload);
   };
 
-  // console.group('Entities');
-  // console.log({ props });
-  // console.log({ newEntity });
-  // console.log({ displayEntities });
-  // console.groupEnd();
-
   return (
     <TableSection
       plain={displayEntities.length > 0}

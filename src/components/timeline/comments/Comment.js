@@ -65,13 +65,11 @@ export default function Comment(props) {
   });
 
   const onCommentStop = () => {
-    // console.log('—— onCommentStop()');
     setEditingState(false);
     popupState.close();
   };
 
   const onCommentEditToggle = () => {
-    // console.log('—— onCommentEditToggle()');
     setEditingState(true);
     popupState.close();
   };

@@ -90,18 +90,6 @@ export default function MapControls({ anchorRef, entityName, entityShape = null,
           ),
         500
       );
-    } else {
-      // console.group('we’re here!');
-      // console.log({ shape });
-      // console.log({ loadedShape });
-      // console.groupEnd();
-      // const { type } = marker;
-      // const { lat, lng, viewport, zoom } = type === 'marker' ? marker : marker.polygon[0];
-      // setTimeout(() => {
-      //   setCenter({ lat, lng });
-      //   setZoom(zoom);
-      //   mapInstance.panToBounds(viewport);
-      // }, 100);
     }
   };
 
@@ -220,20 +208,6 @@ export default function MapControls({ anchorRef, entityName, entityShape = null,
       setCenter({ lat, lng });
     }
   }, [mapInstance]);
-
-  console.group('MapControls.js');
-  console.log({ center });
-  console.log({ loadedShape });
-  console.log({ shape });
-  console.log({ viewport });
-  console.log({ zoom });
-  // console.log(entityShape);
-  // console.log(mode);
-  // console.log(props.onBeforeRename);
-  // console.log(props.onDiscard);
-  // console.log(props.onUpdate);
-  // console.log(props);
-  console.groupEnd();
 
   return (
     <>
