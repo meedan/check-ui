@@ -56,13 +56,13 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
     });
   };
 
-  const onEntityCreate = (payload, callback) => {
+  const onEntityCreate = (payload, duration, callback) => {
     props.onEntityCreate(
       types[type],
       {
         ...(types[type] === 'place' ? payload.place : null),
         id: Date.now(),
-        fragment: `t=${currentTime},${currentTime + 30}&type=${type}`,
+        fragment: `t=${currentTime},${Math.min(duration, currentTime + 30)}&type=${type}`,
         [`project_${types[type]}`]: {
           name: payload.name,
         },
@@ -87,8 +87,8 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
   };
 
   // instance methods
-  const onInstanceCreate = (entityId, payload) => {
-    payload.fragment = `t=${currentTime},${currentTime + 30}&type=${type}`;
+  const onInstanceCreate = (entityId, payload, duration) => {
+    payload.fragment = `t=${currentTime},${Math.min(duration, currentTime + 30)}&type=${type}`;
 
     setNewInstance({
       ...payload,
@@ -165,11 +165,11 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
                 entityType={entityType}
                 existingEntityNames={existingEntityNames}
                 instances={instances}
-                onEntityCreate={onEntityCreate}
+                onEntityCreate={(payload, callback) => onEntityCreate(payload, duration, callback)}
                 onEntityDelete={callback => onEntityDelete(entityId, callback)}
                 onEntityStop={onEntityStop}
                 onEntityUpdate={(payload, callback) => onEntityUpdate(entityId, payload, callback)}
-                onInstanceCreate={payload => onInstanceCreate(entityId, payload)}
+                onInstanceCreate={payload => onInstanceCreate(entityId, payload, duration)}
                 sliderRect={sliderRect}
                 suggestions={suggestions}
               />
