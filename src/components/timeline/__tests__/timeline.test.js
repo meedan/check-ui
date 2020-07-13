@@ -37,10 +37,8 @@ const Component = props => (
 test('Timeline → Render w/ clips, comments, places, tags and playhead', () => {
   const { getByTestId } = render(<Component currentTime={1} />);
 
-  // expect playhead, clips, comments, places and tags to be rendered
-  expect(getByTestId('entities-clips')).toBeInTheDocument();
+  // expect timeline components to be rendered
   expect(getByTestId('entities-notes')).toBeInTheDocument();
-  expect(getByTestId('entities-places')).toBeInTheDocument();
   expect(getByTestId('entities-playhead')).toBeInTheDocument();
   expect(getByTestId('entities-tags')).toBeInTheDocument();
 });

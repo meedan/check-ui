@@ -53,27 +53,6 @@ export default function Timeline({ currentTime = 0, duration, playing = false, d
         user={user}
       />
       <Entities
-        activeInstanceId={props.activeInstanceId}
-        currentTime={currentTime}
-        duration={duration}
-        entities={videoClips}
-        onAfterChange={() => setSkip(false)}
-        onBeforeChange={() => setSkip(true)}
-        onEntityCreate={props.onEntityCreate}
-        onEntityDelete={props.onEntityDelete}
-        onEntityUpdate={props.onEntityUpdate}
-        onInstanceCreate={props.onInstanceCreate}
-        onInstanceDelete={props.onInstanceDelete}
-        onInstanceUpdate={props.onInstanceUpdate}
-        onPlaylistLaunch={() => props.onPlaylistLaunch('clips')}
-        onScrub={props.onScrub}
-        onTimeChange={props.onTimeChange}
-        playing={playing}
-        skip={skip}
-        suggestions={project.projectclips}
-        type="clips"
-      />
-      <Entities
         clips={videoClips}
         currentTime={currentTime}
         duration={duration}
@@ -94,28 +73,6 @@ export default function Timeline({ currentTime = 0, duration, playing = false, d
         skip={skip}
         suggestions={project.projecttags}
         type="tags"
-      />
-      <Entities
-        clips={videoClips}
-        currentTime={currentTime}
-        duration={duration}
-        entities={videoPlaces}
-        onAfterChange={() => setSkip(false)}
-        onBeforeChange={() => setSkip(true)}
-        onEntityCreate={props.onEntityCreate}
-        onEntityDelete={props.onEntityDelete}
-        onEntityUpdate={props.onEntityUpdate}
-        onInstanceClip={props.onInstanceClip}
-        onInstanceCreate={props.onInstanceCreate}
-        onInstanceDelete={props.onInstanceDelete}
-        onInstanceUpdate={props.onInstanceUpdate}
-        onPlaylistLaunch={() => props.onPlaylistLaunch('places')}
-        onScrub={props.onScrub}
-        onTimeChange={props.onTimeChange}
-        playing={playing}
-        skip={skip}
-        suggestions={project.projectplaces}
-        type="places"
       />
     </div>
   );
