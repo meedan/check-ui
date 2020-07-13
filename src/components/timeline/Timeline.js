@@ -62,7 +62,6 @@ export default function Timeline({ currentTime = 0, duration, playing = false, d
         onEntityCreate={props.onEntityCreate}
         onEntityDelete={props.onEntityDelete}
         onEntityUpdate={props.onEntityUpdate}
-        onInstanceClip={props.onInstanceClip}
         onInstanceCreate={props.onInstanceCreate}
         onInstanceDelete={props.onInstanceDelete}
         onInstanceUpdate={props.onInstanceUpdate}
