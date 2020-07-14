@@ -32,6 +32,7 @@ export default function Form(props) {
       <Grid item>
         <TextField
           autoFocus
+          autoComplete="off"
           defaultValue={comment}
           disabled={saving}
           fullWidth
