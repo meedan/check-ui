@@ -2,7 +2,7 @@ import Menu from 'material-ui-popup-state/HoverMenu';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import find from 'lodash/find';
-import { usePopupState, bindHover, bindMenu, bindPopover } from 'material-ui-popup-state/hooks';
+import { usePopupState, bindTrigger, bindMenu, bindPopover } from 'material-ui-popup-state/hooks';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
@@ -197,7 +197,7 @@ export default function Controls({
             <CircularProgress size={18} className={classes.circularProgress} />
           ) : (
             <>
-              <IconButton {...bindHover(morePopupState)} aria-label="More options…">
+              <IconButton {...bindTrigger(morePopupState)} aria-label="More options…">
                 <MoreVertIcon />
               </IconButton>
               <Menu
@@ -213,6 +213,7 @@ export default function Controls({
                   vertical: 'top',
                   horizontal: 'center',
                 }}
+                onMouseLeave={morePopupState.close}
                 varant="menu">
                 <MenuItem dense divider={entityType === 'place'} onClick={onInstanceCreate}>
                   Add highlight
