@@ -81,6 +81,7 @@ export default function Controls({
   };
   const onMouseLeave = () => {
     if (mode === 'hovering') setMode('read');
+    morePopupState?.close();
   };
 
   // utils
