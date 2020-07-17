@@ -16,6 +16,7 @@ export default function HandlePopover({ id, moveBackward, moveForward, popupStat
         vertical: 'top',
         horizontal: 'center',
       }}
+      disablePortal={true}
       id={id}
       transformOrigin={{
         vertical: 'bottom',

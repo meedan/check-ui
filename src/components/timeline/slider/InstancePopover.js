@@ -24,6 +24,7 @@ export default function InstancePopover({ instance, popupState, ...props }) {
         vertical: 'bottom',
         horizontal: 'center',
       }}
+      disablePortal={true}
       id="instancePopover"
       transformOrigin={{
         vertical: 'top',

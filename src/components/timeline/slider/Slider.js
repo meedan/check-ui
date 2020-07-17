@@ -23,7 +23,7 @@ export default function Slider({ activeInstanceId = null, duration, instances = 
 
   //
   const getRootRect = () => {
-    if (sliderRoot && sliderRoot.current) setRootRect(sliderRoot.current.getBoundingClientRect());
+    if (sliderRoot?.current) setRootRect(sliderRoot.current.getBoundingClientRect());
   };
 
   // get rootRect on component mount
