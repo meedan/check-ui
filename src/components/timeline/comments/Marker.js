@@ -46,6 +46,8 @@ export default function Marker(props) {
       vertical: 'top',
       horizontal: 'center',
     },
+    disableScrollLock: true,
+    hideBackdrop: true,
   };
 
   const onToggleActionable = e => {

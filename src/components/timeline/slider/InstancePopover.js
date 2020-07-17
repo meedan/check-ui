@@ -25,6 +25,8 @@ export default function InstancePopover({ instance, popupState, ...props }) {
         horizontal: 'center',
       }}
       disablePortal={true}
+      disableScrollLock={true}
+      hideBackdrop
       id="instancePopover"
       transformOrigin={{
         vertical: 'top',
