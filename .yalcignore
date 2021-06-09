@@ -1,1 +1,6 @@
-src/
+src
+jest*
+LICENSE
+utils
+webpack*
+yarn*
