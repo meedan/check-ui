@@ -1,0 +1,39 @@
+{
+  "name": "@meedan/check-ui",
+  "version": "0.0.85",
+  "main": "lib/index.js",
+  "repository": "git@github.com:meedan/check-ui.git",
+  "license": "MIT",
+  "dependencies": {
+    "@react-google-maps/api": "1.8.7",
+    "fast-deep-equal": "3.1.1",
+    "husky": "^4.2.5",
+    "lodash": "4.17.21",
+    "rc-slider": "9.2.4",
+    "react-player": "2.3.1"
+  },
+  "peerDependencies": {
+    "@material-ui/core": "^4.9.10",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.52",
+    "material-ui-popup-state": "1.5.4",
+    "react": "16.13.1",
+    "react-copy-to-clipboard": "5.0.2",
+    "react-dom": "16.13.1"
+  },
+  "scripts": {
+    "build": "webpack -p --config ./webpack.config.js && yalc publish --store-folder=.yalc",
+    "build-storybook": "build-storybook",
+    "deploy": "yarn run test && storybook-to-ghpages",
+    "start": "start-storybook -p 8080 --ci",
+    "test": "jest --json --outputFile=.jest-test-results.json || true",
+    "test:watch": "jest --watchAll --json --outputFile=.jest-test-results.json || true"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "yalcSig": "51afe705ad40232db568cec5786b6f96"
+}
