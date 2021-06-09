@@ -174,3 +174,6 @@ tmtags
 # Jest test results
 .jest-test-results.json
 __snapshots__
+
+# yalc folder for local dev
+.yalc/

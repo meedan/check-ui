@@ -7,6 +7,7 @@
   "dependencies": {
     "@react-google-maps/api": "1.8.7",
     "fast-deep-equal": "3.1.1",
+    "husky": "^4.2.5",
     "lodash": "4.17.21",
     "rc-slider": "9.2.4",
     "react-player": "2.3.1"
@@ -54,7 +55,6 @@
     "eslint-plugin-prettier": "3.1.3",
     "eslint-plugin-react": "7.19.0",
     "eslint-plugin-testing-library": "3.1.2",
-    "husky": "4.2.5",
     "identity-obj-proxy": "3.0.0",
     "jest": "25.3.0",
     "lint-staged": "10.1.5",
@@ -68,10 +68,11 @@
     "style-loader": "^1.2.1",
     "stylelint-prettier": "1.1.2",
     "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.11",
+    "yalc": "1.0.0-pre.53"
   },
   "scripts": {
-    "build": "webpack -p --config ./webpack.config.js",
+    "build": "webpack -p --config ./webpack.config.js && yalc publish --store-folder=.yalc",
     "build-storybook": "build-storybook",
     "deploy": "yarn run test && storybook-to-ghpages",
     "start": "start-storybook -p 8080 --ci",
