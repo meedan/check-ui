@@ -20,6 +20,16 @@ With the `check-web` docker container running, make whatever changes you need in
 
 When you make changes here and run the build, please be sure to commit the contents of both `lib/` and `.yalc/` as these are necessary for distribution.
 
+Run integration tests on `check-web` as normal.
+
+## To develop with `check-mark`
+
+With the `check-mark` docker container running, make whatever changes you need in `check-ui`, then run `npm run build`. When building `check-mark`, use the `npm run build:check-ui` command instead of the standard `npm run build`.
+
+When you make changes here and run the build, please be sure to commit the contents of both `lib/` and `.yalc/` as these are necessary for distribution.
+
+To run integration tests for `check-mark` while developing `check-ui`, temporarily change the `release:test` command in `check-mark` to use `npm run build:check-ui`.
+
 ## Running test watcher
 
 Some Storybook stories feature Jest test results. In order to see those results within Storybook, it is required to run test watcher in a separate terminal:
