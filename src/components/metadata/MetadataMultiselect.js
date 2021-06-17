@@ -106,6 +106,10 @@ function MetadataMultiselect({
     }
   }
 
+  function cleanup() {
+    setMetadataValue('');
+  }
+
   return (
     <>
       <FieldInformation/>
@@ -170,7 +174,7 @@ function MetadataMultiselect({
         <>
           <AnnotatorInformation />
           <EditButton />
-          <DeleteButton />
+          <DeleteButton onClick={cleanup} />
         </>
       ) : (
         <>

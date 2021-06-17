@@ -25,6 +25,10 @@ function MetadataNumber({
     setMetadataValue(e.target.value);
   }
 
+  function cleanup() {
+    setMetadataValue('');
+  }
+
   function isNumeric(value) {
     return !isNaN(+value) && isFinite(+value);
   }
@@ -39,7 +43,7 @@ function MetadataNumber({
           </Typography>
           <AnnotatorInformation />
           <EditButton />
-          <DeleteButton />
+          <DeleteButton onClick={cleanup} />
         </>
       ) : (
         <>

@@ -55,6 +55,10 @@ function MetadataDate({
     }
   }
 
+  function cleanup() {
+    setMetadataValue('');
+  }
+
   return (
     <>
       <FieldInformation />
@@ -65,7 +69,7 @@ function MetadataDate({
           </Typography>
           <AnnotatorInformation />
           <EditButton />
-          <DeleteButton />
+          <DeleteButton onClick={cleanup} />
         </>
       ) : (
         <MuiPickersUtilsProvider utils={DayJsUtils}>

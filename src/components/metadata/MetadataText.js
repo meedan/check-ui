@@ -25,6 +25,10 @@ function MetadataText({
     setMetadataValue(e.target.value);
   }
 
+  function cleanup() {
+    setMetadataValue('');
+  }
+
   return (
     <>
       <FieldInformation/>
@@ -35,7 +39,7 @@ function MetadataText({
           </Typography>
           <AnnotatorInformation />
           <EditButton />
-          <DeleteButton />
+          <DeleteButton onClick={cleanup} />
         </>
       ) : (
         <>
