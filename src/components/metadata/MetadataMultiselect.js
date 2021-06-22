@@ -6,6 +6,7 @@ import {
   FormGroup,
   FormControlLabel,
   Radio,
+  Grid
 } from '@material-ui/core';
 
 function MetadataMultiselect({
@@ -112,7 +113,7 @@ function MetadataMultiselect({
 
   return (
     <>
-      <FieldInformation/>
+      <FieldInformation />
       <FormGroup>
         {options.map((option) => {
           if (option.other) {
@@ -122,18 +123,12 @@ function MetadataMultiselect({
                   isSingle ? (
                     <Radio name="metadata_other" value={getSavedOtherValue()} />
                   ) : (
-                    <Checkbox
-                      name="metadata_other"
-                      value={metadataValue?.other}
-                    />
+                    <Checkbox name="metadata_other" value={metadataValue?.other} />
                   )
                 }
                 label={
                   !hasData || isEditing ? (
-                    <TextField
-                      value={otherText}
-                      onChange={handleOtherTextChange}
-                    />
+                    <TextField value={getSavedOtherValue()} onChange={handleOtherTextChange} />
                   ) : (
                     getSavedOtherValue()
                   )
@@ -171,16 +166,26 @@ function MetadataMultiselect({
         })}
       </FormGroup>
       {hasData && !isEditing ? (
-        <>
-          <AnnotatorInformation />
-          <EditButton />
-          <DeleteButton onClick={cleanup} />
-        </>
+        <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
+          <Grid item>
+            <EditButton />
+          </Grid>
+          <Grid item>
+            <DeleteButton onClick={cleanup} />
+          </Grid>
+          <Grid item xs>
+            <AnnotatorInformation />
+          </Grid>
+        </Grid>
       ) : (
-        <>
-          <CancelButton {...{ setOtherText }} />
-          <SaveButton {...{ mutationPayload }} />
-        </>
+        <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
+          <Grid item>
+            {otherText ? <CancelButton {...{ setOtherText }} /> : <CancelButton />}
+          </Grid>
+          <Grid item>
+            <SaveButton {...{ mutationPayload }} />
+          </Grid>
+        </Grid>
       )}
     </>
   );

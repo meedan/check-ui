@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, TextField } from '@material-ui/core';
+import { Typography, TextField, Grid } from '@material-ui/core';
 
 function MetadataText({
   node,
@@ -37,9 +37,17 @@ function MetadataText({
           <Typography variant="body1" className={classes.value}>
             {node.first_response_value}
           </Typography>
-          <AnnotatorInformation />
-          <EditButton />
-          <DeleteButton onClick={cleanup} />
+          <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
+            <Grid item>
+              <EditButton />
+            </Grid>
+            <Grid item>
+              <DeleteButton onClick={cleanup} />
+            </Grid>
+            <Grid item xs>
+              <AnnotatorInformation />
+            </Grid>
+          </Grid>
         </>
       ) : (
         <>
@@ -51,9 +59,14 @@ function MetadataText({
             value={metadataValue}
             onChange={handleChange}
           />
-          <br />
-          <CancelButton />
-          <SaveButton {...{ mutationPayload }} />
+          <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
+            <Grid item>
+              <CancelButton />
+            </Grid>
+            <Grid item>
+              <SaveButton {...{ mutationPayload }} />
+            </Grid>
+          </Grid>
         </>
       )}
     </>

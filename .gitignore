@@ -174,3 +174,6 @@ tmtags
 # Jest test results
 .jest-test-results.json
 __snapshots__
+
+# Yalc temporary packages
+.yalc/

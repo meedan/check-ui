@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, TextField } from '@material-ui/core';
+import { Typography, TextField, Grid } from '@material-ui/core';
 
 function MetadataNumber({
   node,
@@ -41,9 +41,17 @@ function MetadataNumber({
           <Typography variant="body1" className={classes.value}>
             {node.first_response_value}
           </Typography>
-          <AnnotatorInformation />
-          <EditButton />
-          <DeleteButton onClick={cleanup} />
+          <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
+            <Grid item>
+              <EditButton />
+            </Grid>
+            <Grid item>
+              <DeleteButton onClick={cleanup} />
+            </Grid>
+            <Grid item xs>
+              <AnnotatorInformation />
+            </Grid>
+          </Grid>
         </>
       ) : (
         <>
@@ -55,12 +63,17 @@ function MetadataNumber({
             value={metadataValue}
             onChange={handleChange}
           />
-          <br />
-          <CancelButton />
-          <SaveButton
-            {...{ mutationPayload }}
-            disabled={!metadataValue || !isNumeric(metadataValue)}
-          />
+          <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
+            <Grid item>
+              <CancelButton />
+            </Grid>
+            <Grid item>
+            <SaveButton
+              {...{ mutationPayload }}
+              disabled={!metadataValue || !isNumeric(metadataValue)}
+            />
+            </Grid>
+          </Grid>
         </>
       )}
     </>

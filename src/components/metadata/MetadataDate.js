@@ -5,6 +5,7 @@ import {
   MenuItem,
   Select,
   Typography,
+  Grid,
 } from '@material-ui/core';
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import dayjs from 'dayjs';
@@ -67,9 +68,17 @@ function MetadataDate({
           <Typography variant="body1" className={classes.value}>
             {node.first_response_value}
           </Typography>
-          <AnnotatorInformation />
-          <EditButton />
-          <DeleteButton onClick={cleanup} />
+          <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
+            <Grid item>
+              <EditButton />
+            </Grid>
+            <Grid item>
+              <DeleteButton onClick={cleanup} />
+            </Grid>
+            <Grid item xs>
+              <AnnotatorInformation />
+            </Grid>
+          </Grid>
         </>
       ) : (
         <MuiPickersUtilsProvider utils={DayJsUtils}>
@@ -90,9 +99,14 @@ function MetadataDate({
               ))}
             </Select>
           </FormControl>
-          <br />
-          <CancelButton />
-          <SaveButton {...{ mutationPayload }} />
+          <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
+            <Grid item>
+              <CancelButton />
+            </Grid>
+            <Grid item>
+              <SaveButton {...{ mutationPayload }} />
+            </Grid>
+          </Grid>
         </MuiPickersUtilsProvider>
       )}
     </>

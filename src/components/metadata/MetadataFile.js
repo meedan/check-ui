@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Box } from '@material-ui/core';
+import { Typography, Box, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -94,9 +94,17 @@ function MetadataFile({
               {node.first_response_value}
             </a>
           </Typography>
-          <AnnotatorInformation />
-          <EditButton />
-          <DeleteButton />
+          <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
+            <Grid item>
+              <EditButton />
+            </Grid>
+            <Grid item>
+              <DeleteButton />
+            </Grid>
+            <Grid item xs>
+              <AnnotatorInformation />
+            </Grid>
+          </Grid>
         </>
       ) : (
         <>
@@ -111,13 +119,18 @@ function MetadataFile({
               <RenderDrop />
             )}
           </Box>
-          <br />
-          <CancelButton />
-          <SaveButton
-            {...{ mutationPayload }}
-            uploadables={{ 'file[]': file }}
-            disabled={error.message !== null}
-          />
+          <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
+            <Grid item>
+              <CancelButton />
+            </Grid>
+            <Grid item>
+              <SaveButton
+                {...{ mutationPayload }}
+                uploadables={{ 'file[]': file }}
+                disabled={error.message !== null}
+              />
+            </Grid>
+          </Grid>
         </>
       )}
     </>

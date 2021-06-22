@@ -18,7 +18,7 @@ $ npm install && npm run start
 
 With the `check-web` docker container running, make whatever changes you need in `check-ui`, then run `npm run build`. Now link the new change in the docker container by running `docker-compose exec web npm run link:ui`. The `check-web` webpack will rebuild and the new build will reflect your changes (you may need to reload your browser running Check).
 
-When you make changes here and run the build, please be sure to commit the contents of both `lib/` and `.yalc/` as these are necessary for distribution.
+When you make changes here and are preparing to distribute via npm, please be sure to commit the contents of both `lib/` as these are necessary for distribution. Also be sure to increment the `version` field in `package.json`.
 
 Run integration tests on `check-web` as normal.
 
@@ -26,7 +26,7 @@ Run integration tests on `check-web` as normal.
 
 With the `check-mark` docker container running, make whatever changes you need in `check-ui`, then run `npm run build`. When building `check-mark`, use the `npm run build:check-ui` command instead of the standard `npm run build`.
 
-When you make changes here and run the build, please be sure to commit the contents of both `lib/` and `.yalc/` as these are necessary for distribution.
+When you make changes here and are preparing to distribute via npm, please be sure to commit the contents of both `lib/` as these are necessary for distribution. Also be sure to increment the `version` field in `package.json`.
 
 To run integration tests for `check-mark` while developing `check-ui`, temporarily change the `release:test` command in `check-mark` to use `npm run build:check-ui`.
 

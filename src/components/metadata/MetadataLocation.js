@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, TextField } from '@material-ui/core';
+import { Typography, TextField, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -194,9 +194,17 @@ function MetadataLocation({
             src={`https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${longitude},${latitude},10,0,0/500x500?access_token=${mapboxApiKey}`}
             alt=""
           />
-          <AnnotatorInformation />
-          <EditButton />
-          <DeleteButton onClick={cleanup} />
+          <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
+            <Grid item>
+              <EditButton />
+            </Grid>
+            <Grid item>
+              <DeleteButton onClick={cleanup} />
+            </Grid>
+            <Grid item xs>
+              <AnnotatorInformation />
+            </Grid>
+          </Grid>
         </>
       ) : (
         <>
@@ -220,9 +228,14 @@ function MetadataLocation({
             helperText={coordinates.error ? messages.coordinatesHelper : null}
           />
           <div id="map-edit" className={classes.map}></div>
-          <br />
-          <CancelButton />
-          <SaveButton {...{ mutationPayload }} disabled={coordinates.error || !nameText} />
+          <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
+            <Grid item>
+              <CancelButton />
+            </Grid>
+            <Grid item>
+              <SaveButton {...{ mutationPayload }} disabled={coordinates.error || !nameText} />
+            </Grid>
+          </Grid>
         </>
       )}
     </>
