@@ -66,6 +66,7 @@
   "scripts": {
     "build": "webpack -p --config ./webpack.config.js && yalc publish --store-folder=.yalc",
     "test": "jest --json --outputFile=.jest-test-results.json || true",
+    "lint": "eslint src/components/metadata && eslint src/components/upload",
     "test:watch": "jest --watchAll --json --outputFile=.jest-test-results.json || true"
   },
   "lint-staged": {

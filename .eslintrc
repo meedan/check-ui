@@ -1,5 +1,22 @@
 {
+  "env": {
+    "es2020": true,
+    "node": true,
+    "browser": true,
+  },
   "parser": "babel-eslint",
-  "extends": ["prettier", "plugin:testing-library/react"],
-  "plugins": ["testing-library"]
+  "extends": ["eslint:recommended", "prettier", "plugin:react/recommended"],
+  "parserOptions": {
+    "ecmaFeatures": {
+        "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["testing-library"],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
 }
