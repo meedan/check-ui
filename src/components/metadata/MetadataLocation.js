@@ -14,6 +14,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     width: '100%',
   },
+  map: {
+    width: '100%',
+    height: '500px',
+  },
 }));
 
 // required for the Leaflet map pin icon images
