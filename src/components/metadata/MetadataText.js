@@ -29,13 +29,20 @@ function MetadataText({
     setMetadataValue('');
   }
 
+  function linkify(plainText) {
+    // regexes modified from https://stackoverflow.com/a/3809435/4869657, adding word boundaries and greedy operator
+    // this regex replacement uses capture groups. $1 is the entire captured url within the word boundary. $2 is the captured protocol, and $4 is the post-protocol portion of the url. By using the `//` "protocol-relative url" scheme, we end up direction cases of `example.com` to `https://example.com` since Check is served on an https url.
+    const parsedText = plainText.replace(/\b((http:|https:)?(\/\/)?((www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)))\b/g,'<a href="$2//$4">$1</a>');
+    return <span dangerouslySetInnerHTML={{ __html: parsedText }} />;
+  }
+
   return (
     <>
       <FieldInformation/>
       {hasData && !isEditing ? (
         <>
           <Typography variant="body1" className={classes.value}>
-            {node.first_response_value}
+            {linkify(node.first_response_value)}
           </Typography>
           <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
             <Grid item>
