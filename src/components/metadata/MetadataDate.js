@@ -32,7 +32,7 @@ function MetadataDate({
     annotation_type: 'task_response_datetime',
     set_fields: `{"response_datetime":"${metadataValue}"}`,
   };
-  const options = node.options;
+  const options = node.options || [{ code: "UTC", label: "UTC (0 GMT)", offset: 0 }];
   // Use GMT as default time zone if none set
   const [timeZoneOffset, setTimeZoneOffset] = React.useState(0);
   const [displayDateTime, setDisplayDateTime] = React.useState(dayjs());
