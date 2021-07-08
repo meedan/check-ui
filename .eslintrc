@@ -18,5 +18,8 @@
     "react": {
       "version": "detect"
     }
+  },
+  "rules": {
+    "no-console": ["error", { allow: ["warn", "error"] }]
   }
 }

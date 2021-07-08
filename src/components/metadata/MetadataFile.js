@@ -29,8 +29,6 @@ function MetadataFile({
     response_file_upload: JSON.stringify(metadataValue),
   };
 
-  console.log(hasData, isEditing, node);
-
   return (
     <>
       <FieldInformation />

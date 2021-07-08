@@ -29,7 +29,6 @@ function Upload({
   const maxFileSize = { bytes: 1048576, label: '1.0 MB' };
 
   function handleDrop(e) {
-    console.log('hiiiiiiiiiiii', e);
     e.preventDefault();
     if (e.dataTransfer.items.length > 1) {
       setError({ message: messages.errorTooManyFiles });
@@ -44,7 +43,6 @@ function Upload({
             setError({ message: null });
             setFile(fileData);
             setMetadataValue(fileData.name);
-            console.log('we set it');
           } else {
             setError({ message: messages.errorFileTooBig });
           }
@@ -70,8 +68,6 @@ function Upload({
       <Typography variant="body1">{messages.dropFile}</Typography>
     );
   }
-
-  console.log('~~~', isEditing, fileUrl, fileName);
 
   return (
     <>
