@@ -17,6 +17,7 @@ function Upload({
   fileUrl,
   isEditing,
   extensions,
+  fileSizeMax,
   errorMessage,
   setMetadataValue,
   setError,
@@ -25,9 +26,6 @@ function Upload({
 }) {
   const classes = useStyles();
 
-  // 1.0 MB max file size
-  const maxFileSize = { bytes: 1048576, label: '1.0 MB' };
-
   function handleDrop(e) {
     e.preventDefault();
     if (e.dataTransfer.items.length > 1) {
@@ -35,11 +33,11 @@ function Upload({
     } else {
       if (e.dataTransfer.items[0].kind === 'file') {
         const fileData = e.dataTransfer.items[0].getAsFile();
-        const fileExtensionMatch = fileData.name?.match(/\.(\w*)$/);
+        const fileExtensionMatch = fileData.name?.match(/\.(\w*)$/i);
         const fileExtension =
           fileExtensionMatch?.length > 1 ? fileExtensionMatch[1] : '';
-        if (extensions.list.includes(fileExtension)) {
-          if (fileData.size < maxFileSize.bytes) {
+        if (extensions.list.includes(fileExtension.toLowerCase())) {
+          if (fileData.size < fileSizeMax) {
             setError({ message: null });
             setFile(fileData);
             setMetadataValue(fileData.name);
@@ -98,6 +96,7 @@ Upload.propTypes = {
   file: PropTypes.object,
   fileUrl: PropTypes.string,
   fileName: PropTypes.string,
+  fileSizeMax: PropTypes.number,
   errorMessage: PropTypes.string,
   extensions: PropTypes.string.isRequired,
   isEditing: PropTypes.bool,

@@ -17,6 +17,7 @@ function MetadataFile({
   setMetadataValue,
   extensions,
   messages,
+  fileSizeMax,
 }) {
   const [error, setError] = React.useState({ message: null });
   const [file, setFile] = React.useState({});
@@ -38,7 +39,7 @@ function MetadataFile({
             fileUrl={node.first_response?.file_data[0]}
             fileName={node.first_response_value}
             errorMessage={error.message}
-            {...{ extensions, messages, setMetadataValue, setError, setFile}}
+            {...{ extensions, messages, setMetadataValue, setError, setFile, fileSizeMax}}
           />
           <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
             <Grid item>
@@ -57,7 +58,7 @@ function MetadataFile({
           <Upload
             isEditing
             errorMessage={error.message}
-            {...{ file, extensions, messages, setMetadataValue, setError, setFile}}
+            {...{ file, extensions, messages, setMetadataValue, setError, setFile, fileSizeMax}}
           />
           <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
             <Grid item>
@@ -91,6 +92,7 @@ MetadataFile.propTypes = {
   setMetadataValue: PropTypes.func.isRequired,
   extensions: PropTypes.string.isRequired,
   messages: PropTypes.object.isRequired,
+  fileSizeMax: PropTypes.number.isRequired,
 };
 
 export default MetadataFile;
