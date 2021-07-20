@@ -7,6 +7,7 @@ import MetadataLocation from './metadata/MetadataLocation.js';
 import MetadataMultiselect from './metadata/MetadataMultiselect.js';
 import MetadataNumber from './metadata/MetadataNumber.js';
 import MetadataText from './metadata/MetadataText.js';
+import MultiSelector from './pickers/MultiSelector';
 
 export {
   Timeline,
@@ -18,4 +19,5 @@ export {
   MetadataMultiselect,
   MetadataNumber,
   MetadataText,
+  MultiSelector,
 };
