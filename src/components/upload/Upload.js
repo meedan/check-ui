@@ -8,6 +8,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     border: '2px dashed',
     minHeight: '100px',
+    cursor: 'pointer',
   },
 }));
 
@@ -26,6 +27,34 @@ function Upload({
 }) {
   const classes = useStyles();
 
+  function validateAndSetFile(fileData) {
+    const fileExtensionMatch = fileData.name?.match(/\.(\w*)$/i);
+    const fileExtension =
+      fileExtensionMatch?.length > 1 ? fileExtensionMatch[1] : '';
+    if (extensions.list.includes(fileExtension.toLowerCase())) {
+      if (fileData.size < fileSizeMax) {
+        setError({ message: null });
+        setFile(fileData);
+        setMetadataValue(fileData.name);
+      } else {
+        setError({ message: messages.errorFileTooBig });
+      }
+    } else {
+      setError({ message: messages.errorFileType });
+    }
+  }
+
+  function handleInputChange(e) {
+    if (e.target.files && e.target.files[0]) {
+      const fileData = e.target.files[0];
+      validateAndSetFile(fileData);
+    }
+  }
+
+  const fileSelector = document.createElement('input');
+  fileSelector.setAttribute('type', 'file');
+  fileSelector.onchange = handleInputChange;
+
   function handleDrop(e) {
     e.preventDefault();
     if (e.dataTransfer.items.length > 1) {
@@ -33,20 +62,7 @@ function Upload({
     } else {
       if (e.dataTransfer.items[0].kind === 'file') {
         const fileData = e.dataTransfer.items[0].getAsFile();
-        const fileExtensionMatch = fileData.name?.match(/\.(\w*)$/i);
-        const fileExtension =
-          fileExtensionMatch?.length > 1 ? fileExtensionMatch[1] : '';
-        if (extensions.list.includes(fileExtension.toLowerCase())) {
-          if (fileData.size < fileSizeMax) {
-            setError({ message: null });
-            setFile(fileData);
-            setMetadataValue(fileData.name);
-          } else {
-            setError({ message: messages.errorFileTooBig });
-          }
-        } else {
-          setError({ message: messages.errorFileType });
-        }
+        validateAndSetFile(fileData);
       } else {
         setError({ message: messages.errorInvalidFile });
       }
@@ -55,6 +71,10 @@ function Upload({
 
   function handleDragOver(e) {
     e.preventDefault();
+  }
+
+  function handleClick() {
+    fileSelector.click();
   }
 
   function RenderDrop() {
@@ -74,6 +94,7 @@ function Upload({
           className={classes.dropZone}
           onDrop={handleDrop}
           onDragOver={handleDragOver}
+          onClick={handleClick}
         >
           {errorMessage ? (
             <Typography variant="body1">{errorMessage}</Typography>
