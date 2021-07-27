@@ -8,9 +8,16 @@ import {
   Grid,
 } from '@material-ui/core';
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { makeStyles } from '@material-ui/core/styles';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import DayJsUtils from '@date-io/dayjs';
+
+const useStyles = makeStyles((theme) => ({
+  timeZoneSelect: {
+    marginTop: theme.spacing(2),
+  },
+}));
 
 dayjs.extend(utc);
 
@@ -33,8 +40,9 @@ function MetadataDate({
     set_fields: `{"response_datetime":"${metadataValue}"}`,
   };
   const options = node.options || [{ code: "UTC", label: "UTC (0 GMT)", offset: 0 }];
-  // Use GMT as default time zone if none set
-  const [timeZoneOffset, setTimeZoneOffset] = React.useState(0);
+  const _classes = useStyles();
+  // Use first time zone as default setting; if no time zone for some reason use GMT
+  const [timeZoneOffset, setTimeZoneOffset] = React.useState(node.options?.length > 0 ? node.options[0].offset : 0);
   const [displayDateTime, setDisplayDateTime] = React.useState(dayjs());
   if (!metadataValue) {
     setMetadataValue(
@@ -89,6 +97,7 @@ function MetadataDate({
               inputVariant="outlined"
             />
             <Select
+              className={_classes.timeZoneSelect}
               value={timeZoneOffset}
               onChange={handleTimeZoneOffsetChange}
             >
