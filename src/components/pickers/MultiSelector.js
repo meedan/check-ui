@@ -68,7 +68,11 @@ class MultiSelector extends React.Component {
     } else {
       selected = null;
     }
-    this.setState({ selected });
+    this.setState({ selected }, () => {
+      if (this.props.onSelectChange) {
+        this.props.onSelectChange(selected);
+      }
+    });
   };
 
   handleToggleAll = () => {
@@ -86,7 +90,11 @@ class MultiSelector extends React.Component {
   addItem = (value) => {
     const selected = [...this.state.selected];
     selected.push(value);
-    this.setState({ selected });
+    this.setState({ selected }, () => {
+      if (this.props.onSelectChange) {
+        this.props.onSelectChange(selected);
+      }
+    });
   };
 
   removeItem = (value) => {
@@ -95,7 +103,11 @@ class MultiSelector extends React.Component {
     if (index > -1) {
       selected.splice(index, 1);
     }
-    this.setState({ selected });
+    this.setState({ selected }, () => {
+      if (this.props.onSelectChange) {
+        this.props.onSelectChange(selected);
+      }
+    });
   };
 
   filter = (options) => {
@@ -226,6 +238,7 @@ MultiSelector.defaultProps = {
   inputPlaceholder: null,
   onDismiss: null,
   onSearchChange: null,
+  onSelectChange: null,
   toggleAllLabel: null,
 };
 
@@ -247,6 +260,7 @@ MultiSelector.propTypes = {
   submitLabel: PropTypes.node.isRequired,
   onDismiss: PropTypes.func,
   onSearchChange: PropTypes.func,
+  onSelectChange: PropTypes.func,
   onSubmit: PropTypes.func.isRequired,
   toggleAllLabel: PropTypes.node,
 };
