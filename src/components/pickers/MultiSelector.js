@@ -90,6 +90,13 @@ class MultiSelector extends React.Component {
   addItem = (value) => {
     const selected = [...this.state.selected];
     selected.push(value);
+
+    this.props.options.forEach((o) => {
+      if (o.parent === value) {
+        selected.push(o.value);
+      }
+    });
+
     this.setState({ selected }, () => {
       if (this.props.onSelectChange) {
         this.props.onSelectChange(selected);
@@ -103,6 +110,23 @@ class MultiSelector extends React.Component {
     if (index > -1) {
       selected.splice(index, 1);
     }
+
+    console.log('removeItem', value);
+
+    if (value === 'any_tipline'){
+      this.props.options.forEach((o) => {
+        if (o.parent === value) {
+          const childIndex = selected.indexOf(o.value);
+          console.log('childIndex', childIndex);
+          if (childIndex > -1) {
+            selected.splice(childIndex, 1);
+          }
+        }
+      });
+    }
+
+    console.log('selected', selected);
+
     this.setState({ selected }, () => {
       if (this.props.onSelectChange) {
         this.props.onSelectChange(selected);
