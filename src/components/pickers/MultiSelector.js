@@ -178,6 +178,10 @@ class MultiSelector extends React.Component {
                     </span>
                   );
                 }
+                const icons = {};
+                if (o.icon) icons.icon = o.icon;
+                if (o.checkedIcon) icons.checkedIcon = o.checkedIcon;
+
                 return (
                   <FormControlLabel
                     key={`multiselector-option-${index.toString()}`}
@@ -186,13 +190,13 @@ class MultiSelector extends React.Component {
                         checked={this.state.selected === o.value}
                         onChange={this.handleSelectRadio}
                         id={o.value}
+                        {...icons}
                       /> :
                       <Checkbox
                         checked={this.state.selected.indexOf(o.value) > -1}
                         onChange={this.handleSelectCheckbox}
                         id={o.value}
-                        icon={o.icon}
-                        checkedIcon={o.checkedIcon}
+                        {...icons}
                       />
                     }
                     label={o.label}
