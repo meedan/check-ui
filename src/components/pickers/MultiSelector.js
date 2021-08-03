@@ -40,8 +40,12 @@ class MultiSelector extends React.Component {
       ? props.options.filter(o => o.value !== '').map(o => o.value)
       : [];
 
+    const parents = props.options.filter(o => o.hasChildren).map(o => o.value);
+    const selectedParents = props.selected.filter(p => parents.includes(p));
+    const childrenOfSelectedParents = props.options.filter(o => selectedParents.includes(o.parent)).map(o => o.value);
+
     this.state = {
-      selected: props.selected.length ? props.selected : defaultSelected,
+      selected: props.selected.length ? props.selected.concat(childrenOfSelectedParents) : defaultSelected,
       filter: '',
     };
   }
@@ -90,6 +94,13 @@ class MultiSelector extends React.Component {
   addItem = (value) => {
     const selected = [...this.state.selected];
     selected.push(value);
+
+    this.props.options.forEach((o) => {
+      if (o.parent === value && !selected.includes(o.value)) {
+        selected.push(o.value);
+      }
+    });
+
     this.setState({ selected }, () => {
       if (this.props.onSelectChange) {
         this.props.onSelectChange(selected);
@@ -99,10 +110,27 @@ class MultiSelector extends React.Component {
 
   removeItem = (value) => {
     const selected = [...this.state.selected];
+
+    // Remove item
     const index = selected.indexOf(value);
-    if (index > -1) {
-      selected.splice(index, 1);
+    if (index > -1) selected.splice(index, 1);
+
+    const valueOption = this.props.options.find(o => o.value === value);
+
+    // If it's a parent remove all its children
+    if (valueOption.hasChildren) {
+      this.props.options.forEach((o) => {
+        if (o.parent === value) {
+          const childIndex = selected.indexOf(o.value);
+          if (childIndex > -1) selected.splice(childIndex, 1);
+        }
+      });
+    // If it's a child remove its parent
+    } else if (valueOption.parent) {
+      const parentIndex = selected.indexOf(valueOption.parent);
+      if (parentIndex > -1) selected.splice(parentIndex, 1);
     }
+
     this.setState({ selected }, () => {
       if (this.props.onSelectChange) {
         this.props.onSelectChange(selected);
