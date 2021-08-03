@@ -31,6 +31,9 @@ const styles = theme => ({
     color: '#757575',
     marginTop: `${theme.spacing(1)} !important`,
   },
+  child: {
+    marginLeft: theme.spacing(2),
+  },
 });
 
 class MultiSelector extends React.Component {
@@ -226,6 +229,7 @@ class MultiSelector extends React.Component {
                 return (
                   <FormControlLabel
                     key={`multiselector-option-${index.toString()}`}
+                    className={o.parent ? classes.child : ''}
                     control={this.props.single ?
                       <Radio
                         checked={this.state.selected === o.value}
@@ -300,6 +304,7 @@ MultiSelector.propTypes = {
   options: PropTypes.arrayOf(PropTypes.shape({
     value: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
+    parent: PropTypes.string,
   })).isRequired,
   selected: PropTypes.arrayOf(PropTypes.string).isRequired,
   submitLabel: PropTypes.node.isRequired,
