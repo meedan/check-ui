@@ -95,7 +95,7 @@ class MultiSelector extends React.Component {
   };
 
   addItem = (value) => {
-    const selected = [...this.state.selected];
+    let selected = [...this.state.selected];
     selected.push(value);
 
     this.props.options.forEach((o) => {
@@ -103,6 +103,19 @@ class MultiSelector extends React.Component {
         selected.push(o.value);
       }
     });
+
+    const valueOption = this.props.options.find(o => o.value === value);
+
+    if (valueOption.exclusive) {
+      selected = [value];
+    } else {
+      this.props.options.forEach((o) => {
+        if (o.exclusive) {
+          const exclusiveIndex = selected.indexOf(o.value);
+          if (exclusiveIndex > -1) selected.splice(exclusiveIndex, 1);
+        }
+      });
+    }
 
     this.setState({ selected }, () => {
       if (this.props.onSelectChange) {
@@ -209,6 +222,10 @@ class MultiSelector extends React.Component {
                     </span>
                   );
                 }
+                const icons = {};
+                if (o.icon) icons.icon = o.icon;
+                if (o.checkedIcon) icons.checkedIcon = o.checkedIcon;
+
                 return (
                   <FormControlLabel
                     key={`multiselector-option-${index.toString()}`}
@@ -218,13 +235,13 @@ class MultiSelector extends React.Component {
                         checked={this.state.selected === o.value}
                         onChange={this.handleSelectRadio}
                         id={o.value}
+                        {...icons}
                       /> :
                       <Checkbox
                         checked={this.state.selected.indexOf(o.value) > -1}
                         onChange={this.handleSelectCheckbox}
                         id={o.value}
-                        icon={o.icon}
-                        checkedIcon={o.checkedIcon}
+                        {...icons}
                       />
                     }
                     label={o.label}
