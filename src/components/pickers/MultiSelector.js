@@ -92,7 +92,7 @@ class MultiSelector extends React.Component {
   };
 
   addItem = (value) => {
-    const selected = [...this.state.selected];
+    let selected = [...this.state.selected];
     selected.push(value);
 
     this.props.options.forEach((o) => {
@@ -100,6 +100,19 @@ class MultiSelector extends React.Component {
         selected.push(o.value);
       }
     });
+
+    const valueOption = this.props.options.find(o => o.value === value);
+
+    if (valueOption.exclusive) {
+      selected = [value];
+    } else {
+      this.props.options.forEach((o) => {
+        if (o.exclusive) {
+          const exclusiveIndex = selected.indexOf(o.value);
+          if (exclusiveIndex > -1) selected.splice(exclusiveIndex, 1);
+        }
+      });
+    }
 
     this.setState({ selected }, () => {
       if (this.props.onSelectChange) {
