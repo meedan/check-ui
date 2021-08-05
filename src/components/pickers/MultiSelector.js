@@ -123,7 +123,7 @@ class MultiSelector extends React.Component {
       if (parentIndex === -1) {
         const childrenValues = this.props.options.filter(o => o.parent == valueOption.parent).map(o => o.value);
         const mixedSet = new Set([...selected, ...childrenValues]);
-        if (mixedSet.size == selected.length) selected.push(valueOption.parent);
+        if (mixedSet.size === selected.length) selected.push(valueOption.parent);
       }
     }
 
