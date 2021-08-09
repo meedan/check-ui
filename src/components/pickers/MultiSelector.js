@@ -117,6 +117,16 @@ class MultiSelector extends React.Component {
       });
     }
 
+    // add parent item if all children selected
+    if (valueOption.parent) {
+      const parentIndex = selected.indexOf(valueOption.parent);
+      if (parentIndex === -1) {
+        const childrenValues = this.props.options.filter(o => o.parent == valueOption.parent).map(o => o.value);
+        const mixedSet = new Set([...selected, ...childrenValues]);
+        if (mixedSet.size === selected.length) selected.push(valueOption.parent);
+      }
+    }
+
     this.setState({ selected }, () => {
       if (this.props.onSelectChange) {
         this.props.onSelectChange(selected);
