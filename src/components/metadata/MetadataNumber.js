@@ -15,6 +15,7 @@ function MetadataNumber({
   isEditing,
   metadataValue,
   setMetadataValue,
+  disabled,
 }) {
   const mutationPayload = {
     annotation_type: 'task_response_number',
@@ -62,6 +63,7 @@ function MetadataNumber({
             variant="outlined"
             value={metadataValue}
             onChange={handleChange}
+            disabled={disabled}
           />
           <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
             <Grid item>
@@ -80,9 +82,14 @@ function MetadataNumber({
   );
 }
 
+MetadataNumber.defaultProps = {
+  disabled: false,
+};
+
 MetadataNumber.propTypes = {
   node: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
+  disabled: PropTypes.bool,
   EditButton: PropTypes.element.isRequired,
   DeleteButton: PropTypes.element.isRequired,
   CancelButton: PropTypes.element.isRequired,

@@ -15,6 +15,7 @@ function MetadataText({
   isEditing,
   metadataValue,
   setMetadataValue,
+  disabled,
 }) {
   const mutationPayload = {
     annotation_type: 'task_response_free_text',
@@ -65,6 +66,7 @@ function MetadataText({
             variant="outlined"
             value={metadataValue}
             onChange={handleChange}
+            disabled={disabled}
           />
           <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
             <Grid item>
@@ -80,9 +82,14 @@ function MetadataText({
   );
 }
 
+MetadataText.defaultProps = {
+  disabled: false,
+};
+
 MetadataText.propTypes = {
   node: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
+  disabled: PropTypes.bool,
   EditButton: PropTypes.element.isRequired,
   DeleteButton: PropTypes.element.isRequired,
   CancelButton: PropTypes.element.isRequired,

@@ -22,6 +22,7 @@ function MetadataMultiselect({
   AnnotatorInformation,
   FieldInformation,
   isSingle,
+  disabled,
 }) {
   let mutationPayload = {};
 
@@ -138,7 +139,7 @@ function MetadataMultiselect({
                     ? otherText.length > 0 && metadataValue === otherText
                     : metadataValue?.other
                 }
-                disabled={hasData && !isEditing}
+                disabled={disabled || (hasData && !isEditing)}
                 onChange={isSingle ? handleSingleChange : handleMultiChange}
               />
             );
@@ -158,7 +159,7 @@ function MetadataMultiselect({
                     ? option.label === metadataValue
                     : metadataValue?.selected?.indexOf(option.label) > -1
                 }
-                disabled={hasData && !isEditing}
+                disabled={disabled || (hasData && !isEditing)}
                 onChange={isSingle ? handleSingleChange : handleMultiChange}
               />
             );
