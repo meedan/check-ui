@@ -129,7 +129,11 @@ function MetadataMultiselect({
                 }
                 label={
                   !hasData || isEditing ? (
-                    <TextField value={getSavedOtherValue()} onChange={handleOtherTextChange} />
+                    <TextField
+                      disabled={disabled}
+                      value={getSavedOtherValue()}
+                      onChange={handleOtherTextChange}
+                    />
                   ) : (
                     getSavedOtherValue()
                   )
@@ -192,8 +196,13 @@ function MetadataMultiselect({
   );
 }
 
+MetadataMultiselect.defaultProps = {
+  disabled: false,
+};
+
 MetadataMultiselect.propTypes = {
   node: PropTypes.object.isRequired,
+  disabled: PropTypes.bool,
   hasData: PropTypes.bool.isRequired,
   isEditing: PropTypes.bool.isRequired,
   metadataValue: PropTypes.string.isRequired,
