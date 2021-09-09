@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     height: '500px',
   },
+  marginBottom: {
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 // required for the Leaflet map pin icon images
@@ -42,6 +45,7 @@ function MetadataLocation({
   setMetadataValue,
   mapboxApiKey,
   messages,
+  disabled,
 }) {
   const classes = useStyles();
   const [firstMapRender, setFirstMapRender] = React.useState(true);
@@ -212,8 +216,20 @@ function MetadataLocation({
         </>
       ) : (
         <>
-          <AutocompleteLocation {...{ setNameText, setCoordinates, map, mapboxApiKey, messages }} />
+          <div className={classes.marginBottom}>
+            <AutocompleteLocation
+              {...{
+                disabled,
+                setNameText,
+                setCoordinates,
+                map,
+                mapboxApiKey,
+                messages,
+              }}
+            />
+          </div>
           <TextField
+            className={classes.marginBottom}
             fullWidth
             label={messages.customize}
             variant="outlined"
@@ -221,8 +237,10 @@ function MetadataLocation({
             onChange={handleNameChange}
             error={!nameText}
             helperText={!nameText ? 'Please enter a name for this location.' : null}
+            disabled={disabled}
           />
           <TextField
+            className={classes.marginBottom}
             fullWidth
             label={messages.coordinates}
             variant="outlined"
@@ -230,6 +248,7 @@ function MetadataLocation({
             onChange={handleLatLngChange}
             error={coordinates.error}
             helperText={coordinates.error ? messages.coordinatesHelper : null}
+            disabled={disabled}
           />
           <div id="map-edit" className={classes.map}></div>
           <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
