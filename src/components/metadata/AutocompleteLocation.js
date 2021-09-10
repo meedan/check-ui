@@ -4,7 +4,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { TextField, CircularProgress } from '@material-ui/core';
 
 function AutocompleteLocation(props) {
-  const { setNameText, setCoordinates, map, mapboxApiKey, messages } = props;
+  const { setNameText, setCoordinates, map, mapboxApiKey, messages, disabled } = props;
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
   const [searchText, setSearchText] = React.useState('');
@@ -48,6 +48,7 @@ function AutocompleteLocation(props) {
   return (
     <Autocomplete
       fullWidth
+      disabled={disabled}
       open={open}
       onOpen={() => {
         setOpen(true);

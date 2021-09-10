@@ -22,6 +22,7 @@ function MetadataMultiselect({
   AnnotatorInformation,
   FieldInformation,
   isSingle,
+  disabled,
 }) {
   let mutationPayload = {};
 
@@ -128,7 +129,11 @@ function MetadataMultiselect({
                 }
                 label={
                   !hasData || isEditing ? (
-                    <TextField value={getSavedOtherValue()} onChange={handleOtherTextChange} />
+                    <TextField
+                      disabled={disabled}
+                      value={getSavedOtherValue()}
+                      onChange={handleOtherTextChange}
+                    />
                   ) : (
                     getSavedOtherValue()
                   )
@@ -138,7 +143,7 @@ function MetadataMultiselect({
                     ? otherText?.length > 0 && metadataValue === otherText
                     : metadataValue?.other
                 }
-                disabled={hasData && !isEditing}
+                disabled={disabled || (hasData && !isEditing)}
                 onChange={isSingle ? handleSingleChange : handleMultiChange}
               />
             );
@@ -158,7 +163,7 @@ function MetadataMultiselect({
                     ? option.label === metadataValue
                     : metadataValue?.selected?.indexOf(option.label) > -1
                 }
-                disabled={hasData && !isEditing}
+                disabled={disabled || (hasData && !isEditing)}
                 onChange={isSingle ? handleSingleChange : handleMultiChange}
               />
             );
@@ -191,8 +196,13 @@ function MetadataMultiselect({
   );
 }
 
+MetadataMultiselect.defaultProps = {
+  disabled: false,
+};
+
 MetadataMultiselect.propTypes = {
   node: PropTypes.object.isRequired,
+  disabled: PropTypes.bool,
   hasData: PropTypes.bool.isRequired,
   isEditing: PropTypes.bool.isRequired,
   metadataValue: PropTypes.string.isRequired,
