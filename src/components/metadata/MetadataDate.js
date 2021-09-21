@@ -34,6 +34,7 @@ function MetadataDate({
   isEditing,
   metadataValue,
   setMetadataValue,
+  disabled,
 }) {
   const mutationPayload = {
     annotation_type: 'task_response_datetime',
@@ -95,11 +96,13 @@ function MetadataDate({
               value={dayjs(displayDateTime)}
               onChange={handleChange}
               inputVariant="outlined"
+              disabled={disabled}
             />
             <Select
               className={_classes.timeZoneSelect}
               value={timeZoneOffset}
               onChange={handleTimeZoneOffsetChange}
+              disabled={disabled}
             >
               {options.map((item) => (
                 <MenuItem value={item.offset} key={item.label}>
@@ -122,9 +125,14 @@ function MetadataDate({
   );
 }
 
+MetadataDate.defaultProps = {
+  disabled: false,
+};
+
 MetadataDate.propTypes = {
   node: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
+  disabled: PropTypes.bool,
   EditButton: PropTypes.element.isRequired,
   DeleteButton: PropTypes.element.isRequired,
   CancelButton: PropTypes.element.isRequired,

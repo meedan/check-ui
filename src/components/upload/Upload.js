@@ -8,7 +8,8 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     border: '2px dashed',
     minHeight: '100px',
-    cursor: 'pointer',
+    borderColor: props => props.disabled ? '#bbb' : '',
+    cursor: props => props.disabled ? '' : 'pointer',
   },
 }));
 
@@ -24,8 +25,9 @@ function Upload({
   setError,
   setFile,
   messages,
+  disabled,
 }) {
-  const classes = useStyles();
+  const classes = useStyles({ disabled });
 
   function validateAndSetFile(fileData) {
     const fileExtensionMatch = fileData.name?.match(/\.(\w*)$/i);
@@ -57,6 +59,7 @@ function Upload({
 
   function handleDrop(e) {
     e.preventDefault();
+    if (disabled) return;
     if (e.dataTransfer.items.length > 1) {
       setError({ message: messages.errorTooManyFiles });
     } else {
@@ -74,6 +77,7 @@ function Upload({
   }
 
   function handleClick() {
+    if (disabled) return;
     fileSelector.click();
   }
 
