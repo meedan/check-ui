@@ -140,7 +140,7 @@ function MetadataMultiselect({
                 }
                 checked={
                   isSingle
-                    ? otherText.length > 0 && metadataValue === otherText
+                    ? otherText?.length > 0 && metadataValue === otherText
                     : metadataValue?.other
                 }
                 disabled={disabled || (hasData && !isEditing)}
