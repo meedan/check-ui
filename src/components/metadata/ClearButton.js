@@ -23,7 +23,7 @@ function ClearButton({cleanup}) {
   const _classes = useStyles();
   return (
     <Button
-      className={_classes.clearButton}
+      className={`clear-button ${_classes.clearButton}`}
       size="small"
       color="secondary"
       variant="text"
