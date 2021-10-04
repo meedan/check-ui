@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography, TextField, Grid } from '@material-ui/core';
+import ClearButton from './ClearButton';
 
 function MetadataNumber({
   node,
@@ -16,6 +17,7 @@ function MetadataNumber({
   metadataValue,
   setMetadataValue,
   disabled,
+  required,
 }) {
   const mutationPayload = {
     annotation_type: 'task_response_number',
@@ -36,13 +38,13 @@ function MetadataNumber({
 
   return (
     <>
-      <FieldInformation/>
+      <FieldInformation />
       {hasData && !isEditing ? (
         <>
           <Typography variant="body1" className={classes.value}>
             {node.first_response_value}
           </Typography>
-          <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
+          <Grid container alignItems="flex-end" wrap="nowrap" spacing={0}>
             <Grid item>
               <EditButton />
             </Grid>
@@ -65,16 +67,22 @@ function MetadataNumber({
             onChange={handleChange}
             disabled={disabled}
           />
-          <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
+          <Grid container alignItems="flex-end" wrap="nowrap" spacing={0}>
             <Grid item>
               <CancelButton />
             </Grid>
             <Grid item>
-            <SaveButton
-              {...{ mutationPayload }}
-              disabled={!metadataValue || !isNumeric(metadataValue)}
-            />
+              <SaveButton
+                {...{ mutationPayload, required }}
+                disabled={!metadataValue || !isNumeric(metadataValue)}
+                empty={metadataValue === ''}
+              />
             </Grid>
+            { disabled ? null :
+              <Grid item>
+                <ClearButton cleanup={cleanup} />
+              </Grid>
+            }
           </Grid>
         </>
       )}
@@ -90,6 +98,7 @@ MetadataNumber.propTypes = {
   node: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
   disabled: PropTypes.bool,
+  required: PropTypes.bool,
   EditButton: PropTypes.element.isRequired,
   DeleteButton: PropTypes.element.isRequired,
   CancelButton: PropTypes.element.isRequired,

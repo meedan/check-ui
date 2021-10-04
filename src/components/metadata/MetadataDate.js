@@ -12,6 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import DayJsUtils from '@date-io/dayjs';
+import ClearButton from './ClearButton';
 
 const useStyles = makeStyles((theme) => ({
   timeZoneSelect: {
@@ -35,6 +36,7 @@ function MetadataDate({
   metadataValue,
   setMetadataValue,
   disabled,
+  required,
 }) {
   const mutationPayload = {
     annotation_type: 'task_response_datetime',
@@ -45,15 +47,10 @@ function MetadataDate({
   // Use first time zone as default setting; if no time zone for some reason use GMT
   const [timeZoneOffset, setTimeZoneOffset] = React.useState(node.options?.length > 0 ? node.options[0].offset : 0);
   const [displayDateTime, setDisplayDateTime] = React.useState(dayjs());
-  if (!metadataValue) {
-    setMetadataValue(
-      dayjs(displayDateTime).utcOffset(timeZoneOffset, true).format(),
-    );
-  }
 
   function handleChange(e) {
-    setDisplayDateTime(e.format());
-    setMetadataValue(e.utcOffset(timeZoneOffset, true).format());
+    setDisplayDateTime(e?.format());
+    setMetadataValue(e?.utcOffset(timeZoneOffset, true).format());
   }
 
   function handleTimeZoneOffsetChange(e) {
@@ -67,17 +64,18 @@ function MetadataDate({
 
   function cleanup() {
     setMetadataValue('');
+    setDisplayDateTime(null);
   }
 
   return (
-    <>
+    <div>
       <FieldInformation />
       {hasData && !isEditing ? (
         <>
           <Typography variant="body1" className={classes.value}>
             {node.first_response_value}
           </Typography>
-          <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
+          <Grid container alignItems="flex-end" wrap="nowrap" spacing={0}>
             <Grid item>
               <EditButton />
             </Grid>
@@ -93,10 +91,11 @@ function MetadataDate({
         <MuiPickersUtilsProvider utils={DayJsUtils}>
           <FormControl variant="outlined" fullWidth>
             <DateTimePicker
-              value={dayjs(displayDateTime)}
+              value={displayDateTime ? dayjs(displayDateTime) : null}
               onChange={handleChange}
               inputVariant="outlined"
               disabled={disabled}
+              clearable
             />
             <Select
               className={_classes.timeZoneSelect}
@@ -111,17 +110,25 @@ function MetadataDate({
               ))}
             </Select>
           </FormControl>
-          <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
+          <Grid container alignItems="flex-end" wrap="nowrap" spacing={0}>
             <Grid item>
               <CancelButton />
             </Grid>
             <Grid item>
-              <SaveButton {...{ mutationPayload }} />
+              <SaveButton
+                empty={displayDateTime === null}
+                {...{ mutationPayload, required }}
+              />
             </Grid>
+            { disabled ? null :
+              <Grid item>
+                <ClearButton cleanup={cleanup} />
+              </Grid>
+            }
           </Grid>
         </MuiPickersUtilsProvider>
       )}
-    </>
+    </div>
   );
 }
 
@@ -143,6 +150,7 @@ MetadataDate.propTypes = {
   isEditing: PropTypes.bool.isRequired,
   metadataValue: PropTypes.string.isRequired,
   setMetadataValue: PropTypes.func.isRequired,
+  required: PropTypes.bool,
 };
 
 export default MetadataDate;
