@@ -64,6 +64,8 @@ function MetadataText({
           <TextField
             id="metadata-input"
             fullWidth
+            multiline
+            rowsMax={Infinity}
             label="Answer here"
             variant="outlined"
             value={metadataValue}
