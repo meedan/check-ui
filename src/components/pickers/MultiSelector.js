@@ -254,7 +254,7 @@ class MultiSelector extends React.Component {
                         {...icons}
                       />
                     }
-                    label={o.label}
+                    label={<span style={{ color: o.color }}>{o.label} </span>}
                   />
                 );
               })
@@ -314,6 +314,7 @@ MultiSelector.propTypes = {
   options: PropTypes.arrayOf(PropTypes.shape({
     value: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
+    color: PropTypes.string,
     parent: PropTypes.string,
   })).isRequired,
   selected: PropTypes.arrayOf(PropTypes.string).isRequired,
