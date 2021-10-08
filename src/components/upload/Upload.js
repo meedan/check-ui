@@ -129,6 +129,7 @@ Upload.propTypes = {
   setError: PropTypes.func.isRequired,
   setFile: PropTypes.func.isRequired,
   messages: PropTypes.object.isRequired,
+  disabled: PropTypes.bool,
 };
 
 export default Upload;

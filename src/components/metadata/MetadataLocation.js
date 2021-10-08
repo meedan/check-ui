@@ -8,6 +8,7 @@ import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png';
 import iconUrl from 'leaflet/dist/images/marker-icon.png';
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
 import AutocompleteLocation from './AutocompleteLocation';
+import ClearButton from './ClearButton';
 
 const useStyles = makeStyles((theme) => ({
   mapImg: {
@@ -46,6 +47,7 @@ function MetadataLocation({
   mapboxApiKey,
   messages,
   disabled,
+  required,
 }) {
   const classes = useStyles();
   const [firstMapRender, setFirstMapRender] = React.useState(true);
@@ -53,7 +55,9 @@ function MetadataLocation({
   const [marker, setMarker] = React.useState({});
   let latitude, longitude, name;
   try {
-    const parsedNode = JSON.parse(JSON.parse(node.first_response?.content)[0].value);
+    const parsedNode = JSON.parse(
+      JSON.parse(node.first_response?.content)[0].value
+    );
     [latitude, longitude] = parsedNode.geometry.coordinates;
     name = parsedNode.properties.name;
   } catch {
@@ -76,7 +80,9 @@ function MetadataLocation({
   };
 
   function handleLatLngChange(e) {
-    const parsedLatLng = e.target.value.match(/^(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)$/);
+    const parsedLatLng = e.target.value.match(
+      /^(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)$/
+    );
     if (parsedLatLng === null) {
       setCoordinates({
         latitude,
@@ -127,7 +133,7 @@ function MetadataLocation({
       longitude: 0,
       text: `0,0`,
       displayText: `0,0`,
-      error: false
+      error: false,
     });
     setFirstMapRender(true);
   }
@@ -202,7 +208,7 @@ function MetadataLocation({
             src={`https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${longitude},${latitude},10,0,0/500x500?access_token=${mapboxApiKey}`}
             alt=""
           />
-          <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
+          <Grid container alignItems="flex-end" wrap="nowrap" spacing={0}>
             <Grid item>
               <EditButton />
             </Grid>
@@ -236,7 +242,9 @@ function MetadataLocation({
             value={nameText}
             onChange={handleNameChange}
             error={!nameText}
-            helperText={!nameText ? 'Please enter a name for this location.' : null}
+            helperText={
+              !nameText ? 'Please enter a name for this location.' : null
+            }
             disabled={disabled}
           />
           <TextField
@@ -251,13 +259,22 @@ function MetadataLocation({
             disabled={disabled}
           />
           <div id="map-edit" className={classes.map}></div>
-          <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
+          <Grid container alignItems="flex-end" wrap="nowrap" spacing={0}>
             <Grid item>
               <CancelButton />
             </Grid>
             <Grid item>
-              <SaveButton {...{ mutationPayload }} disabled={coordinates.error || !nameText} />
+              <SaveButton
+                {...{ mutationPayload, required }}
+                disabled={coordinates.error || !nameText}
+                empty={nameText === ''}
+              />
             </Grid>
+            {disabled ? null : (
+              <Grid item>
+                <ClearButton cleanup={cleanup} />
+              </Grid>
+            )}
           </Grid>
         </>
       )}
@@ -279,6 +296,8 @@ MetadataLocation.propTypes = {
   setMetadataValue: PropTypes.func.isRequired,
   mapboxApiKey: PropTypes.string.isRequired,
   messages: PropTypes.arrayOf(PropTypes.element).isRequired,
+  disabled: PropTypes.bool,
+  required: PropTypes.bool,
 };
 
 export default MetadataLocation;

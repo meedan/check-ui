@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
 import Upload from '../upload/Upload';
+import ClearButton from './ClearButton';
 
 function MetadataFile({
   node,
@@ -19,6 +20,7 @@ function MetadataFile({
   messages,
   fileSizeMax,
   disabled,
+  required,
 }) {
   const [error, setError] = React.useState({ message: null });
   const [file, setFile] = React.useState({});
@@ -30,6 +32,11 @@ function MetadataFile({
   const mutationPayload = {
     response_file_upload: JSON.stringify(metadataValue),
   };
+
+  function cleanup() {
+    setMetadataValue('');
+    setFile({});
+  }
 
   return (
     <>
@@ -43,7 +50,7 @@ function MetadataFile({
             errorMessage={error.message}
             {...{ extensions, messages, setMetadataValue, setError, setFile, fileSizeMax}}
           />
-          <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
+          <Grid container alignItems="flex-end" wrap="nowrap" spacing={0}>
             <Grid item>
               <EditButton />
             </Grid>
@@ -61,19 +68,25 @@ function MetadataFile({
             disabled={disabled}
             isEditing
             errorMessage={error.message}
-            {...{ file, extensions, messages, setMetadataValue, setError, setFile, fileSizeMax}}
+            {...{ file, extensions, messages, setMetadataValue, setError, setFile, fileSizeMax }}
           />
-          <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
+          <Grid container alignItems="flex-end" wrap="nowrap" spacing={0}>
             <Grid item>
               <CancelButton />
             </Grid>
             <Grid item>
               <SaveButton
-                {...{ mutationPayload }}
+                {...{ mutationPayload, required }}
                 uploadables={{ 'file[]': file }}
                 disabled={error.message !== null}
+                empty={file.name === undefined}
               />
             </Grid>
+            { disabled ? null :
+              <Grid item>
+                <ClearButton cleanup={cleanup} />
+              </Grid>
+            }
           </Grid>
         </>
       )}
@@ -96,6 +109,8 @@ MetadataFile.propTypes = {
   extensions: PropTypes.string.isRequired,
   messages: PropTypes.object.isRequired,
   fileSizeMax: PropTypes.number.isRequired,
+  disabled: PropTypes.bool,
+  required: PropTypes.bool,
 };
 
 export default MetadataFile;
