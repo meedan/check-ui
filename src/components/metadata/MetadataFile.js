@@ -66,8 +66,9 @@ function MetadataFile({
         <>
           <Upload
             disabled={disabled}
+            fileUrl={metadataValue && node.first_response?.file_data[0]}
+            fileName={metadataValue && node.first_response_value}
             isEditing
-            fileUrl={node.first_response?.file_data[0]}
             errorMessage={error.message}
             {...{ file, extensions, messages, setMetadataValue, setError, setFile, fileSizeMax }}
           />
@@ -80,7 +81,7 @@ function MetadataFile({
                 {...{ mutationPayload, required }}
                 uploadables={{ 'file[]': file }}
                 disabled={error.message !== null}
-                empty={file.name === undefined}
+                empty={file.name === undefined && !metadataValue}
               />
             </Grid>
             { disabled ? null :
