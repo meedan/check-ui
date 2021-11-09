@@ -23,7 +23,7 @@ function MetadataFile({
   required,
 }) {
   const [error, setError] = React.useState({ message: null });
-  const [file, setFile] = React.useState({});
+  const [file, setFile] = React.useState(metadataValue ? {name: metadataValue} : {});
   extensions = {
     label: extensions.join(', '),
     list: extensions,
@@ -67,6 +67,7 @@ function MetadataFile({
           <Upload
             disabled={disabled}
             isEditing
+            fileUrl={node.first_response?.file_data[0]}
             errorMessage={error.message}
             {...{ file, extensions, messages, setMetadataValue, setError, setFile, fileSizeMax }}
           />

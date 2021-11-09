@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
     minHeight: '100px',
     borderColor: props => props.disabled ? '#bbb' : '',
     cursor: props => props.disabled ? '' : 'pointer',
+    color: props => props.disabled ? 'rgba(0, 0, 0, 0.38)' : 'inherit',
   },
 }));
 
