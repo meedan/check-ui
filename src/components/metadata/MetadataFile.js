@@ -23,7 +23,7 @@ function MetadataFile({
   required,
 }) {
   const [error, setError] = React.useState({ message: null });
-  const [file, setFile] = React.useState({});
+  const [file, setFile] = React.useState(metadataValue ? {name: metadataValue} : {});
   extensions = {
     label: extensions.join(', '),
     list: extensions,

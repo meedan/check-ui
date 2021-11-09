@@ -46,7 +46,7 @@ function MetadataDate({
   const _classes = useStyles();
   // Use first time zone as default setting; if no time zone for some reason use GMT
   const [timeZoneOffset, setTimeZoneOffset] = React.useState(node.options?.length > 0 ? node.options[0].offset : 0);
-  const [displayDateTime, setDisplayDateTime] = React.useState(dayjs());
+  const [displayDateTime, setDisplayDateTime] = React.useState(null);
 
   function handleChange(e) {
     setDisplayDateTime(e?.format());
