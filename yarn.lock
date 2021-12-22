@@ -1504,6 +1504,11 @@
     "semver" "^7.3.2"
     "tsutils" "^3.17.1"
 
+"@vvo/tzdb@^6.39.0":
+  "integrity" "sha512-O6Yv4Jkhvabh6G+BEpBxFWGcl6F6B74B0Um6GLy8N5wolRYW/lbVlUvS+RKptXHDRwuAVZYU90cof3auO7bJPw=="
+  "resolved" "https://registry.npmjs.org/@vvo/tzdb/-/tzdb-6.40.0.tgz"
+  "version" "6.40.0"
+
 "@webassemblyjs/ast@1.9.0":
   "integrity" "sha512-C6wW5L+b7ogSDVqymbkkvuW9kruN//YisMED04xzeBBqjHa2FYnmvOlS6Xj68xWQRgWvI9cIglsjFowH/RJyEA=="
   "resolved" "https://registry.npmjs.org/@webassemblyjs/ast/-/ast-1.9.0.tgz"
