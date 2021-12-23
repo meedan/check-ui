@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   FormControl,
-  MenuItem,
-  Select,
   Typography,
   Grid,
+  TextField,
 } from '@material-ui/core';
-import { KeyboardDatePicker, KeyboardTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { DatePicker, TimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles } from '@material-ui/core/styles';
 import { getTimeZones } from '@vvo/tzdb';
 import dayjs from 'dayjs';
@@ -57,14 +57,19 @@ function MetadataDate({
   };
   const options = node.options || [{ code: 'UTC', label: 'UTC (GMT +0)', offset: 0 }];
   const _classes = useStyles();
-  // Use first time zone as default setting; if no time zone for some reason use GMT
-  // If timezones are restricted, use first. Otherwise, guess local timezone and use that.
-  const [timeZone, setTimeZone] = React.useState(options[0]?.restrictTimezones ? node.options[0] : unrestrictedTimezones.find(zone => Intl.DateTimeFormat().resolvedOptions().timeZone === zone.code));
+  // If timezones are restricted, use first available. Otherwise, guess local timezone and use that.
+  const firstOption = {
+    code: node.options[0].code,
+    label: node.options[0].label,
+    offset: node.options[0].offset,
+  };
+  const [timeZone, setTimeZone] = React.useState(options[0]?.restrictTimezones ? firstOption : unrestrictedTimezones.find(zone => Intl.DateTimeFormat().resolvedOptions().timeZone === zone.code));
   const [offsetTime, setOffsetTime] = React.useState(null);
   const [displayDate, setDisplayDate] = React.useState(null);
   const [displayTime, setDisplayTime] = React.useState(null);
 
   function handleDateChange(e) {
+    console.log('~~~datechange fired!', e?.format);
     setDisplayDate(e?.format());
     // combine the set date with the current set UTC time to get metadata (final) value
     if (offsetTime && e) {
@@ -95,13 +100,13 @@ function MetadataDate({
     );
   }
   
-  function handleTimeZoneOffsetChange(e) {
-    setTimeZone(e.target.value);
+  function handleTimeZoneOffsetChange(event, newValue) {
+    setTimeZone(newValue);
     // update the displaytime to the new timezone, and then set final value to display date at the correct hour in the correct new timezone
-    const o = dayjs(displayTime).utcOffset(e.target.value.offset, true);
+    const o = dayjs(displayTime).utcOffset(newValue.offset, true);
     setMetadataValue(
       dayjs(displayDate)
-        .utcOffset(e.target.value.offset, true)
+        .utcOffset(newValue.offset, true)
         .hour(o.hour())
         .minute(o.minute())
         .format(),
@@ -115,6 +120,8 @@ function MetadataDate({
   }
 
   const selectOptions = options[0]?.restrictTimezones ? options : unrestrictedTimezones;
+
+  console.log('~~~selectOptions',selectOptions, timeZone);
 
   return (
     <div>
@@ -139,35 +146,39 @@ function MetadataDate({
       ) : (
         <MuiPickersUtilsProvider utils={DayJsUtils}>
           <FormControl variant="outlined" fullWidth>
-            <KeyboardDatePicker
+            <DatePicker
               value={displayDate ? dayjs(displayDate) : null}
               onChange={handleDateChange}
               inputVariant="outlined"
+              format="DD/MM/YYYY"
               disabled={disabled}
               clearable
             />
-            <KeyboardTimePicker
+            <TimePicker
               value={displayTime ? dayjs(displayTime) : null}
               onChange={handleTimeChange}
               inputVariant="outlined"
               disabled={disabled || displayDate === null}
               error={options[0]?.requireTime && displayTime === null}
               keyboardIcon={<AccessTimeIcon/>}
-              mask="__:__ _M"
+              placeholder="08:00 AM"
               clearable
             />
-            <Select
+            <Autocomplete
               className={_classes.timeZoneSelect}
-              value={timeZone}
+              options={selectOptions}
+              getOptionLabel={option => option.label}
+              defaultValue={timeZone}
+              filterSelectedOptions
               onChange={handleTimeZoneOffsetChange}
-              disabled={disabled}
-            >
-              {selectOptions.map((item) => (
-                <MenuItem value={item} key={item.label}>
-                  {item.label}
-                </MenuItem>
-              ))}
-            </Select>
+              renderInput={params => (
+                <TextField
+                  {...params}
+                  variant="outlined"
+                  label=""
+                />
+              )}
+            />
           </FormControl>
           <Grid container alignItems="flex-end" wrap="nowrap" spacing={0}>
             <Grid item>
