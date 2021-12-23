@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  Button,
   FormControl,
   Typography,
   Grid,
   TextField,
 } from '@material-ui/core';
-import { DatePicker, TimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { KeyboardDatePicker, KeyboardTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles } from '@material-ui/core/styles';
 import { getTimeZones } from '@vvo/tzdb';
@@ -15,9 +16,17 @@ import utc from 'dayjs/plugin/utc';
 import DayJsUtils from '@date-io/dayjs';
 import ClearButton from './ClearButton';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles((theme) => ({
   timeZoneSelect: {
+    marginTop: theme.spacing(2),
+  },
+  addTime: {
+    maxWidth: '100px',
+    marginTop: theme.spacing(1),
+  },
+  timePicker: {
     marginTop: theme.spacing(2),
   },
 }));
@@ -35,6 +44,56 @@ const unrestrictedTimezones = getTimeZones({ includeUtc: true }).map((option) =>
   return newOption;
 });
 
+const guessTimeZoneFromISOString = isoString => {
+  const offset = isoString.match(/(\d\d):(\d\d)$/);
+  let timeZone;
+  if (offset) {
+    const numericOffset = getNumericOffsetFromISOString(isoString);
+    timeZone = unrestrictedTimezones.find(zone => zone.offset === numericOffset).code;
+  } else if (isoString.match(/Z$/)) {
+    timeZone = 'UTC';
+  } else {
+    throw(new Error('Could not parse time zone from database entry!'));
+  }
+  return timeZone;
+};
+
+const getNumericOffsetFromISOString = isoString => {
+  const offset = isoString.match(/(\+|-)(\d\d):(\d\d)$/);
+  let numericOffset;
+  if (offset) {
+    const sign = offset[1] === '+' ? 1 : -1;
+    const hours = +offset[2];
+    const minutes = +offset[3];
+    numericOffset = sign * (hours + minutes/60);
+  } else if (isoString.match(/Z$/)) {
+    numericOffset = 0;
+  } else {
+    throw(new Error('Could not parse UTC offset from database entry!'));
+  }
+  return numericOffset;
+};
+
+const getInititalTimeZoneState = (isoString, options) => {
+  // If there's nothing in the DB and timezones are restricted, show first available. Otherwise, guess local timezone and use that.
+  if (!isoString) {
+    const firstOption = {
+      code: options[0].code,
+      label: options[0].label,
+      offset: options[0].offset,
+    };
+    return options[0]?.restrictTimezones ? firstOption : unrestrictedTimezones.find(zone => Intl.DateTimeFormat().resolvedOptions().timeZone === zone.code)
+  } else {
+    // if there is a time in the DB and time zones are restricted, we match to the time zone with the right offset
+    if (options[0]?.restrictTimezones) {
+      return options.find(zone => zone.offset === getNumericOffsetFromISOString(isoString));
+    } else {
+      // if time zones are unrestricted, match to the closest we can find
+      return unrestrictedTimezones.find(zone => zone.offset === getNumericOffsetFromISOString(isoString));
+    }
+  }
+}
+
 function MetadataDate({
   node,
   classes,
@@ -51,46 +110,73 @@ function MetadataDate({
   disabled,
   required,
 }) {
+  // If there is data in the DB, need the standard ISO 8601 string which is stored in first_response
+  const storedISODate = node?.first_response?.content ? JSON.parse(node.first_response.content)[0].value : null;
   const mutationPayload = {
     annotation_type: 'task_response_datetime',
     set_fields: `{"response_datetime":"${metadataValue}"}`,
   };
   const options = node.options || [{ code: 'UTC', label: 'UTC (GMT +0)', offset: 0 }];
+  const alwaysShowTime = options[0].alwaysShowTime;
   const _classes = useStyles();
-  // If timezones are restricted, use first available. Otherwise, guess local timezone and use that.
-  const firstOption = {
-    code: node.options[0].code,
-    label: node.options[0].label,
-    offset: node.options[0].offset,
-  };
-  const [timeZone, setTimeZone] = React.useState(options[0]?.restrictTimezones ? firstOption : unrestrictedTimezones.find(zone => Intl.DateTimeFormat().resolvedOptions().timeZone === zone.code));
+  const [timeZone, setTimeZone] = React.useState(getInititalTimeZoneState(storedISODate, options));
   const [offsetTime, setOffsetTime] = React.useState(null);
   const [displayDate, setDisplayDate] = React.useState(null);
-  const [displayTime, setDisplayTime] = React.useState(null);
+  const [showTime, setShowTime] = React.useState(false);
 
-  function handleDateChange(e) {
-    console.log('~~~datechange fired!', e?.format);
-    setDisplayDate(e?.format());
+  let convertedMaskDate;
+  if (storedISODate) {
+    // guess the database time zone from the stored ISO offset
+    const guessedTimeZone = guessTimeZoneFromISOString(storedISODate);
+    // use en-ZA to get YYYY/MM/DD
+    convertedMaskDate = new Intl.DateTimeFormat('en-ZA',
+      {
+        timeZone: guessedTimeZone,
+        dateStyle: 'short',
+      }).format(Date.parse(storedISODate));
+  }
+  const [displayDateMask, setDisplayDateMask] = React.useState(storedISODate ? convertedMaskDate : null);
+  const [displayTime, setDisplayTime] = React.useState('');
+
+  let convertedMaskTime;
+  if (storedISODate) {
+    // guess the database time zone from the stored ISO offset
+    const guessedTimeZone = guessTimeZoneFromISOString(storedISODate);
+    convertedMaskTime = new Intl.DateTimeFormat('en-US',
+      {
+        timeZone: guessedTimeZone,
+        hour: '2-digit',
+        minute: '2-digit'
+      }).format(Date.parse(storedISODate));
+  }
+  const [displayTimeMask, setDisplayTimeMask] = React.useState(storedISODate ? convertedMaskTime : null);
+
+  function handleDateChange(_, maskedInput) {
+    setDisplayDateMask(maskedInput);
+    const date = dayjs(maskedInput);
+    setDisplayDate(date?.format());
     // combine the set date with the current set UTC time to get metadata (final) value
-    if (offsetTime && e) {
+    if (offsetTime && date) {
       const o = dayjs(offsetTime);
       setMetadataValue(
-        dayjs(e?.format())
+        dayjs(date?.format())
           .hour(o.hour())
           .minute(o.minute())
           .format(),
       );
     } else {
       // otherwise just set the date to midnight day of
-      setMetadataValue(e?.utcOffset(timeZone.offset, true).hour(0).minute(0).format());
+      setMetadataValue(date?.utcOffset(timeZone.offset, true).hour(0).minute(0).format());
     }
   }
 
-  function handleTimeChange(e) {
-    setDisplayTime(e?.format());
-    setOffsetTime(e?.utcOffset(timeZone.offset, true).format());
+  function handleTimeChange(_, maskedInput) {
+    setDisplayTimeMask(maskedInput);
+    const time = dayjs(`${displayDateMask} ${maskedInput}`);
+    setDisplayTime(time?.format());
+    setOffsetTime(time?.utcOffset(timeZone.offset, true).format());
     // combine the UTC time with the current set date to get metadata (final) value
-    const o = e?.utcOffset(timeZone.offset, true);
+    const o = time?.utcOffset(timeZone.offset, true);
     setMetadataValue(
       dayjs(displayDate)
         .utcOffset(timeZone.offset, true)
@@ -121,8 +207,6 @@ function MetadataDate({
 
   const selectOptions = options[0]?.restrictTimezones ? options : unrestrictedTimezones;
 
-  console.log('~~~selectOptions',selectOptions, timeZone);
-
   return (
     <div>
       <FieldInformation />
@@ -146,39 +230,57 @@ function MetadataDate({
       ) : (
         <MuiPickersUtilsProvider utils={DayJsUtils}>
           <FormControl variant="outlined" fullWidth>
-            <DatePicker
-              value={displayDate ? dayjs(displayDate) : null}
-              onChange={handleDateChange}
+            <KeyboardDatePicker
+              value={displayDate}
+              inputValue={displayDateMask}
+              onChange={(_, maskedInput) => handleDateChange(_, maskedInput)}
               inputVariant="outlined"
-              format="DD/MM/YYYY"
+              format="YYYY/MM/DD"
+              mask="____/__/__"
+              placeholder="Date"
               disabled={disabled}
               clearable
             />
-            <TimePicker
-              value={displayTime ? dayjs(displayTime) : null}
-              onChange={handleTimeChange}
-              inputVariant="outlined"
-              disabled={disabled || displayDate === null}
-              error={options[0]?.requireTime && displayTime === null}
-              keyboardIcon={<AccessTimeIcon/>}
-              placeholder="08:00 AM"
-              clearable
-            />
-            <Autocomplete
-              className={_classes.timeZoneSelect}
-              options={selectOptions}
-              getOptionLabel={option => option.label}
-              defaultValue={timeZone}
-              filterSelectedOptions
-              onChange={handleTimeZoneOffsetChange}
-              renderInput={params => (
-                <TextField
-                  {...params}
-                  variant="outlined"
-                  label=""
-                />
-              )}
-            />
+            {
+              alwaysShowTime || showTime ? (
+                <>
+                  <KeyboardTimePicker
+                    value=""
+                    className={_classes.timePicker}
+                    inputValue={displayTimeMask}
+                    onChange={(_, maskedInput) => handleTimeChange(_, maskedInput)}
+                    inputVariant="outlined"
+                    disabled={disabled || !displayDateMask}
+                    error={options[0]?.requireTime && displayTime === null}
+                    keyboardIcon={<AccessTimeIcon/>}
+                    placeholder="Time"
+                    mask="__:__ _M"
+                    clearable
+                  />
+                  <Autocomplete
+                    className={_classes.timeZoneSelect}
+                    options={selectOptions}
+                    getOptionLabel={option => option.label}
+                    defaultValue={timeZone}
+                    filterSelectedOptions
+                    onChange={handleTimeZoneOffsetChange}
+                    renderInput={params => (
+                      <TextField
+                        {...params}
+                        variant="outlined"
+                        label=""
+                      />
+                    )}
+                  />
+                </>) : (
+                <Button
+                  className={_classes.addTime}
+                  startIcon={<AddIcon />}
+                  onClick={() => setShowTime(!showTime)}
+                >
+                  Add time
+                </Button>)
+            }
           </FormControl>
           <Grid container alignItems="flex-end" wrap="nowrap" spacing={0}>
             <Grid item>
