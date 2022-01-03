@@ -203,6 +203,8 @@ function MetadataDate({
     setMetadataValue('');
     setDisplayDate(null);
     setDisplayTime(null);
+    setDisplayDateMask(null);
+    setDisplayTimeMask(null);
   }
 
   const selectOptions = options[0]?.restrictTimezones ? options : unrestrictedTimezones;
