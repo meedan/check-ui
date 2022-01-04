@@ -15,7 +15,6 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Popover from '@material-ui/core/Popover';
 
 import DeleteModal from './DeleteModal';
-import MapControls from './MapControls';
 import NameField from './NameField';
 import config from '../utils/config';
 
@@ -61,17 +60,12 @@ export default function Controls({
     variant: 'popover',
     popupId: 'moreMenu',
   });
-  const mapPopupState = usePopupState({
-    variant: 'popover',
-    popupId: 'MapControls',
-  });
 
   const displayEntityName = mode === 'processing' && name ? name : entityName;
 
   // mode methods
 
   const onModeReset = () => {
-    mapPopupState?.close();
     morePopupState?.close();
     setMode('read');
     setName(null);
@@ -98,16 +92,11 @@ export default function Controls({
   const onEntityNameCreate = str => {
     if (detectDuplicates(str)) return null;
     setName(str);
-    if (entityType === 'place') {
-      mapPopupState?.open();
-    } else {
-      setMode('processing');
-      props.onEntityCreate({ name: str }, onModeReset);
-    }
+    setMode('processing');
+    props.onEntityCreate({ name: str }, onModeReset);
   };
   const onEntityPlaceCreate = place => {
     setMode('processing');
-    mapPopupState.close();
     props.onEntityCreate({ name: name, place: place }, onModeReset);
   };
 
@@ -131,7 +120,6 @@ export default function Controls({
   };
   const onEntityPlaceUpdate = place => {
     setMode('processing');
-    mapPopupState?.close();
     props.onEntityUpdate(place, onModeReset);
   };
   const onEntityDeleteStart = () => setMode('delete');
@@ -171,12 +159,6 @@ export default function Controls({
 
     // TODO: add support for processing state w/ parent callback
     props.onInstanceCreate(newInstance);
-  };
-
-  // map/place methods
-  const onStartEntityReposition = () => {
-    morePopupState?.close();
-    mapPopupState?.open();
   };
 
   const readControls = (
@@ -219,11 +201,6 @@ export default function Controls({
                 <MenuItem dense divider={entityType === 'place'} onClick={onInstanceCreate}>
                   Add highlight
                 </MenuItem>
-                {entityType === 'place' ? (
-                  <MenuItem dense onClick={onStartEntityReposition}>
-                    Edit place
-                  </MenuItem>
-                ) : null}
                 <MenuItem dense divider={entityType === 'place'} onClick={onEntityUpdateStart}>
                   Edit name
                 </MenuItem>
@@ -255,27 +232,6 @@ export default function Controls({
       onMouseLeave={onMouseLeave}
       ref={controlsRoot}>
       {mode === 'editName' ? editControls : readControls}
-      <Popover
-        {...bindPopover(mapPopupState)}
-        anchorEl={controlsRoot.current}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-        onClick={e => e.stopPropagation()}>
-        <MapControls
-          entityName={name || entityName}
-          entityShape={entityShape}
-          mode={entityShape?.type || null}
-          onBeforeRename={() => setMode('editName')}
-          onDiscard={onModeReset}
-          onUpdate={entityName ? onEntityPlaceUpdate : onEntityPlaceCreate}
-        />
-      </Popover>
       {entityName && mode === 'delete' ? (
         <DeleteModal
           entityName={displayEntityName}
