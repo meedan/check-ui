@@ -117,7 +117,7 @@ function MetadataDate({
     set_fields: `{"response_datetime":"${metadataValue}"}`,
   };
   const options = node.options || [{ code: 'UTC', label: 'UTC (GMT +0)', offset: 0 }];
-  const alwaysShowTime = options[0].alwaysShowTime;
+  const alwaysShowTime = options[0]?.alwaysShowTime;
   const _classes = useStyles();
   const [timeZone, setTimeZone] = React.useState(getInititalTimeZoneState(storedISODate, options));
   const [offsetTime, setOffsetTime] = React.useState(null);
