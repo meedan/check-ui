@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState } from 'react';
-import _ from 'lodash';
+import maxBy from 'lodash-es/maxBy';
+import minBy from 'lodash-es/minBy';
+import filter from 'lodash-es/filter';
 import { usePopupState, bindHover } from 'material-ui-popup-state/hooks';
 
 import Tooltip from '@material-ui/core/Tooltip';
@@ -71,13 +73,13 @@ export default function Instance({ duration, instances, isSelected = false, isLo
   };
 
   // Define boundaries for how far the instance can be moved right/left
-  const prevInstance = _.maxBy(
-    _.filter(instances, i => i.end_seconds <= start),
+  const prevInstance = maxBy(
+    filter(instances, i => i.end_seconds <= start),
     i => i.end_seconds
   );
 
-  const nextInstance = _.minBy(
-    _.filter(instances, i => i.start_seconds >= end),
+  const nextInstance = minBy(
+    filter(instances, i => i.start_seconds >= end),
     i => i.start_seconds
   );
 

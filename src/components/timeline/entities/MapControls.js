@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
-import mean from 'lodash/mean';
+import mean from 'lodash-es/mean';
 import { GoogleMap, Marker, Polygon } from '@react-google-maps/api';
 
 import AddLocationIcon from '@material-ui/icons/AddLocation';

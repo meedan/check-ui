@@ -78,9 +78,9 @@ const getInititalTimeZoneState = (isoString, options) => {
   // If there's nothing in the DB and timezones are restricted, show first available. Otherwise, guess local timezone and use that.
   if (!isoString) {
     const firstOption = {
-      code: options[0].code,
-      label: options[0].label,
-      offset: options[0].offset,
+      code: options[0]?.code,
+      label: options[0]?.label,
+      offset: options[0]?.offset,
     };
     return options[0]?.restrictTimezones ? firstOption : unrestrictedTimezones.find(zone => Intl.DateTimeFormat().resolvedOptions().timeZone === zone.code)
   } else {

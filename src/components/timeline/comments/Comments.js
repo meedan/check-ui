@@ -2,7 +2,7 @@ import 'rc-slider/assets/index.css';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import Slider from 'rc-slider';
-import _ from 'lodash';
+import reduce from 'lodash-es/reduce';
 
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
@@ -59,7 +59,7 @@ export default function Comments({ currentTime, ...props }) {
     props.onCommentThreadCreate(newThread.start_seconds, text, callback);
   };
 
-  const markers = _.reduce(
+  const markers = reduce(
     threads,
     (object, param) => ({
       ...object,

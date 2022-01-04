@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import _ from 'lodash';
+import filter from 'lodash-es/filter';
 
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
@@ -31,7 +31,7 @@ export default function Entities({ currentTime = 0, duration, entities = [], sug
 
   const displayEntities = newEntity ? [newEntity, ...entities] : entities;
   const existingEntityNames = entities.map(entity => entity[`project_${types[type]}`].name);
-  const hasInstances = _.filter(entities, o => o.instances.length > 0).length > 0;
+  const hasInstances = filter(entities, o => o.instances.length > 0).length > 0;
 
   const onEntityStart = () => {
     const ifPlace = {

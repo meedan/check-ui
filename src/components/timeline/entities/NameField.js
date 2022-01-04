@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
-import orderBy from 'lodash/orderBy';
+import orderBy from 'lodash-es/orderBy';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';

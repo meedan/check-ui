@@ -1,5 +1,5 @@
 import React from 'react';
-import _ from 'lodash';
+import _ from 'lodash-es';
 import { fireEvent, render, waitFor, waitForElementToBeRemoved } from 'test-utils';
 
 import Timeline from '../Timeline';

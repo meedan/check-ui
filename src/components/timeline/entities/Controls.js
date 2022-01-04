@@ -1,7 +1,7 @@
 import Menu from 'material-ui-popup-state/HoverMenu';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
-import find from 'lodash/find';
+import find from 'lodash-es/find';
 import { usePopupState, bindTrigger, bindMenu, bindPopover } from 'material-ui-popup-state/hooks';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
