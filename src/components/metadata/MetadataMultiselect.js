@@ -120,7 +120,13 @@ function MetadataMultiselect({
   }
 
   function cleanup() {
-    setMetadataValue('');
+    if (node.type === 'single_choice') {
+      setMetadataValue('');
+    } else if (options.find(option => option.other)) {
+      setMetadataValue({selected: [], other: ''});
+    } else {
+      setMetadataValue({selected: []});
+    }
   }
 
   return (
@@ -152,7 +158,7 @@ function MetadataMultiselect({
                 checked={
                   isSingle
                     ? otherText?.length > 0 && metadataValue === otherText
-                    : metadataValue?.other
+                    : !!metadataValue?.other
                 }
                 disabled={disabled || (hasData && !isEditing)}
                 onChange={isSingle ? handleSingleChange : handleMultiChange}
