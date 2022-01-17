@@ -123,6 +123,7 @@ function MetadataDate({
   const [offsetTime, setOffsetTime] = React.useState(null);
   const [displayDate, setDisplayDate] = React.useState(null);
   const [showTime, setShowTime] = React.useState(false);
+  const [error, setError] = React.useState('');
 
   let convertedMaskDate;
   if (storedISODate) {
@@ -236,6 +237,7 @@ function MetadataDate({
               value={displayDate}
               inputValue={displayDateMask}
               onChange={(_, maskedInput) => handleDateChange(_, maskedInput)}
+              onError={err => setError(err)}
               inputVariant="outlined"
               format="YYYY/MM/DD"
               mask="____/__/__"
@@ -290,7 +292,7 @@ function MetadataDate({
             </Grid>
             <Grid item>
               <SaveButton
-                empty={displayDate === null || (options[0]?.requireTime && displayTime === null)}
+                empty={storedISODate === null || error.length > 0 || (options[0]?.requireTime && displayTime === null)}
                 {...{ mutationPayload, required }}
               />
             </Grid>
