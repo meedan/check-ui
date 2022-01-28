@@ -6,6 +6,7 @@ import MetadataLocation from './metadata/MetadataLocation.js';
 import MetadataMultiselect from './metadata/MetadataMultiselect.js';
 import MetadataNumber from './metadata/MetadataNumber.js';
 import MetadataText from './metadata/MetadataText.js';
+import MetadataUrl from './metadata/MetadataUrl.js';
 import MultiSelector from './pickers/MultiSelector';
 
 export {
@@ -17,5 +18,6 @@ export {
   MetadataMultiselect,
   MetadataNumber,
   MetadataText,
+  MetadataUrl,
   MultiSelector,
 };
