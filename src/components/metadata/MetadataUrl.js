@@ -71,6 +71,32 @@ function MetadataUrl({
     setMetadataValue(newUrls);
   }
 
+  function handleUrlBlur(e, index) {
+    const newUrls = [...urls];
+    let value = e.target.value;
+    // if the entered value is not a URL, but it *is* a URL with "http://" prepended, then prepend the "http://"
+    if (!isUrl(value) && isUrl(`http://${value}`)) {
+      value = `http://${value}`;
+      newUrls[index] = {
+        url: value,
+        title: urls[index].title,
+      };
+    }
+    // if the entered value is not a url, and is invalid without a prepend, and it's not blank, put it in an error state to be rendered by the component
+    else if (!isUrl(value) && urls[index].url !== '') {
+      newUrls[index] = {
+        url: value,
+        title: urls[index].title,
+        error: true,
+      };
+    }
+    // otherwise it's a url, or it's blank, so remove any error state, we will either save this url or we'll interpret it as a blank/delete
+    else {
+      delete newUrls[index].error;
+    }
+    setUrls(newUrls);
+  }
+
   function handleNameChange(e, index) {
     const newUrls = [...urls];
     newUrls[index] = {
@@ -166,9 +192,10 @@ function MetadataUrl({
                   variant="outlined"
                   value={urls[index].url}
                   onChange={e => handleUrlChange(e, index)}
+                  onBlur={e => handleUrlBlur(e, index)}
                   disabled={disabled}
-                  error={!isUrl(urls[index].url) && urls[index].url !== ''}
-                  helperText={!isUrl(urls[index].url) ? messages.helperText : ''}
+                  error={urls[index].error}
+                  helperText={urls[index].error ? messages.helperText : ''}
                 />
                 { index > 0 && !disabled ? (
                   <IconButton
