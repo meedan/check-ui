@@ -1,6 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, TextField, Grid, Button, IconButton } from '@material-ui/core';
+import {
+  Typography,
+  TextField,
+  Grid,
+  Button,
+  IconButton,
+  Divider,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
@@ -14,6 +21,10 @@ const useStyles = makeStyles((theme) => ({
   removeButton: {
     marginTop: '1rem',
     width: '10%',
+  },
+  divider: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(1),
   },
 }));
 
@@ -185,6 +196,11 @@ function MetadataUrl({
                     </Grid>
                   ) : null }
                 </Grid>
+                {
+                  urls.length > 0 && index < urls.length ? (
+                    <Divider className={_classes.divider}/>
+                  ) : null
+                }
               </>
             ))
           }
