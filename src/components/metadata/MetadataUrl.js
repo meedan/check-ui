@@ -95,6 +95,7 @@ function MetadataUrl({
       delete newUrls[index].error;
     }
     setUrls(newUrls);
+    setMetadataValue(newUrls);
   }
 
   function handleNameChange(e, index) {
