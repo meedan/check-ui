@@ -44,32 +44,113 @@ const unrestrictedTimezones = getTimeZones({ includeUtc: true }).map((option) =>
   return newOption;
 });
 
-const guessTimeZoneFromISOString = isoString => {
-  const offset = isoString.match(/(\d\d):(\d\d)$/);
-  let timeZone;
-  if (offset) {
-    const numericOffset = getNumericOffsetFromISOString(isoString);
-    timeZone = unrestrictedTimezones.find(zone => zone.offset === numericOffset).code;
-  } else if (isoString.match(/Z$/)) {
+const guessTimeZoneFromDirtyDateString = dateString => {
+  const offset = dateString.match(/(\d\d):(\d\d)$/);
+  let timeZone, numericOffset;
+  try {
+    if (offset) {
+      // Likely a standard ISO 8601 datestring
+      numericOffset = getNumericOffsetFromDirtyDateString(dateString);
+      timeZone = unrestrictedTimezones.find(zone => zone.offset === numericOffset).code;
+    } else if (dateString.match(/Z$/)) {
+      // If not 8601 but ends in "Z", assume "zulu" time aka UTC
+      timeZone = 'UTC';
+    } else if (dateString.match(/(\+|-)(\d\d?) \w+ $/)) { 
+      // match something like '2017-10-27 2:19 +3 EAT ' (note space at end)
+      numericOffset = getNumericOffsetFromDirtyDateString(dateString);
+      timeZone = unrestrictedTimezones.find(zone => zone.offset === numericOffset).code;
+    } else if (dateString.match(/\d\d\d\d-\d\d?-\d\d? 0:0 (\+|-)?(\d\d?) \w+ notime/)) { 
+      // match something lke '2020-9-2 0:0 +8 PHT notime'
+      numericOffset = getNumericOffsetFromDirtyDateString(dateString);
+      timeZone = unrestrictedTimezones.find(zone => zone.offset === numericOffset).code;
+    } else {
+      throw(new Error('Could not parse time zone from database entry!'));
+    }
+  } catch (e) {
+    // if we can't find a timezone we assume UTC
     timeZone = 'UTC';
-  } else {
-    throw(new Error('Could not parse time zone from database entry!'));
   }
   return timeZone;
 };
 
-const getNumericOffsetFromISOString = isoString => {
-  const offset = isoString.match(/(\+|-)(\d\d):(\d\d)$/);
-  let numericOffset;
-  if (offset) {
-    const sign = offset[1] === '+' ? 1 : -1;
-    const hours = +offset[2];
-    const minutes = +offset[3];
-    numericOffset = sign * (hours + minutes/60);
-  } else if (isoString.match(/Z$/)) {
+const getUnixTimeFromDirtyDateString = dateString => {
+  // attempt to parse ms since epoch out of potentially badly formatted date string (see https://meedan.atlassian.net/browse/CHECK-1354 comments)
+  // returns milliseconds since epoch like 1634774400000
+
+  // first, see if this is a normal ISO 8601 date
+  let isoDate = Date.parse(dateString);
+  if (isoDate) {
+    return isoDate;
+  }
+
+  // next, try a few of the time formats you can find in our DB
+  let year, month, day, hour, minute;
+  const firstTry = dateString.match(/(\d\d\d\d)-(\d\d?)-(\d\d?) (\d\d?):(\d\d?)/);
+  if (firstTry) {
+    year = firstTry[1];
+    month = firstTry[2];
+    day = firstTry[3];
+    hour = firstTry[4];
+    minute = firstTry[5];
+    return Date.parse(`${year}-${month}-${day} ${hour}:${minute}Z`);
+  }
+  const secondTry = dateString.match(/^(\w+) (\d\d?), (\d\d\d\d) at (\d\d?):(\d\d?)/);
+  if (secondTry) {
+    year = secondTry[3];
+    month = secondTry[1];
+    day = secondTry[2];
+    hour = secondTry[4];
+    minute = secondTry[5];
+    // Note: you cannot simply parse 'January 1, 2021' because while it parses, it does so in local time, not UTC
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse#differences_in_assumed_time_zone
+    // so we have to convert the month string to 2-digit month
+    // https://stackoverflow.com/a/66791326/4869657
+    month = new Date(`${month} 01 2000`).toLocaleDateString(`en`, {month:`2-digit`})
+    return Date.parse(`${year}-${month}-${day} ${hour}:${minute}Z`);
+  }
+
+  // if all else fails, give up and return today's date
+  return Date.now();
+}
+
+const getNumericOffsetFromDirtyDateString = dateString => {
+  const offset = dateString.match(/(\+|-)(\d\d):(\d\d)$/);
+  let numericOffset, customOffset, sign, hours, minutes;
+  try {
+    if (offset) {
+      // Likely a standard ISO 8601 datestring
+      sign = offset[1] === '+' ? 1 : -1;
+      hours = +offset[2];
+      minutes = +offset[3];
+      numericOffset = sign * (hours + minutes/60);
+    } else if (dateString.match(/Z$/)) {
+      // If not 8601 but ends in "Z", assume "zulu" time aka UTC
+      numericOffset = 0;
+    } else if (dateString.match(/(\+|-)(\d\d?) \w+ $/)) { 
+      // match something like '2017-10-27 2:19 +3 EAT ' (note space at end)
+      customOffset = dateString.match(/(\+|-)(\d\d?) \w+ $/);
+      sign = customOffset[1] === '+' ? 1 : -1;
+      hours = +customOffset[2];
+      numericOffset = sign * hours;
+    } else if (dateString.match(/\d\d\d\d-\d\d?-\d\d? 0:0 (\+|-)?(\d\d?) \w+ notime/)) { 
+      // match something lke '2020-9-2 0:0 +8 PHT notime'
+      customOffset = dateString.match(/\d\d\d\d-\d\d?-\d\d? 0:0 (\+|-)?(\d\d?) \w+ notime/);
+      sign = customOffset[1] === '+' ? 1 : -1;
+      hours = +customOffset[2];
+      numericOffset = sign * hours;
+    } else if (dateString.match(/^\w+ \d\d?, \d\d\d\d at \d\d?:\d\d?\s\s\((\+|-)(\d\d)(\d\d) UTC/)) { 
+      // match something like 'October 26, 2021 at 11:16  (+0600 UTC)'
+      customOffset = dateString.match(/^\w+ \d\d?, \d\d\d\d at \d\d?:\d\d?\s\s\((\+|-)(\d\d)(\d\d) UTC/);
+      sign = customOffset[1] === '+' ? 1 : -1;
+      hours = +customOffset[2];
+      minutes = +customOffset[3];
+      numericOffset = sign * (hours + minutes/60);
+    } else {
+      throw(new Error('Could not parse UTC offset from database entry!'));
+    }
+  } catch (e) {
+    // if we error, we assume 0 offset for calculations
     numericOffset = 0;
-  } else {
-    throw(new Error('Could not parse UTC offset from database entry!'));
   }
   return numericOffset;
 };
@@ -86,10 +167,10 @@ const getInititalTimeZoneState = (isoString, options) => {
   } else {
     // if there is a time in the DB and time zones are restricted, we match to the time zone with the right offset
     if (options[0]?.restrictTimezones) {
-      return options.find(zone => zone.offset === getNumericOffsetFromISOString(isoString));
+      return options.find(zone => zone.offset === getNumericOffsetFromDirtyDateString(isoString));
     } else {
       // if time zones are unrestricted, match to the closest we can find
-      return unrestrictedTimezones.find(zone => zone.offset === getNumericOffsetFromISOString(isoString));
+      return unrestrictedTimezones.find(zone => zone.offset === getNumericOffsetFromDirtyDateString(isoString));
     }
   }
 }
@@ -111,7 +192,8 @@ function MetadataDate({
   required,
 }) {
   // If there is data in the DB, need the standard ISO 8601 string which is stored in first_response
-  const storedISODate = node?.first_response?.content ? JSON.parse(node.first_response.content)[0].value : null;
+  // We also catch several other formats that have snuck their way into the DB, see https://meedan.atlassian.net/browse/CHECK-1354
+  const storedDateString = node?.first_response?.content ? JSON.parse(node.first_response.content)[0].value : null;
   const mutationPayload = {
     annotation_type: 'task_response_datetime',
     set_fields: `{"response_datetime":"${metadataValue}"}`,
@@ -119,38 +201,38 @@ function MetadataDate({
   const options = node.options?.length > 0 ? node.options : [{ code: 'UTC', label: 'UTC (GMT +0)', offset: 0 }];
   const alwaysShowTime = options[0]?.alwaysShowTime;
   const _classes = useStyles();
-  const [timeZone, setTimeZone] = React.useState(getInititalTimeZoneState(storedISODate, options));
+  const [timeZone, setTimeZone] = React.useState(getInititalTimeZoneState(storedDateString, options));
   const [offsetTime, setOffsetTime] = React.useState(null);
   const [displayDate, setDisplayDate] = React.useState(null);
   const [showTime, setShowTime] = React.useState(false);
   const [error, setError] = React.useState('');
 
   let convertedMaskDate;
-  if (storedISODate) {
+  if (storedDateString) {
     // guess the database time zone from the stored ISO offset
-    const guessedTimeZone = guessTimeZoneFromISOString(storedISODate);
+    const guessedTimeZone = guessTimeZoneFromDirtyDateString(storedDateString);
     // use en-ZA to get YYYY/MM/DD
     convertedMaskDate = new Intl.DateTimeFormat('en-ZA',
       {
         timeZone: guessedTimeZone,
         dateStyle: 'short',
-      }).format(Date.parse(storedISODate));
+      }).format(getUnixTimeFromDirtyDateString(storedDateString));
   }
-  const [displayDateMask, setDisplayDateMask] = React.useState(storedISODate ? convertedMaskDate : null);
+  const [displayDateMask, setDisplayDateMask] = React.useState(storedDateString ? convertedMaskDate : null);
   const [displayTime, setDisplayTime] = React.useState('');
 
   let convertedMaskTime;
-  if (storedISODate) {
+  if (storedDateString) {
     // guess the database time zone from the stored ISO offset
-    const guessedTimeZone = guessTimeZoneFromISOString(storedISODate);
+    const guessedTimeZone = guessTimeZoneFromDirtyDateString(storedDateString);
     convertedMaskTime = new Intl.DateTimeFormat('en-US',
       {
         timeZone: guessedTimeZone,
         hour: '2-digit',
         minute: '2-digit'
-      }).format(Date.parse(storedISODate));
+      }).format(getUnixTimeFromDirtyDateString(storedDateString));
   }
-  const [displayTimeMask, setDisplayTimeMask] = React.useState(storedISODate ? convertedMaskTime : null);
+  const [displayTimeMask, setDisplayTimeMask] = React.useState(storedDateString ? convertedMaskTime : null);
 
   function handleDateChange(_, maskedInput) {
     setDisplayDateMask(maskedInput);
@@ -292,7 +374,7 @@ function MetadataDate({
             </Grid>
             <Grid item>
               <SaveButton
-                empty={storedISODate === null || error.length > 0 || (options[0]?.requireTime && displayTime === null)}
+                empty={storedDateString === null || error.length > 0 || (options[0]?.requireTime && displayTime === null)}
                 {...{ mutationPayload, required }}
               />
             </Grid>
