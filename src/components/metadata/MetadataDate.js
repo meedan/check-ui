@@ -374,7 +374,7 @@ function MetadataDate({
             </Grid>
             <Grid item>
               <SaveButton
-                empty={metadataValue === null || error.length > 0 || (options[0]?.requireTime && displayTime === null)}
+                empty={!metadataValue || error.length > 0 || (options[0]?.requireTime && displayTime === null)}
                 {...{ mutationPayload, required }}
               />
             </Grid>
