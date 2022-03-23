@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid } from '@material-ui/core';
+import { LinearProgress, Grid } from '@material-ui/core';
 import Upload from '../upload/Upload';
 import ClearButton from './ClearButton';
 
@@ -12,8 +12,10 @@ function MetadataFile({
   SaveButton,
   AnnotatorInformation,
   FieldInformation,
+  ProgressLabel,
   hasData,
   isEditing,
+  isSaving,
   metadataValue,
   setMetadataValue,
   extensions,
@@ -36,6 +38,16 @@ function MetadataFile({
   function cleanup() {
     setMetadataValue('');
     setFile({});
+  }
+
+  if (isSaving) {
+    return (
+      <>
+        <FieldInformation />
+        <ProgressLabel fileName={file.name} />
+        <LinearProgress />
+      </>
+    );
   }
 
   return (
@@ -104,7 +116,9 @@ MetadataFile.propTypes = {
   SaveButton: PropTypes.element.isRequired,
   AnnotatorInformation: PropTypes.element.isRequired,
   FieldInformation: PropTypes.element.isRequired,
+  ProgressLabel: PropTypes.element.isRequired,
   hasData: PropTypes.bool.isRequired,
+  isEditing: PropTypes.bool.isRequired,
   isEditing: PropTypes.bool.isRequired,
   metadataValue: PropTypes.string.isRequired,
   setMetadataValue: PropTypes.func.isRequired,
