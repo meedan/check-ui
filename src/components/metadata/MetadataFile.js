@@ -57,7 +57,7 @@ function MetadataFile({
         <>
           <Upload
             disabled={disabled}
-            fileUrl={node.first_response?.file_data?.file_urls[0]}
+            fileUrl={node.first_response?.file_data?.file_urls?.[0]}
             fileName={node.first_response_value}
             errorMessage={error.message}
             {...{ extensions, messages, setMetadataValue, setError, setFile, fileSizeMax}}
@@ -78,7 +78,7 @@ function MetadataFile({
         <>
           <Upload
             disabled={disabled}
-            fileUrl={metadataValue && node.first_response?.file_data?.file_urls[0]}
+            fileUrl={metadataValue && node.first_response?.file_data?.file_urls?.[0]}
             fileName={metadataValue && node.first_response_value}
             isEditing
             errorMessage={error.message}

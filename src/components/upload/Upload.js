@@ -109,13 +109,13 @@ function Upload({
         </Box>
       ) : (
         <Typography variant="body1" className={classes.value}>
-          { fileUrl ? 
-            <a href={fileUrl}>
-              {fileName || file.name}
-            </a> :
+          { file || !fileUrl ?
             <span>
-              {fileName || file.name}
-            </span>
+              {file?.name}
+            </span> :
+            <a href={fileUrl}>
+              {fileName}
+            </a>
           }
         </Typography>
       )}
