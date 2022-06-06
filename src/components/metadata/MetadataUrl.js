@@ -79,14 +79,14 @@ function MetadataUrl({
       value = `http://${value}`;
       newUrls[index] = {
         url: value,
-        title: urls[index].title,
+        title: urls[index].title.trimLeft(),
       };
     }
     // if the entered value is not a url, and is invalid without a prepend, and it's not blank, put it in an error state to be rendered by the component
     else if (!isUrl(value) && urls[index].url !== '') {
       newUrls[index] = {
         url: value,
-        title: urls[index].title,
+        title: urls[index].title.trimLeft(),
         error: true,
       };
     }
@@ -102,7 +102,7 @@ function MetadataUrl({
     const newUrls = [...urls];
     newUrls[index] = {
       url: urls[index].url,
-      title: e.target.value,
+      title: e.target.value.trimLeft(),
     };
     setUrls(newUrls);
     setMetadataValue(newUrls);
@@ -126,7 +126,7 @@ function MetadataUrl({
   }
 
   function isEveryFieldEmpty() {
-    return urls.filter(item => item.url !== '' || item.title !== '').length === 0;
+    return urls.filter(item => item.url !== '' || item.title.trimLeft() !== '').length === 0;
   }
 
   function cleanup(index) {
