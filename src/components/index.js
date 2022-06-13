@@ -1,4 +1,3 @@
-import Timeline from './timeline/Timeline';
 import Player from './player/Player';
 import MetadataDate from './metadata/MetadataDate.js';
 import MetadataFile from './metadata/MetadataFile.js';
@@ -10,7 +9,6 @@ import MetadataUrl from './metadata/MetadataUrl.js';
 import MultiSelector from './pickers/MultiSelector';
 
 export {
-  Timeline,
   Player,
   MetadataDate,
   MetadataFile,
