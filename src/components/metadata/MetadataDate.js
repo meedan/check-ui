@@ -55,11 +55,11 @@ const guessTimeZoneFromDirtyDateString = dateString => {
     } else if (dateString.match(/Z$/)) {
       // If not 8601 but ends in "Z", assume "zulu" time aka UTC
       timeZone = 'UTC';
-    } else if (dateString.match(/(\+|-)(\d\d?) \w+ $/)) { 
+    } else if (dateString.match(/(\+|-)(\d\d?) \w+ $/)) {
       // match something like '2017-10-27 2:19 +3 EAT ' (note space at end)
       numericOffset = getNumericOffsetFromDirtyDateString(dateString);
       timeZone = unrestrictedTimezones.find(zone => zone.offset === numericOffset).code;
-    } else if (dateString.match(/\d\d\d\d-\d\d?-\d\d? 0:0 (\+|-)?(\d\d?) \w+ notime/)) { 
+    } else if (dateString.match(/\d\d\d\d-\d\d?-\d\d? 0:0 (\+|-)?(\d\d?) \w+ notime/)) {
       // match something lke '2020-9-2 0:0 +8 PHT notime'
       numericOffset = getNumericOffsetFromDirtyDateString(dateString);
       timeZone = unrestrictedTimezones.find(zone => zone.offset === numericOffset).code;
@@ -126,19 +126,19 @@ const getNumericOffsetFromDirtyDateString = dateString => {
     } else if (dateString.match(/Z$/)) {
       // If not 8601 but ends in "Z", assume "zulu" time aka UTC
       numericOffset = 0;
-    } else if (dateString.match(/(\+|-)(\d\d?) \w+ $/)) { 
+    } else if (dateString.match(/(\+|-)(\d\d?) \w+ $/)) {
       // match something like '2017-10-27 2:19 +3 EAT ' (note space at end)
       customOffset = dateString.match(/(\+|-)(\d\d?) \w+ $/);
       sign = customOffset[1] === '+' ? 1 : -1;
       hours = +customOffset[2];
       numericOffset = sign * hours;
-    } else if (dateString.match(/\d\d\d\d-\d\d?-\d\d? 0:0 (\+|-)?(\d\d?) \w+ notime/)) { 
+    } else if (dateString.match(/\d\d\d\d-\d\d?-\d\d? 0:0 (\+|-)?(\d\d?) \w+ notime/)) {
       // match something lke '2020-9-2 0:0 +8 PHT notime'
       customOffset = dateString.match(/\d\d\d\d-\d\d?-\d\d? 0:0 (\+|-)?(\d\d?) \w+ notime/);
       sign = customOffset[1] === '+' ? 1 : -1;
       hours = +customOffset[2];
       numericOffset = sign * hours;
-    } else if (dateString.match(/^\w+ \d\d?, \d\d\d\d at \d\d?:\d\d?\s\s\((\+|-)(\d\d)(\d\d) UTC/)) { 
+    } else if (dateString.match(/^\w+ \d\d?, \d\d\d\d at \d\d?:\d\d?\s\s\((\+|-)(\d\d)(\d\d) UTC/)) {
       // match something like 'October 26, 2021 at 11:16  (+0600 UTC)'
       customOffset = dateString.match(/^\w+ \d\d?, \d\d\d\d at \d\d?:\d\d?\s\s\((\+|-)(\d\d)(\d\d) UTC/);
       sign = customOffset[1] === '+' ? 1 : -1;
@@ -163,7 +163,8 @@ const getInititalTimeZoneState = (isoString, options) => {
       label: options[0]?.label,
       offset: options[0]?.offset,
     };
-    return options[0]?.restrictTimezones ? firstOption : unrestrictedTimezones.find(zone => Intl.DateTimeFormat().resolvedOptions().timeZone === zone.code)
+    const defaultTz = unrestrictedTimezones.find(zone => Intl.DateTimeFormat().resolvedOptions().timeZone === zone.code) || firstOption;
+    return options[0]?.restrictTimezones ? firstOption : defaultTz;
   } else {
     // if there is a time in the DB and time zones are restricted, we match to the time zone with the right offset
     if (options[0]?.restrictTimezones) {
@@ -268,8 +269,10 @@ function MetadataDate({
         .format(),
     );
   }
-  
-  function handleTimeZoneOffsetChange(event, newValue) {
+
+  function handleTimeZoneOffsetChange(event, value) {
+    // handle clearing timezone selection (value = null)
+    const newValue = value || { offset: 0 };
     setTimeZone(newValue);
     // update the displaytime to the new timezone, and then set final value to display date at the correct hour in the correct new timezone
     const o = dayjs(displayTime).utcOffset(newValue.offset, true);
@@ -346,8 +349,9 @@ function MetadataDate({
                   <Autocomplete
                     className={_classes.timeZoneSelect}
                     options={selectOptions}
-                    getOptionLabel={option => option.label}
-                    defaultValue={timeZone}
+                    getOptionLabel={option => option.label || ''}
+                    getOptionSelected={option => option.label === timeZone?.label}
+                    value={timeZone?.label ? timeZone : null}
                     filterSelectedOptions
                     onChange={handleTimeZoneOffsetChange}
                     renderInput={params => (
@@ -357,12 +361,14 @@ function MetadataDate({
                         label=""
                       />
                     )}
+                    disabled={disabled}
                   />
                 </>) : (
                 <Button
                   className={_classes.addTime}
                   startIcon={<AddIcon />}
                   onClick={() => setShowTime(!showTime)}
+                  disabled={disabled}
                 >
                   Add time
                 </Button>)
