@@ -119,7 +119,7 @@ MetadataFile.propTypes = {
   ProgressLabel: PropTypes.element.isRequired,
   hasData: PropTypes.bool.isRequired,
   isEditing: PropTypes.bool.isRequired,
-  isEditing: PropTypes.bool.isRequired,
+  isSaving: PropTypes.bool.isRequired,
   metadataValue: PropTypes.string.isRequired,
   setMetadataValue: PropTypes.func.isRequired,
   extensions: PropTypes.string.isRequired,
