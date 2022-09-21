@@ -61,11 +61,11 @@ function Upload({
   function handleDrop(e) {
     e.preventDefault();
     if (disabled) return;
-    if (e.dataTransfer.items.length > 1) {
+    if (e.dataTransfer?.items?.length > 1) {
       setError({ message: messages.errorTooManyFiles });
     } else {
-      if (e.dataTransfer.items[0].kind === 'file') {
-        const fileData = e.dataTransfer.items[0].getAsFile();
+      if (e.dataTransfer?.items[0]?.kind === 'file') {
+        const fileData = e.dataTransfer?.items[0]?.getAsFile();
         validateAndSetFile(fileData);
       } else {
         setError({ message: messages.errorInvalidFile });
