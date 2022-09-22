@@ -104,12 +104,17 @@ function AutocompleteLocation(props) {
   );
 }
 
+AutocompleteLocation.defaultProps = {
+  disabled: false,
+};
+
 AutocompleteLocation.propTypes = {
   setNameText: PropTypes.func.isRequired,
   setCoordinates: PropTypes.func.isRequired,
   map: PropTypes.object.isRequired,
   mapboxApiKey: PropTypes.string.isRequired,
   messages: PropTypes.arrayOf(PropTypes.element).isRequired,
+  disabled: PropTypes.bool,
 };
 
 export default AutocompleteLocation;
