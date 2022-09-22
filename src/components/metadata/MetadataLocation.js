@@ -53,6 +53,8 @@ function MetadataLocation({
   const [firstMapRender, setFirstMapRender] = React.useState(true);
   const [map, setMap] = React.useState({});
   const [marker, setMarker] = React.useState({});
+  const mapId = `map-${node.dbid}`;
+
   let latitude, longitude, name;
   try {
     const parsedNode = JSON.parse(
@@ -166,7 +168,7 @@ function MetadataLocation({
   React.useEffect(() => {
     if ((!hasData || isEditing) && firstMapRender) {
       setFirstMapRender(false);
-      let tempMap = L.map('map-edit');
+      let tempMap = L.map(mapId);
       let defaultCenter, basemap;
       const defaultZoom = 10;
 
@@ -258,7 +260,7 @@ function MetadataLocation({
             helperText={coordinates.error ? messages.coordinatesHelper : null}
             disabled={disabled}
           />
-          <div id="map-edit" className={classes.map}></div>
+          <div id={mapId} className={classes.map}></div>
           <Grid container alignItems="flex-end" wrap="nowrap" spacing={0}>
             <Grid item>
               <CancelButton />
