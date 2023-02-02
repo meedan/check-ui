@@ -181,6 +181,7 @@ class MultiSelector extends React.Component {
     const {
       onDismiss,
       onSubmit,
+      onReset,
       classes,
     } = this.props;
 
@@ -213,6 +214,14 @@ class MultiSelector extends React.Component {
               }
               label={this.props.toggleAllLabel}
             />
+            <Button
+              className="multiselector__reset"
+              color="primary"
+              variant="contained"
+              onClick={onReset}
+            >
+              { this.props.resetLabel}
+            </Button>
           </Box>
           : null
         }
