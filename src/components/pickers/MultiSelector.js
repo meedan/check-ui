@@ -203,7 +203,7 @@ class MultiSelector extends React.Component {
           : null
         }
         { this.props.allowToggleAll ?
-          <Box p={2}>
+          <Box p={2} display="flex" justifyContent="space-between">
             <FormControlLabel
               control={
                 <Checkbox
@@ -214,14 +214,16 @@ class MultiSelector extends React.Component {
               }
               label={this.props.toggleAllLabel}
             />
-            <Button
-              className="multiselector__reset"
-              color="primary"
-              variant="contained"
-              onClick={onReset}
-            >
-              { this.props.resetLabel}
-            </Button>
+            { onReset && this.props.resetLabel ?
+              <Button
+                className="multiselector__reset"
+                onClick={onReset}
+                disabled={this.props.disableReset}
+              >
+                { this.props.resetLabel}
+              </Button>
+              : null
+            }
           </Box>
           : null
         }
@@ -303,11 +305,14 @@ MultiSelector.defaultProps = {
   allowToggleAll: false,
   children: null,
   defaultAllSelected: false,
+  disableReset: false,
   inputPlaceholder: null,
   onDismiss: null,
+  onReset: null,
   onSearchChange: null,
   onSelectChange: null,
   toggleAllLabel: null,
+  resetLabel: null,
 };
 
 MultiSelector.propTypes = {
@@ -318,6 +323,7 @@ MultiSelector.propTypes = {
   classes: PropTypes.object.isRequired,
   children: PropTypes.node,
   defaultAllSelected: PropTypes.bool,
+  disableReset: PropTypes.bool,
   inputPlaceholder: PropTypes.string,
   notFoundLabel: PropTypes.node.isRequired,
   options: PropTypes.arrayOf(PropTypes.shape({
@@ -333,6 +339,8 @@ MultiSelector.propTypes = {
   onSelectChange: PropTypes.func,
   onSubmit: PropTypes.func.isRequired,
   toggleAllLabel: PropTypes.node,
+  onReset: PropTypes.func,
+  resetLabel: PropTypes.node,
 };
 
 export default withStyles(styles)(MultiSelector);
