@@ -41,7 +41,7 @@ class MultiSelector extends React.Component {
     super(props);
     const defaultSelected = props.defaultAllSelected
       ? props.options.filter(o => o.value !== '').map(o => o.value)
-      : [];
+      : props.defaultValue;
 
     const parents = props.options.filter(o => o.hasChildren).map(o => o.value);
     const selectedParents = props.selected.filter(p => parents.includes(p));
@@ -92,6 +92,10 @@ class MultiSelector extends React.Component {
           .map(o => o.value),
       });
     }
+  };
+
+  handleReset = () => {
+    this.setState({ selected: this.props.defaultValue });
   };
 
   addItem = (value) => {
@@ -181,11 +185,13 @@ class MultiSelector extends React.Component {
     const {
       onDismiss,
       onSubmit,
-      onReset,
       classes,
+
+
     } = this.props;
 
     const options = this.filter(this.props.options);
+    const disableReset = JSON.stringify(this.state.selected.sort()) === JSON.stringify(this.props.defaultValue.sort());
 
     return (
       <div>
@@ -214,11 +220,11 @@ class MultiSelector extends React.Component {
               }
               label={this.props.toggleAllLabel}
             />
-            { onReset && this.props.resetLabel ?
+            { this.props.resetLabel ?
               <Button
                 className="multiselector__reset"
-                onClick={onReset}
-                disabled={this.props.disableReset}
+                onClick={this.handleReset}
+                disabled={disableReset}
               >
                 { this.props.resetLabel}
               </Button>
@@ -305,10 +311,10 @@ MultiSelector.defaultProps = {
   allowToggleAll: false,
   children: null,
   defaultAllSelected: false,
+  defaultValue: [],
   disableReset: false,
   inputPlaceholder: null,
   onDismiss: null,
-  onReset: null,
   onSearchChange: null,
   onSelectChange: null,
   toggleAllLabel: null,
@@ -323,6 +329,7 @@ MultiSelector.propTypes = {
   classes: PropTypes.object.isRequired,
   children: PropTypes.node,
   defaultAllSelected: PropTypes.bool,
+  defaultValue: PropTypes.array,
   disableReset: PropTypes.bool,
   inputPlaceholder: PropTypes.string,
   notFoundLabel: PropTypes.node.isRequired,
@@ -339,7 +346,6 @@ MultiSelector.propTypes = {
   onSelectChange: PropTypes.func,
   onSubmit: PropTypes.func.isRequired,
   toggleAllLabel: PropTypes.node,
-  onReset: PropTypes.func,
   resetLabel: PropTypes.node,
 };
 
