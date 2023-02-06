@@ -186,8 +186,6 @@ class MultiSelector extends React.Component {
       onDismiss,
       onSubmit,
       classes,
-
-
     } = this.props;
 
     const options = this.filter(this.props.options);
