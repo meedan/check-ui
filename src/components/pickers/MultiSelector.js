@@ -46,9 +46,10 @@ class MultiSelector extends React.Component {
     const parents = props.options.filter(o => o.hasChildren).map(o => o.value);
     const selectedParents = props.selected.filter(p => parents.includes(p));
     const childrenOfSelectedParents = props.options.filter(o => selectedParents.includes(o.parent)).map(o => o.value);
+    const selected = props.selected.length ? props.selected.concat(childrenOfSelectedParents) : defaultSelected;
 
     this.state = {
-      selected: props.selected.length ? props.selected.concat(childrenOfSelectedParents) : defaultSelected,
+      selected: [...new Set(selected)], // Removes duplicate values
       filter: '',
     };
   }
