@@ -190,7 +190,10 @@ class MultiSelector extends React.Component {
     } = this.props;
 
     const options = this.filter(this.props.options);
-    const disableReset = JSON.stringify(this.state.selected.sort()) === JSON.stringify(this.props.defaultValue.sort());
+    const disableReset = (
+      (this.props.single && this.state.selected === this.props.defaultValue) ||
+      (!this.props.single && JSON.stringify(this.state.selected.sort()) === JSON.stringify(this.props.defaultValue.sort()))
+    );
 
     return (
       <div>
