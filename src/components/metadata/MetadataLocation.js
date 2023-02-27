@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography, TextField, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import L from 'leaflet';
+import L from 'leaflet/dist/leaflet';
 import 'leaflet/dist/leaflet.css';
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png';
 import iconUrl from 'leaflet/dist/images/marker-icon.png';
