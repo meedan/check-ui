@@ -1,4 +1,3 @@
-import Player from './player/Player';
 import MetadataDate from './metadata/MetadataDate.js';
 import MetadataFile from './metadata/MetadataFile.js';
 import MetadataLocation from './metadata/MetadataLocation.js';
@@ -9,7 +8,6 @@ import MetadataUrl from './metadata/MetadataUrl.js';
 import MultiSelector from './pickers/MultiSelector';
 
 export {
-  Player,
   MetadataDate,
   MetadataFile,
   MetadataLocation,
