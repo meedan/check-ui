@@ -236,55 +236,59 @@ class MultiSelector extends React.Component {
           : null
         }
         <div className={classes.multiSelectorArea}>
-          <FormGroup>
-            {
-              options.map((o, index) => {
-                if (o.value === '' && o.label === '') {
-                  return (
-                    <Divider key={`multiselector-divider-${index.toString()}`} />
-                  );
-                }
-                if (o.value === '') {
-                  return (
-                    <span className={classes.category} key={`multiselector-header-${index.toString()}`}>
-                      {o.label}
-                    </span>
-                  );
-                }
-                const icons = {};
-                if (o.icon) icons.icon = o.icon;
-                if (o.checkedIcon) icons.checkedIcon = o.checkedIcon;
-
-                return (
-                  <FormControlLabel
-                    key={`multiselector-option-${index.toString()}`}
-                    className={o.parent ? classes.child : ''}
-                    control={this.props.single ?
-                      <Radio
-                        checked={this.state.selected === o.value}
-                        onChange={this.handleSelectRadio}
-                        id={o.value}
-                        {...icons}
-                      /> :
-                      <Checkbox
-                        checked={this.state.selected.indexOf(o.value) > -1}
-                        onChange={this.handleSelectCheckbox}
-                        id={o.value}
-                        {...icons}
-                      />
+          {
+            this.props.loadingIcon ? this.props.loadingIcon : (
+              <FormGroup>
+                {
+                  options.map((o, index) => {
+                    if (o.value === '' && o.label === '') {
+                      return (
+                        <Divider key={`multiselector-divider-${index.toString()}`} />
+                      );
                     }
-                    label={<span style={{ color: o.color }}>{o.label} </span>}
-                  />
-                );
-              })
-            }
-            { options.length < 1 ?
-              <div className={classes.notFound}>
-                { this.props.notFoundLabel }
-              </div>
-              : null
-            }
-          </FormGroup>
+                    if (o.value === '') {
+                      return (
+                        <span className={classes.category} key={`multiselector-header-${index.toString()}`}>
+                          {o.label}
+                        </span>
+                      );
+                    }
+                    const icons = {};
+                    if (o.icon) icons.icon = o.icon;
+                    if (o.checkedIcon) icons.checkedIcon = o.checkedIcon;
+
+                    return (
+                      <FormControlLabel
+                        key={`multiselector-option-${index.toString()}`}
+                        className={o.parent ? classes.child : ''}
+                        control={this.props.single ?
+                          <Radio
+                            checked={this.state.selected === o.value}
+                            onChange={this.handleSelectRadio}
+                            id={o.value}
+                            {...icons}
+                          /> :
+                          <Checkbox
+                            checked={this.state.selected.indexOf(o.value) > -1}
+                            onChange={this.handleSelectCheckbox}
+                            id={o.value}
+                            {...icons}
+                          />
+                        }
+                        label={<span style={{ color: o.color }}>{o.label} </span>}
+                      />
+                    );
+                  })
+                }
+                { options.length < 1 ?
+                  <div className={classes.notFound}>
+                    { this.props.notFoundLabel }
+                  </div>
+                  : null
+                }
+              </FormGroup>
+            )
+          }
         </div>
         { this.props.children }
         <Box p={2} display="flex" justifyContent="flex-end" flexDirection="row">
